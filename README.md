@@ -62,6 +62,34 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ![](WebDesign/profile.PNG)
 
+## Casos de uso
+
+![](Diagrams/estudiante.PNG)
+
+* Como estudiante quiero inscribirme a las clases para poder aprender los temas en los que tengo dudas.
+* Como estudiante quiero conectarme a las sesiones  para poder asistir a las clases en las que solicité unirme
+* Como estudiante quiero buscar clases para poder encontrar el tema en el que tengo dudas.
+
+
+![](Diagrams/profesor.PNG)
+
+* Como profesor quiero registrar una clase para poder ofrecerla a los estudiante 
+* Como profesor quiero realizar una videollamada para poder interactuar con mis estudiantes durante la videollamada
+* Como profesor quiero decidir qué estudiantes se conectan a la clase para poder saber las personas que estarán en la sesión
+
+
+![](Diagrams/usuario.PNG)
+
+* Como Usuario quiero registrarme en la plataforma para poder acceder a las funcionalidades de la misma
+* Como Usuario quiero loguearme en la plataforma para poder acceder a las funcionalidades que poseo en ella
+
+## Diagrama de clases
+
+![](Diagrams/class.PNG)
+
+## Diagrama entidad relacion
+
+![](Diagrams/er.PNG)
 
 ## Autores
 
