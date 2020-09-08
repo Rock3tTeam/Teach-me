@@ -99,7 +99,7 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ## Diagrama de componentes
 
-![](Diagrams/components.PNG)
+![](Diagrams/components.png)
 
 
 ## Autores
