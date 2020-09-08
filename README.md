@@ -96,6 +96,12 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ![](Diagrams/er.PNG)
 
+
+## Diagrama de componentes
+
+![](Diagrams/components.PNG)
+
+
 ## Autores
 
 * **Nicolas Aguilera Contreras** - Escuela Colombiana de Ingeniería Julio Garavito
