@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var app = (function () {
     const constraints = {
@@ -13,9 +13,9 @@ var app = (function () {
         var video = document.getElementById("video");
         var snap = document.getElementById("snap");
         var canvas = document.getElementById("canvas");
-        var errorMsgElement = document.querySelector('span#errorMsg');
+        var errorMsgElement = document.querySelector("span#errorMsg");
         // Dibuja la imagen
-        var context = canvas.getContext('2d');
+        var context = canvas.getContext("2d");
         snap.addEventListener("click", function() {
             context.drawImage(video, 0, 0, 640, 480);
         });
@@ -31,10 +31,6 @@ var app = (function () {
     function handleSuccess(stream) {
         window.stream = stream;
         video.srcObject = stream;
-    }
-
-    function drawImage(){
-
     }
 
     return {
