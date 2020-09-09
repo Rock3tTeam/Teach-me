@@ -6,6 +6,10 @@
 
 [![CircleCI](https://circleci.com/gh/Rock3tTeam/Teach-me.svg?style=svg)](https://app.circleci.com/pipelines/github/Rock3tTeam/Teach-me)
 
+[Enlace Burndown Chart](https://docs.google.com/spreadsheets/d/1e1N1zd1U_OG5T2ELwBz_HQ3leefo6FXZyYKzylzRoOI/edit#gid=0)
+
+[Enlace Taiga](https://tree.taiga.io/project/nicolasaguilera9906-eduapp/backlog)
+
 ## Asignatura 
 
 Arquitecturas de software (ARSW) 2020-2 
