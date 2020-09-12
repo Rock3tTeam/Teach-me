@@ -8,10 +8,10 @@ public class User {
     private String lastName;
     private String password;
     private String description;
-    private List<Clase> teachingClases;
+    private List<Class> teachingClases;
     private List<Request> requests;
 
-    public User(String email, String firstName, String lastName, String password, String description, List<Clase> teachingClases, List<Request> requests) {
+    public User(String email, String firstName, String lastName, String password, String description, List<Class> teachingClases, List<Request> requests) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,11 +61,11 @@ public class User {
         this.description = description;
     }
 
-    public List<Clase> getTeachingClasses() {
+    public List<Class> getTeachingClasses() {
         return teachingClases;
     }
 
-    public void setTeachingClasses(List<Clase> teachingClases) {
+    public void setTeachingClasses(List<Class> teachingClases) {
         this.teachingClases = teachingClases;
     }
 

@@ -26,6 +26,8 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+
     /*@RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addSomething(@RequestBody Object object){
         try {

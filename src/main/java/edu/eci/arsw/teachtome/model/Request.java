@@ -1,19 +1,19 @@
 package edu.eci.arsw.teachtome.model;
 
 public class Request {
-    private Clase clase;
+    private Class clase;
     private User user;
 
-    public Request(Clase clase, User user) {
+    public Request(Class clase, User user) {
         this.clase = clase;
         this.user = user;
     }
 
-    public Clase getClase() {
+    public Class getClase() {
         return clase;
     }
 
-    public void setClase(Clase clase) {
+    public void setClase(Class clase) {
         this.clase = clase;
     }
 
