@@ -2,26 +2,25 @@ package edu.eci.arsw.teachtome.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "classes")
 public class Clase {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name="nombre",length=255, nullable = false)
+    @Column(name = "nombre", length = 255, nullable = false)
     private String nombre;
 
-    @Column(name = "capacity",length=50, nullable = false)
+    @Column(name = "capacity", length = 50, nullable = false)
     private int capacity;
 
-    @Column(name = "description",length=255, unique = true, nullable = false)
+    @Column(name = "description", length = 255, unique = true, nullable = false)
     private String description;
 
-    @Column(name = "amount_of_students",length=50,nullable = false)
+    @Column(name = "amount_of_students", length = 50, nullable = false)
     private int amountOfStudents;
 
     @Column(name = "date_of_init")
@@ -30,7 +29,7 @@ public class Clase {
     @Column(name = "date_of_end")
     private Date dateOfEnd;
 
-    public Clase(){
+    public Clase() {
     }
 
     public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd) {

@@ -1,9 +1,9 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
+import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +11,16 @@ import java.util.List;
 @Service
 public class TeachToMeServices implements TeachToMeServicesInterface {
 
-    //@Autowired
-    //private ARepository repository = null;
+    @Autowired
+    private TeachToMePersistence persistence;
 
     @Override
-    public String getClase() throws TeachToMeServiceException {
-        return "Listo";
+    public Clase getClase(Long classId) throws TeachToMeServiceException {
+        try {
+            return persistence.getClase(classId);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
     }
 
     @Override

@@ -1,14 +1,11 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 
 import java.util.List;
 
 public interface TeachToMeServicesInterface {
-    public String getClase() throws TeachToMeServiceException;
+    public Clase getClase(Long classId) throws TeachToMeServiceException;
 
     public void addClase() throws TeachToMeServiceException;
 
