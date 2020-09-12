@@ -21,7 +21,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Override
     public void addClase() throws TeachToMeServiceException {
-
     }
 
     @Override
