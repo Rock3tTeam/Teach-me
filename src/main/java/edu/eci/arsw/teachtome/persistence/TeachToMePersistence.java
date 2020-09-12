@@ -16,23 +16,23 @@ public interface TeachToMePersistence {
      * @return La clase con su respectivo identificador
      * @throws TeachToMePersistenceException - Cuando no existe la clase dentro de la base de datos
      */
-    public Clase getClase(Long id) throws TeachToMePersistenceException;
+    Clase getClase(Long id) throws TeachToMePersistenceException;
 
-    public void addClase(Clase clase) throws TeachToMePersistenceException;
+    void addClase(Clase clase) throws TeachToMePersistenceException;
 
-    public List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
+    List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 
-    public void addClase(String className, Draw draw) throws TeachToMePersistenceException;
+    void addClase(String className, Draw draw) throws TeachToMePersistenceException;
 
-    public void sendRequest(Request request) throws TeachToMePersistenceException;
+    void sendRequest(Request request) throws TeachToMePersistenceException;
 
-    public void acceptRequest(Request request) throws TeachToMePersistenceException;
+    void updateRequest(Request request) throws TeachToMePersistenceException;
 
-    public void sendMessage(Message message) throws TeachToMePersistenceException;
+    void sendMessage(Message message) throws TeachToMePersistenceException;
 
-    public List<Message> getChat(String className) throws TeachToMePersistenceException;
+    List<Message> getChat(String className) throws TeachToMePersistenceException;
 
-    public void addUser(User user) throws TeachToMePersistenceException;
+    void addUser(User user) throws TeachToMePersistenceException;
 
-    public User getUser(String email) throws TeachToMePersistenceException;
+    User getUser(String email) throws TeachToMePersistenceException;
 }

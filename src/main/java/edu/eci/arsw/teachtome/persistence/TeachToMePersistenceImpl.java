@@ -60,7 +60,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public void acceptRequest(Request request) throws TeachToMePersistenceException {
+    public void updateRequest(Request request) throws TeachToMePersistenceException {
 
     }
 

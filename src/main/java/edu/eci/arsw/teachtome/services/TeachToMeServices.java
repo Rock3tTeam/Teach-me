@@ -74,9 +74,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void acceptRequest(Request request) throws TeachToMeServiceException {
+    public void updateRequest(Request request) throws TeachToMeServiceException {
         try {
-            persistence.acceptRequest(request);
+            persistence.updateRequest(request);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
