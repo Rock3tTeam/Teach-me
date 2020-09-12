@@ -4,21 +4,15 @@ var app = (function () {
     const constraints = {
         audio: true,
         video: {
-            width: 800, height: 600
+            width: 700, height: 500
         }
     };
 
     // Acceso a la webcam
     async function init() {
         var video = document.getElementById("video");
-        var snap = document.getElementById("snap");
-        var canvas = document.getElementById("canvas");
         var errorMsgElement = document.querySelector("span#errorMsg");
-        // Dibuja la imagen
-        var context = canvas.getContext("2d");
-        snap.addEventListener("click", function() {
-            context.drawImage(video, 0, 0, 640, 480);
-        });
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             handleSuccess(stream);
