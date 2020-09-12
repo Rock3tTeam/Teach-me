@@ -97,4 +97,15 @@ public class Clase {
         this.dateOfEnd = dateOfEnd;
     }
 
+    @Override
+    public String toString() {
+        return "{id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", capacity=" + capacity +
+                ", description='" + description + '\'' +
+                ", amountOfStudents=" + amountOfStudents +
+                ", dateOfInit=" + dateOfInit +
+                ", dateOfEnd=" + dateOfEnd +
+                '}';
+    }
 }

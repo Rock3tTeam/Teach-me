@@ -1,40 +1,33 @@
 package edu.eci.arsw.teachtome;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+import static org.junit.Assert.assertEquals;
+
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@TestPropertySource(locations = "classpath:db-test.properties")
+@Sql("/test-h2.sql")
+@AutoConfigureTestDatabase
+public class AppTest {
+
+    @Autowired
+    private ClaseRepository claseRepository;
+
+    @Test
+    public void shouldGetById() {
+        Clase clase = claseRepository.findById(1L).get();
+        assertEquals("description", clase.getDescription());
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-
-        assertTrue( true );
-        assertEquals(1,1);
-    }
 }
