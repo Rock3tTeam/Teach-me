@@ -2,6 +2,9 @@ package edu.eci.arsw.teachtome.model;
 
 import java.util.List;
 
+/**
+ * Clase que representa un usuario dentro de la aplicación TeachToMe
+ */
 public class User {
     private String email;
     private String firstName;

@@ -2,6 +2,9 @@ package edu.eci.arsw.teachtome.model;
 
 import java.util.List;
 
+/**
+ * Clase que representa una sesión de una asignatura dentro de la aplicación TeachToMe
+ */
 public class Session {
     private List<Message> chat;
     private List<Draw> draws;

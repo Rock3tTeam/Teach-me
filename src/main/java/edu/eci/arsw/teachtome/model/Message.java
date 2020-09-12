@@ -2,6 +2,9 @@ package edu.eci.arsw.teachtome.model;
 
 import java.sql.Date;
 
+/**
+ * Clase que representa un mensaje dentro del chat de una sesión dentro de la aplicación TeachToMe
+ */
 public class Message {
     private String content;
     private Date date;

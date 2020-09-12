@@ -8,6 +8,12 @@ var app = (function () {
         }
     };
 
+    // Correcto!
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+
     // Acceso a la webcam
     async function init() {
         var video = document.getElementById("video");
@@ -19,12 +25,6 @@ var app = (function () {
         } catch (e) {
             errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
         }
-    }
-
-    // Correcto!
-    function handleSuccess(stream) {
-        window.stream = stream;
-        video.srcObject = stream;
     }
 
     return {

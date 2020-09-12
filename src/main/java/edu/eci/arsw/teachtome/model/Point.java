@@ -1,5 +1,8 @@
 package edu.eci.arsw.teachtome.model;
 
+/**
+ * Clase que representa un punto de un dibujo dentro de la aplicación TeachToMe
+ */
 public class Point {
     private int x;
     private int y;

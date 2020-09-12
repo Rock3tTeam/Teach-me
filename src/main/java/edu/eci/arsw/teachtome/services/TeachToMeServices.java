@@ -8,12 +8,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementación de la capa de servicios de la aplicación TeachToMe
+ */
 @Service
 public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Autowired
     private TeachToMePersistence persistence;
 
+    /**
+     * Consulta una clase dentro del modelo
+     *
+     * @param classId - Identificador de la clase
+     * @return Un objeto tipo Clase con su respectivo identificador
+     * @throws TeachToMeServiceException - Cuando no existe clase con ese identificador
+     */
     @Override
     public Clase getClase(Long classId) throws TeachToMeServiceException {
         try {
@@ -24,7 +34,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void addClase() throws TeachToMeServiceException {
+    public void addClase(Clase clase) throws TeachToMeServiceException {
     }
 
     @Override

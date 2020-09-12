@@ -3,6 +3,9 @@ package edu.eci.arsw.teachtome.model;
 import javax.persistence.*;
 import java.sql.Date;
 
+/**
+ * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
+ */
 @Entity
 @Table(name = "classes")
 public class Clase {

@@ -2,6 +2,9 @@ package edu.eci.arsw.teachtome.model;
 
 import java.util.List;
 
+/**
+ * Clase que representa un dibujo de una sesión dentro de la aplicación TeachToMe
+ */
 public class Draw {
     private List<Point> points;
 

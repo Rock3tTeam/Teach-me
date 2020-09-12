@@ -12,13 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Controlador API REST de la aplicación TeachToMe
+ */
 @RestController
 @RequestMapping(value = "/api")
 public class TeachToMeAPIController {
     @Autowired
     private TeachToMeServicesInterface services;
 
-    @GetMapping(value="/clases/{classId}")
+    /**
+     * Obtiene la clase con el Id especificado
+     *
+     * @param classId - Identificador de la clase
+     * @return Una entidad de respuesta con la clase o mensaje de excepción y su código de respuesta HTTP
+     */
+    @GetMapping(value = "/clases/{classId}")
     public ResponseEntity<?> getClass(@PathVariable Long classId) {
         try {
             return new ResponseEntity<>(services.getClase(classId), HttpStatus.ACCEPTED);
