@@ -1,4 +1,4 @@
-BEGIN;
+DROP TABLE IF EXISTS classes;
 
 CREATE TABLE IF NOT EXISTS classes (
    id serial PRIMARY KEY,
@@ -11,6 +11,4 @@ CREATE TABLE IF NOT EXISTS classes (
 );
 
 INSERT INTO classes VALUES
-    (1,0,20,'2017-03-14','2017-03-14','description','hi');
-
-COMMIT;
+    (1,0,20,'2017-03-14','2017-03-14','description test','hi');
