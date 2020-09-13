@@ -57,7 +57,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (user == null) {
             throw new TeachToMePersistenceException("El usuario es nulo");
         }
-        claseRepository.save(clase);
         user.getTeachingClasses().add(clase);
     }
 

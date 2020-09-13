@@ -14,6 +14,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -84,7 +88,7 @@ public class AppServicesTest {
     }
 
 
-    /*
+
     @Test
     public void shouldAddANewUser() throws TeachToMeServiceException {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
@@ -95,12 +99,16 @@ public class AppServicesTest {
 
     @Test
     public void shouldAddANewClass() throws TeachToMeServiceException {
-        Date dateOfInit = new Date(System.currentTimeMillis());
-        Date dateOfEnd = new Date(System.currentTimeMillis() + 10000);
-        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, dateOfInit, dateOfEnd);
+        Date dateOfInit = null;
+        Date dateOfEnd = null;
+        try {
+            dateOfInit = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2020/04/13 15:23:12");
+            dateOfEnd = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2019/04/13 12:23:12");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()),new java.sql.Date(dateOfEnd.getTime()));
         User user = services.getUser("prueba@gmail.com");
         services.addClase(clase, user);
     }
-     */
-
 }
