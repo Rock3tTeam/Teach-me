@@ -34,12 +34,12 @@ public class AppServicesTest {
     private TeachToMeServicesInterface services;
 
     @Test
-    public void shouldGetAClassById() throws TeachToMeServiceException {
+    public void shouldAddAnGetAClass() throws TeachToMeServiceException {
         Date dateOfInit = null;
         Date dateOfEnd = null;
         try {
-            dateOfInit = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2020/04/13 15:23:12");
-            dateOfEnd = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2019/04/13 12:23:12");
+            dateOfInit = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2020/04/13 15:23:12");
+            dateOfEnd = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2019/04/13 12:23:12");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -101,8 +101,6 @@ public class AppServicesTest {
         }
     }
 
-
-
     @Test
     public void shouldAddANewUser() throws TeachToMeServiceException {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
@@ -111,19 +109,4 @@ public class AppServicesTest {
         assertEquals(user,databaseUser);
     }
 
-    @Test
-    public void shouldAddANewClass() throws TeachToMeServiceException {
-        Date dateOfInit = null;
-        Date dateOfEnd = null;
-        try {
-            dateOfInit = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2020/04/13 15:23:12");
-            dateOfEnd = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2019/04/13 12:23:12");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()),new java.sql.Date(dateOfEnd.getTime()));
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
-        services.addClase(clase, user);
-    }
 }
