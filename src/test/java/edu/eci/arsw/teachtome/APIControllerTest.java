@@ -1,8 +1,5 @@
 package edu.eci.arsw.teachtome;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,19 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
-public class AppTest {
-
-    @Autowired
-    private TeachToMeServicesInterface services;
+public class APIControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @Test
-    public void shouldGetById() throws TeachToMeServiceException {
-        Clase clase = services.getClase(1L);
-        assertEquals("description test", clase.getDescription());
-    }
 
     @Test
     public void shouldGetByIdController() throws Exception {
@@ -50,5 +36,4 @@ public class AppTest {
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.description").value("description test"));
     }
-
 }

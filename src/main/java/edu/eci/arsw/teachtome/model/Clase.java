@@ -1,8 +1,12 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Date;
-import java.util.List;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -36,7 +40,7 @@ public class Clase {
     public Clase() {
     }
 
-    public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd ) {
+    public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd) {
         this.nombre = nombre;
         this.capacity = capacity;
         this.description = description;
