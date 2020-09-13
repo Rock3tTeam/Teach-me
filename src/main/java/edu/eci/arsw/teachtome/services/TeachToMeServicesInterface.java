@@ -21,7 +21,14 @@ public interface TeachToMeServicesInterface {
      */
     Clase getClase(Long classId) throws TeachToMeServiceException;
 
-    void addClase(Clase clase , User user) throws TeachToMeServiceException;
+    /**
+     * Permite a un usuario agregar una nueva clase
+     *
+     * @param clase - La nueva clase que se va a agregar
+     * @param user  - El usuario que va a dictar esa clase
+     * @throws TeachToMeServiceException - Cuando el usuario no exista o la clase tiene información nula
+     */
+    void addClase(Clase clase, User user) throws TeachToMeServiceException;
 
     List<Draw> getDrawsOfAClass(String className) throws TeachToMeServiceException;
 

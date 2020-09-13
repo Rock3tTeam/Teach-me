@@ -43,12 +43,19 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return clase;
     }
 
+    /**
+     * Agrega una nueva clase de un usuario dentro de la base de datos
+     *
+     * @param clase - La nueva clase que se va a agregar
+     * @param user  - El usuario que va a dictar esa clase
+     * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o falte información obligatoria de la clase
+     */
     @Override
-    public void addClase(Clase clase , User user) throws TeachToMePersistenceException {
-        if(clase==null){
+    public void addClase(Clase clase, User user) throws TeachToMePersistenceException {
+        if (clase == null) {
             throw new TeachToMePersistenceException("La clase es nula");
         }
-        if(user==null){
+        if (user == null) {
             throw new TeachToMePersistenceException("El usuario es nulo");
         }
         claseRepository.save(clase);
@@ -87,7 +94,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
-        if(user==null){
+        if (user == null) {
             throw new TeachToMePersistenceException("El usuario es nulo");
         }
         userRepository.save(user);

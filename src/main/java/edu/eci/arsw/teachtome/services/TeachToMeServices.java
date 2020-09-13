@@ -37,10 +37,17 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    /**
+     * Permite a un usuario agregar una nueva clase
+     *
+     * @param clase - La nueva clase que se va a agregar
+     * @param user  - El usuario que va a dictar esa clase
+     * @throws TeachToMeServiceException - Cuando el usuario no existía o la clase tiene información nula
+     */
     @Override
-    public void addClase(Clase clase , User user) throws TeachToMeServiceException {
+    public void addClase(Clase clase, User user) throws TeachToMeServiceException {
         try {
-            persistence.addClase(clase , user);
+            persistence.addClase(clase, user);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

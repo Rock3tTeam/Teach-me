@@ -1,6 +1,11 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -25,14 +30,14 @@ public class User {
     private String description;
 
     @OneToMany
-    @JoinColumn(name="professor")
+    @JoinColumn(name = "professor")
     private List<Clase> teachingClasses;
 
 
-    public User(){
+    public User() {
     }
 
-    public User(String email, String firstName, String lastName, String password, String description , List<Clase> teachingClasses) {
+    public User(String email, String firstName, String lastName, String password, String description, List<Clase> teachingClasses) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -18,7 +18,14 @@ public interface TeachToMePersistence {
      */
     Clase getClase(Long id) throws TeachToMePersistenceException;
 
-    void addClase(Clase clase , User user) throws TeachToMePersistenceException;
+    /**
+     * Agrega una nueva clase de un usuario dentro de la base de datos
+     *
+     * @param clase - La nueva clase que se va a agregar
+     * @param user  - El usuario que va a dictar esa clase
+     * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o falte información obligatoria de la clase
+     */
+    void addClase(Clase clase, User user) throws TeachToMePersistenceException;
 
     List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 
