@@ -26,7 +26,7 @@ public class User {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "professor")
     private List<Clase> teachingClasses;
 

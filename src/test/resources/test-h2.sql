@@ -24,8 +24,3 @@ ALTER TABLE classes ADD CONSTRAINT FK_PROFESSOR
   foreign key (professor)
   references users (email);
 
-INSERT INTO users VALUES
-    ('prueba@gmail.com','pepito','perez','prueba','Soy una prueba');
-
-INSERT INTO classes VALUES
-    (1,0,20,'2017-03-14','2017-03-14','description test','clase de prueba','prueba@gmail.com');

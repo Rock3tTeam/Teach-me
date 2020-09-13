@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
  */
-@Entity
+@Entity(name = "Clase")
 @Table(name = "classes")
 public class Clase {
 
@@ -33,9 +33,15 @@ public class Clase {
     @Column(name = "date_of_end")
     private Date dateOfEnd;
 
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="professor")
+    private User professor;
+
+
     public Clase() {
     }
+
+
 
     public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd) {
         this.nombre = nombre;
@@ -44,6 +50,14 @@ public class Clase {
         this.amountOfStudents = amountOfStudents;
         this.dateOfInit = dateOfInit;
         this.dateOfEnd = dateOfEnd;
+    }
+
+    public User getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(User professor) {
+        this.professor = professor;
     }
 
     public String getNombre() {

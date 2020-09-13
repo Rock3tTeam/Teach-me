@@ -35,13 +35,25 @@ public class AppServicesTest {
 
     @Test
     public void shouldGetAClassById() throws TeachToMeServiceException {
-        Clase clase = services.getClase(1L);
-        assertEquals("description test", clase.getDescription());
+        Date dateOfInit = null;
+        Date dateOfEnd = null;
+        try {
+            dateOfInit = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2020/04/13 15:23:12");
+            dateOfEnd = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss").parse("2019/04/13 12:23:12");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()),new java.sql.Date(dateOfEnd.getTime()));
+        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
+        services.addClase(clase, user);
+        Clase clasePrueba = services.getClase(1L);
+        assertEquals("Clase para probar inserción", clasePrueba.getDescription());
     }
 
     @Test
     public void shouldNotGetAClassById() {
-        Long id = 2L;
+        long id = 20;
         try {
             services.getClase(id);
             fail("Debió fallar al buscar una clase con id inexistente");
@@ -62,8 +74,10 @@ public class AppServicesTest {
 
     @Test
     public void shouldGetAUserByEmail() throws TeachToMeServiceException {
-        User user = services.getUser("prueba@gmail.com");
-        assertEquals("pepito", user.getFirstName());
+        User user = new User("prueba@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
+        User userPrueba= services.getUser("prueba@gmail.com");
+        assertEquals("Juan", userPrueba.getFirstName());
     }
 
     @Test
@@ -108,7 +122,8 @@ public class AppServicesTest {
             e.printStackTrace();
         }
         Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()),new java.sql.Date(dateOfEnd.getTime()));
-        User user = services.getUser("prueba@gmail.com");
+        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
         services.addClase(clase, user);
     }
 }

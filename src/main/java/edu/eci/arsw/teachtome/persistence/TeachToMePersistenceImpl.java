@@ -58,6 +58,8 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException("El usuario es nulo");
         }
         user.getTeachingClasses().add(clase);
+        clase.setProfessor(user);
+        userRepository.save(user);
     }
 
     @Override
