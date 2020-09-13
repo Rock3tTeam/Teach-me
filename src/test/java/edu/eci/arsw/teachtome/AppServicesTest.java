@@ -43,7 +43,7 @@ public class AppServicesTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()),new java.sql.Date(dateOfEnd.getTime()));
+        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()), new java.sql.Date(dateOfEnd.getTime()));
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
         services.addClase(clase, user);
@@ -76,7 +76,7 @@ public class AppServicesTest {
     public void shouldGetAUserByEmail() throws TeachToMeServiceException {
         User user = new User("prueba@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
-        User userPrueba= services.getUser("prueba@gmail.com");
+        User userPrueba = services.getUser("prueba@gmail.com");
         assertEquals("Juan", userPrueba.getFirstName());
     }
 
@@ -106,7 +106,7 @@ public class AppServicesTest {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
         User databaseUser = services.getUser("nuevo@gmail.com");
-        assertEquals(user,databaseUser);
+        assertEquals(user, databaseUser);
     }
 
 }

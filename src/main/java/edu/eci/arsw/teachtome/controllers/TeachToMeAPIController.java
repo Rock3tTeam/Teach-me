@@ -48,13 +48,12 @@ public class TeachToMeAPIController {
 
 
     @PostMapping(value = "/users/{userEmail}/clases")
-    public ResponseEntity<?> addClase(@RequestBody Clase clase , @PathVariable String userEmail) {
+    public ResponseEntity<?> addClase(@RequestBody Clase clase, @PathVariable String userEmail) {
         try {
             User user = services.getUser(userEmail);
-            services.addClase(clase,user);
+            services.addClase(clase, user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
-            System.out.println(ex);
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }

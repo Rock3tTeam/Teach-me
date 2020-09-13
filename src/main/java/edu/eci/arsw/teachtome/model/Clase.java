@@ -1,8 +1,15 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Date;
-import java.util.List;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -34,13 +41,12 @@ public class Clase {
     private Date dateOfEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="professor")
+    @JoinColumn(name = "professor")
     private User professor;
 
 
     public Clase() {
     }
-
 
 
     public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd) {

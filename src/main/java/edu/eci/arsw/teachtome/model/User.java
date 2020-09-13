@@ -1,6 +1,13 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,7 +33,7 @@ public class User {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "professor")
     private List<Clase> teachingClasses;
 
