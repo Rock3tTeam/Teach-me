@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Clase que representa un usuario dentro de la aplicación TeachToMe
@@ -44,6 +46,15 @@ public class User {
         this.password = password;
         this.description = description;
         this.teachingClasses = teachingClasses;
+    }
+
+    public User(String email, String firstName, String lastName, String password, String description) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.description = description;
+        this.teachingClasses = new CopyOnWriteArrayList<>();
     }
 
     public List<Clase> getTeachingClasses() {
@@ -94,4 +105,32 @@ public class User {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "{email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", description='" + description + '\'' +
+                ", teachingClasses=" + teachingClasses +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(description, user.description) &&
+                Objects.equals(teachingClasses, user.teachingClasses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, firstName, lastName, password, description, teachingClasses);
+    }
 }

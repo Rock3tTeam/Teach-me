@@ -34,12 +34,11 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     @Override
     public Clase getClase(Long id) throws TeachToMePersistenceException {
         Clase clase = null;
+        if (id == null) throw new TeachToMePersistenceException("El id no puede ser nulo");
         if (claseRepository.existsById(id)) {
             clase = claseRepository.findById(id).get();
         }
-        if (clase == null) {
-            throw new TeachToMePersistenceException("No existe la clase con el id " + id);
-        }
+        if (clase == null) throw new TeachToMePersistenceException("No existe la clase con el id " + id);
         return clase;
     }
 
@@ -103,12 +102,11 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     @Override
     public User getUser(String email) throws TeachToMePersistenceException {
         User user = null;
+        if (email == null) throw new TeachToMePersistenceException("El email no puede ser nulo");
         if (userRepository.existsById(email)) {
             user = userRepository.findById(email).get();
         }
-        if (user == null) {
-            throw new TeachToMePersistenceException("No existe el usuario con el email" + email);
-        }
+        if (user == null) throw new TeachToMePersistenceException("No existe el usuario con el email " + email);
         return user;
     }
 }
