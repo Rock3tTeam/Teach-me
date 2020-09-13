@@ -40,19 +40,21 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> getClass(@PathVariable Long classId) {
         try {
             return new ResponseEntity<>(services.getClase(classId), HttpStatus.ACCEPTED);
-        } catch (TeachToMeServiceException e) {
+        } catch (Exception e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
 
-    @PostMapping(value = "/clases")
-    public ResponseEntity<?> addClase(@RequestBody Clase clase) {
+    @PostMapping(value = "/users/{userEmail}/clases")
+    public ResponseEntity<?> addClase(@RequestBody Clase clase , @PathVariable String userEmail) {
         try {
-            services.addClase(clase);
+            User user = services.getUser(userEmail);
+            services.addClase(clase,user);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (TeachToMeServiceException ex) {
+        } catch (Exception ex) {
+            System.out.println(ex);
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }

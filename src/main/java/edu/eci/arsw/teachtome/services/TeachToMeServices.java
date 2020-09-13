@@ -38,9 +38,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void addClase(Clase clase) throws TeachToMeServiceException {
+    public void addClase(Clase clase , User user) throws TeachToMeServiceException {
         try {
-            persistence.addClase(clase);
+            persistence.addClase(clase , user);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

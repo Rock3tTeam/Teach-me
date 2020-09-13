@@ -6,6 +6,7 @@ import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
+import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Autowired
     private ClaseRepository claseRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Consulta una clase dentro de la base de datos
@@ -40,8 +44,15 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public void addClase(Clase clase) throws TeachToMePersistenceException {
-
+    public void addClase(Clase clase , User user) throws TeachToMePersistenceException {
+        if(clase==null){
+            throw new TeachToMePersistenceException("La clase es nula");
+        }
+        if(user==null){
+            throw new TeachToMePersistenceException("El usuario es nulo");
+        }
+        claseRepository.save(clase);
+        user.getTeachingClasses().add(clase);
     }
 
     @Override
@@ -76,11 +87,21 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
-
+        if(user==null){
+            throw new TeachToMePersistenceException("El usuario es nulo");
+        }
+        userRepository.save(user);
     }
 
     @Override
     public User getUser(String email) throws TeachToMePersistenceException {
-        return null;
+        User user = null;
+        if (userRepository.existsById(email)) {
+            user = userRepository.findById(email).get();
+        }
+        if (user == null) {
+            throw new TeachToMePersistenceException("No existe el usuario con el email" + email);
+        }
+        return user;
     }
 }

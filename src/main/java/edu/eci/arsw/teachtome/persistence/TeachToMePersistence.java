@@ -18,7 +18,7 @@ public interface TeachToMePersistence {
      */
     Clase getClase(Long id) throws TeachToMePersistenceException;
 
-    void addClase(Clase clase) throws TeachToMePersistenceException;
+    void addClase(Clase clase , User user) throws TeachToMePersistenceException;
 
     List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 

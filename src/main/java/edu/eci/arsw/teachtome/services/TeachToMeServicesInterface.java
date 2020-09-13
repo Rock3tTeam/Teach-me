@@ -21,7 +21,7 @@ public interface TeachToMeServicesInterface {
      */
     Clase getClase(Long classId) throws TeachToMeServiceException;
 
-    void addClase(Clase clase) throws TeachToMeServiceException;
+    void addClase(Clase clase , User user) throws TeachToMeServiceException;
 
     List<Draw> getDrawsOfAClass(String className) throws TeachToMeServiceException;
 

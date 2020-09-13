@@ -1,27 +1,52 @@
 package edu.eci.arsw.teachtome.model;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Clase que representa un usuario dentro de la aplicación TeachToMe
  */
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
     private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String description;
-    private List<Class> teachingClases;
-    private List<Request> requests;
 
-    public User(String email, String firstName, String lastName, String password, String description, List<Class> teachingClases, List<Request> requests) {
+    @Column(name = "first_name", length = 255, nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", length = 255, nullable = false)
+    private String lastName;
+
+    @Column(name = "password", length = 255, nullable = false)
+    private String password;
+
+    @Column(name = "description", length = 255, nullable = false)
+    private String description;
+
+    @OneToMany
+    @JoinColumn(name="professor")
+    private List<Clase> teachingClasses;
+
+
+    public User(){
+    }
+
+    public User(String email, String firstName, String lastName, String password, String description , List<Clase> teachingClasses) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.description = description;
-        this.teachingClases = teachingClases;
-        this.requests = requests;
+        this.teachingClasses = teachingClasses;
+    }
+
+    public List<Clase> getTeachingClasses() {
+        return teachingClasses;
+    }
+
+    public void setTeachingClasses(List<Clase> teachingClasses) {
+        this.teachingClasses = teachingClasses;
     }
 
     public String getEmail() {
@@ -64,19 +89,4 @@ public class User {
         this.description = description;
     }
 
-    public List<Class> getTeachingClasses() {
-        return teachingClases;
-    }
-
-    public void setTeachingClasses(List<Class> teachingClases) {
-        this.teachingClases = teachingClases;
-    }
-
-    public List<Request> getRequests() {
-        return requests;
-    }
-
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
-    }
 }
