@@ -3,16 +3,122 @@
 
 <head>
     <title>Teach2me</title>
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+
 
 </head>
 
 <body>
 
 
+
+
+
+<div class="container">
+
+
+
+    <div class="row" style="width: 80%;margin: auto;">
+        <div class="col" >
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col" >
+                            <div class="form-group">
+                                <label for="class_name">Class name</label>
+                                <input class="form-control" id="class_name" style="width: 50%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" >
+                            <div class="form-group row">
+
+                                <label class="col-md-2 col-form-label" for="class_category">Category</label>
+                                <div class="dropdown show">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="class_category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Select category
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">Category 1</a>
+                                        <a class="dropdown-item" href="#">Category 2</a>
+                                        <a class="dropdown-item" href="#">Category 3</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" >
+                            </br>
+                            <p class="h5">Class description</p>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col" >
+                            <textarea id="description_class" name="description" rows="4" cols="70" style="max-width: 95%;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" >
+                            <h5>Schedule</h5>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg" >
+
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" style="max-width: 95%;"/>
+                                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-sm-4" >
+                            <button type="button" class="btn btn-primary">Create class</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
 </body>
+
+<script src="js/app1.js"></script>
 
 </html>
