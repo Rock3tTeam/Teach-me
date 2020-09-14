@@ -2,25 +2,33 @@
 
 $('#datetimepicker').datetimepicker({
     language: 'en',
-    format: 'YYYY-MM-dd hh:mm',
+    format: 'YYYY-MM-DD hh:mm',
 
 });
 
 $('#datetimepicker1').datetimepicker({
     language: 'en',
-    format: 'YYYY-MM-dd hh:mm',
+    format: 'YYYY-MM-DD hh:mm',
+
+});
+
+$('#datetimepicker2').datetimepicker({
+    language: 'en',
+    format: 'YYYY-MM-DD hh:mm',
 
 });
 
 
 var d = new Date();
 
-let weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Th', 'Fri', 'Sat'][d.getDay()]
 
-var datestring = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + weekday + " " +
+
+var datestring = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDay() + " " +
     d.getHours() + ":" + d.getMinutes();
 
 $('#iddatetimepicker').val(datestring);
+
+$('#iddatetimepicker1').val(datestring);
 
 $('#datetimepicker1').datetimepicker();
 

@@ -49,6 +49,10 @@ input[type=checkbox] {
   -o-appearance: checkbox !important;
   -ms-appearance: checkbox !important; }
 
+mont {
+  font-family: 'Montserrat', sans-serif ;
+}
+
 img {
   max-width: 100%;
   height: auto; }
