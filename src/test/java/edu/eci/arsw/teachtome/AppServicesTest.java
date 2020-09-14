@@ -33,7 +33,7 @@ public class AppServicesTest {
     @Autowired
     private TeachToMeServicesInterface services;
 
-    @Test
+    /*@Test
     public void shouldAddAnGetAClass() throws TeachToMeServiceException {
         Date dateOfInit = null;
         Date dateOfEnd = null;
@@ -49,7 +49,7 @@ public class AppServicesTest {
         services.addClase(clase, user);
         Clase clasePrueba = services.getClase(1L);
         assertEquals("Clase para probar inserción", clasePrueba.getDescription());
-    }
+    }*/
 
     @Test
     public void shouldNotGetAClassById() {

@@ -1,15 +1,7 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -35,10 +27,10 @@ public class Clase {
     private int amountOfStudents;
 
     @Column(name = "date_of_init")
-    private Date dateOfInit;
+    private java.sql.Timestamp dateOfInit;
 
     @Column(name = "date_of_end")
-    private Date dateOfEnd;
+    private java.sql.Timestamp dateOfEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor")
@@ -49,7 +41,7 @@ public class Clase {
     }
 
 
-    public Clase(String nombre, int capacity, String description, int amountOfStudents, Date dateOfInit, Date dateOfEnd) {
+    public Clase(String nombre, int capacity, String description, int amountOfStudents, Timestamp dateOfInit, Timestamp dateOfEnd) {
         this.nombre = nombre;
         this.capacity = capacity;
         this.description = description;
@@ -98,19 +90,19 @@ public class Clase {
         this.amountOfStudents = amountOfStudents;
     }
 
-    public Date getDateOfInit() {
+    public Timestamp getDateOfInit() {
         return dateOfInit;
     }
 
-    public void setDateOfInit(Date dateOfInit) {
+    public void setDateOfInit(Timestamp dateOfInit) {
         this.dateOfInit = dateOfInit;
     }
 
-    public Date getDateOfEnd() {
+    public Timestamp getDateOfEnd() {
         return dateOfEnd;
     }
 
-    public void setDateOfEnd(Date dateOfEnd) {
+    public void setDateOfEnd(Timestamp dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
     }
 

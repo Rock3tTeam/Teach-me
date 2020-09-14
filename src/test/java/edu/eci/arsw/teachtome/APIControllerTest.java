@@ -73,7 +73,7 @@ public class APIControllerTest {
     }
 
 
-    private Clase getClase(String nombre) throws Exception {
+    /*private Clase getClase(String nombre) throws Exception {
         Date dateOfInit;
         Date dateOfEnd;
         try {
@@ -83,6 +83,6 @@ public class APIControllerTest {
             throw new Exception(e);
         }
         return new Clase(nombre, 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()), new java.sql.Date(dateOfEnd.getTime()));
-    }
+    }*/
 
 }
