@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -39,20 +40,27 @@ public class APIControllerTest implements ClassGenerator {
     @Test
     public void shouldNotGetANonExistentUserByEmail() throws Exception {
         String email = "noexiste@gmail.com";
-        mvc.perform(
+        MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get("/api/users/" + email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe el usuario con el email " + email, bodyResult);
     }
 
     @Test
     public void shouldNotAddAsUserSomethingThatIsNotAnUser() throws Exception {
-        mvc.perform(
+        MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(new Clase())))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("JSON Bad Format", bodyResult);
     }
 
 
@@ -78,11 +86,14 @@ public class APIControllerTest implements ClassGenerator {
     @Test
     public void shouldNotGetAClassById() throws Exception {
         long id = 200;
-        mvc.perform(
+        MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get("/api/clases/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + id, bodyResult);
     }
 
     @Test
@@ -93,11 +104,14 @@ public class APIControllerTest implements ClassGenerator {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isCreated());
-        mvc.perform(
+        MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/clases")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("JSON Bad Format", bodyResult);
     }
 
     @Test
