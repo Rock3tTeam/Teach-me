@@ -1,34 +1,54 @@
 
 
-$('#datetimepicker').datetimepicker({
+$('#datetimepicker_select').datetimepicker({
     language: 'en',
-    format: 'YYYY-MM-DD hh:mm',
+    format: 'YYYY-MM-DD HH:mm:ss',
 
 });
 
-$('#datetimepicker1').datetimepicker({
+$('#datetimepicker_select1').datetimepicker({
     language: 'en',
-    format: 'YYYY-MM-DD hh:mm',
+    format: 'YYYY-MM-DD HH:mm:ss',
 
 });
 
-$('#datetimepicker2').datetimepicker({
+
+$('#datetimepicker_teach').datetimepicker({
     language: 'en',
-    format: 'YYYY-MM-DD hh:mm',
+    format: 'YYYY-MM-DD HH:mm:ss',
 
 });
+
+$('#datetimepicker_teach1').datetimepicker({
+    language: 'en',
+    format: 'YYYY-MM-DD HH:mm:ss',
+
+});
+
+
+/**
+var button = document.getElementById('create_button');
+
+console.log(button);
+
+button.addEventListener('click', function () {
+
+    var data = document.getElementById('datetimepickercreate_input').value;
+    console.log(data);
+});
+ */
 
 
 var d = new Date();
 
 
+var datestring = d.getFullYear()  + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0"+d.getDate()).slice(-2) + " " +
+    ("0"+d.getHours()).slice(-2)  + ":" + ("0"+d.getMinutes()).slice(-2) +":"+("0"+d.getSeconds()).slice(-2) ;
 
-var datestring = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDay() + " " +
-    d.getHours() + ":" + d.getMinutes();
 
-$('#iddatetimepicker').val(datestring);
+$('#datetimepickerselect_input').val(datestring);
+$('#datetimepickerselect_input1').val(datestring);
 
-$('#iddatetimepicker1').val(datestring);
-
-$('#datetimepicker1').datetimepicker();
+$('#datetimepickerteach_input').val(datestring);
+$('#datetimepickerteach_input1').val(datestring);
 
