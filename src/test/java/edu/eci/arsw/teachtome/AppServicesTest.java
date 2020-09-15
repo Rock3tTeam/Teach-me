@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome;
 
-import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
@@ -14,10 +13,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -28,28 +23,20 @@ import static org.junit.Assert.fail;
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
-public class AppServicesTest {
+public class AppServicesTest implements ClassGenerator {
 
     @Autowired
     private TeachToMeServicesInterface services;
 
     /*@Test
     public void shouldAddAnGetAClass() throws TeachToMeServiceException {
-        Date dateOfInit = null;
-        Date dateOfEnd = null;
-        try {
-            dateOfInit = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2020/04/13 15:23:12");
-            dateOfEnd = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2019/04/13 12:23:12");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Clase clase = new Clase("Nueva Clase", 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()), new java.sql.Date(dateOfEnd.getTime()));
+        Clase clase = getClase("Nueva Clase");
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
         services.addClase(clase, user);
         Clase clasePrueba = services.getClase(1L);
-        assertEquals("Clase para probar inserción", clasePrueba.getDescription());
-    }*/
+        assertEquals("Nueva Clase", clasePrueba.getNombre());
+    } */
 
     @Test
     public void shouldNotGetAClassById() {

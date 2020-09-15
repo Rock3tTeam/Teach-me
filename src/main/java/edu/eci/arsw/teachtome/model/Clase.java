@@ -50,6 +50,10 @@ public class Clase {
         this.dateOfEnd = dateOfEnd;
     }
 
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
+
     public User getProfessor() {
         return professor;
     }

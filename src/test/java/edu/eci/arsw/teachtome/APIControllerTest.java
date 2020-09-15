@@ -17,9 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
-public class APIControllerTest {
+public class APIControllerTest implements ClassGenerator {
 
     @Autowired
     private MockMvc mvc;
@@ -66,23 +65,30 @@ public class APIControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isCreated());
+        System.out.println("Antes: " + clase);
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/clases")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(clase)));
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isCreated());
+        System.out.println("Después: " + clase);
+        //FALTA EL GET DE LA CLASE
+        //MvcResult result = MockMvcRequestBuilders.get("/api/clases"+clase.getId())
     }
 
+    private String getJsonClase(Clase clase) {
+        return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getNombre(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
+    }
 
-    /*private Clase getClase(String nombre) throws Exception {
-        Date dateOfInit;
-        Date dateOfEnd;
-        try {
-            dateOfInit = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2020/04/13 15:23:12");
-            dateOfEnd = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse("2019/04/13 12:23:12");
-        } catch (ParseException e) {
-            throw new Exception(e);
-        }
-        return new Clase(nombre, 23, "Clase para probar inserción", 0, new java.sql.Date(dateOfInit.getTime()), new java.sql.Date(dateOfEnd.getTime()));
-    }*/
+    private String getJsonFormatTimeStamp(Timestamp timestamp) {
+        Date date = new Date(timestamp.getTime());
+        int hour = timestamp.getHours();
+        int minute = timestamp.getMinutes();
+        int second = timestamp.getSeconds();
+        String hora = (hour < 10) ? "0" + hour : Integer.toString(hour);
+        String minuto = (minute < 10) ? "0" + minute : Integer.toString(minute);
+        String segundo = (second < 10) ? "0" + second : Integer.toString(second);
+        return date + "T" + hora + ":" + minuto + ":" + segundo;
+    }
 
 }

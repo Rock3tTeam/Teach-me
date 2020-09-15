@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS classes (
    id serial PRIMARY KEY,
    amount_of_students INTEGER(50) NOT NULL,
    capacity INTEGER(50) NOT NULL,
-   date_of_end DATE NOT NULL,
-   date_of_init DATE NOT NULL,
+   date_of_end TIMESTAMP NOT NULL,
+   date_of_init TIMESTAMP NOT NULL,
    description VARCHAR(255) UNIQUE NOT NULL,
    name VARCHAR(255) NOT NULL,
    professor VARCHAR(255) NOT NULL
