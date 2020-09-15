@@ -33,7 +33,7 @@ public class User {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "professor")
     private List<Clase> teachingClasses;
 
