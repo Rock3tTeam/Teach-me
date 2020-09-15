@@ -55,7 +55,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
         user.getTeachingClasses().add(clase);
         clase.setProfessor(user);
-        userRepository.save(user);
+        User userSaved = userRepository.save(user);
+        long claseId = userSaved.getTeachingClasses().get(0).getId();
+        clase.setId(claseId);
     }
 
     @Override
