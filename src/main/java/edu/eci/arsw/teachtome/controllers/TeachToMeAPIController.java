@@ -49,6 +49,7 @@ public class TeachToMeAPIController {
 
     @PostMapping(value = "/users/{userEmail}/clases")
     public ResponseEntity<?> addClase(@RequestBody Clase clase, @PathVariable String userEmail) {
+        if (clase.getNombre() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             User user = services.getUser(userEmail);
             services.addClase(clase, user);
@@ -126,6 +127,7 @@ public class TeachToMeAPIController {
 
     @PostMapping(value = "/users")
     public ResponseEntity<?> addUser(@RequestBody User user) {
+        if (user.getEmail() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             services.addUser(user);
             return new ResponseEntity<>(HttpStatus.CREATED);

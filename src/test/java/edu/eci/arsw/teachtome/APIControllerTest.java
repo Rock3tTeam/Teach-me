@@ -36,6 +36,25 @@ public class APIControllerTest implements ClassGenerator {
 
     private final Gson gson = new Gson();
 
+    @Test
+    public void shouldNotGetANonExistentUserByEmail() throws Exception {
+        String email = "noexiste@gmail.com";
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/users/" + email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldNotAddAsUserSomethingThatIsNotAnUser() throws Exception {
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(new Clase())))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     public void shouldAddAUser() throws Exception {
@@ -54,6 +73,31 @@ public class APIControllerTest implements ClassGenerator {
         String json = result.getResponse().getContentAsString();
         User selectedUser = gson.fromJson(json, User.class);
         assertEquals(user, selectedUser);
+    }
+
+    @Test
+    public void shouldNotGetAClassById() throws Exception {
+        long id = 200;
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/clases/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldNotAddAsAClassSomethingThatIsNotAnClass() throws Exception {
+        User user = new User("badteacher@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/clases")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

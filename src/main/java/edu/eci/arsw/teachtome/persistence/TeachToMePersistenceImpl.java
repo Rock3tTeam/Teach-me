@@ -51,12 +51,8 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
      */
     @Override
     public void addClase(Clase clase, User user) throws TeachToMePersistenceException {
-        if (clase == null) {
-            throw new TeachToMePersistenceException("La clase es nula");
-        }
-        if (user == null) {
-            throw new TeachToMePersistenceException("El usuario es nulo");
-        }
+        if (clase == null) throw new TeachToMePersistenceException("La clase no puede ser nula");
+        if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
         user.getTeachingClasses().add(clase);
         clase.setProfessor(user);
         userRepository.save(user);
@@ -94,9 +90,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
-        if (user == null) {
-            throw new TeachToMePersistenceException("El usuario es nulo");
-        }
+        if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
         userRepository.save(user);
     }
 

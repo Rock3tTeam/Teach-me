@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome;
 
+import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
@@ -28,44 +29,6 @@ public class AppServicesTest implements ClassGenerator {
     @Autowired
     private TeachToMeServicesInterface services;
 
-    /*@Test
-    public void shouldAddAnGetAClass() throws TeachToMeServiceException {
-        Clase clase = getClase("Nueva Clase");
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
-        services.addClase(clase, user);
-        Clase clasePrueba = services.getClase(1L);
-        assertEquals("Nueva Clase", clasePrueba.getNombre());
-    } */
-
-    @Test
-    public void shouldNotGetAClassById() {
-        long id = 20;
-        try {
-            services.getClase(id);
-            fail("Debió fallar al buscar una clase con id inexistente");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe la clase con el id " + id, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetAClassWithANullId() {
-        try {
-            services.getClase(null);
-            fail("Debió fallar la buscar una clase con id nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El id no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldGetAUserByEmail() throws TeachToMeServiceException {
-        User user = new User("prueba@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
-        User userPrueba = services.getUser("prueba@gmail.com");
-        assertEquals("Juan", userPrueba.getFirstName());
-    }
 
     @Test
     public void shouldNotGetAUserByEmail() {
@@ -89,11 +52,81 @@ public class AppServicesTest implements ClassGenerator {
     }
 
     @Test
-    public void shouldAddANewUser() throws TeachToMeServiceException {
+    public void shouldNotAddANullUser() {
+        try {
+            services.addUser(null);
+            fail("Debió fallar al intentar agregar un usuario nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El usuario no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldAddAndGetANewUser() throws TeachToMeServiceException {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
         User databaseUser = services.getUser("nuevo@gmail.com");
         assertEquals(user, databaseUser);
+    }
+
+    @Test
+    public void shouldNotGetAClassById() {
+        long id = 200;
+        try {
+            services.getClase(id);
+            fail("Debió fallar al buscar una clase con id inexistente");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe la clase con el id " + id, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetAClassWithANullId() {
+        try {
+            services.getClase(null);
+            fail("Debió fallar la buscar una clase con id nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El id no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotAddANullClass() {
+        User user = new User("badteacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        try {
+            services.addUser(user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar por agregar un nuevo usuario");
+        }
+        try {
+            services.addClase(null, user);
+            fail("Debió fallar por insertar una clase nula");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("La clase no puede ser nula", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotAddAClassWithANullTeacher() {
+        Clase clase = getClase("Mala clase");
+        try {
+            services.addClase(clase, null);
+            fail("Debió fallar por insertar una clase con un profesor nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El usuario no puede ser nulo", e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void shouldAddAndGetAClass() throws TeachToMeServiceException {
+        Clase clase = getClase("Nueva Clase");
+        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
+        services.addClase(clase, user);
+        //FALTA EL GET
+        //Clase clasePrueba = services.getClase(1L);
+        //assertEquals("Nueva Clase", clasePrueba.getNombre());
     }
 
 }
