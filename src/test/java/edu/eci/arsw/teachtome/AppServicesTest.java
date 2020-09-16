@@ -60,7 +60,7 @@ public class AppServicesTest implements ClassGenerator {
             assertEquals("El usuario no puede ser nulo", e.getMessage());
         }
     }
-    
+
     @Test
     public void shouldAddAndGetANewUser() throws TeachToMeServiceException {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
