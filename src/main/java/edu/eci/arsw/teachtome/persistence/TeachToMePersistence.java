@@ -25,7 +25,37 @@ public interface TeachToMePersistence {
      * @param user  - El usuario que va a dictar esa clase
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o falte información obligatoria de la clase
      */
+
     void addClase(Clase clase, User user) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene las clases que enseña un usuario
+     *
+     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @return Las clases que dicta el usuario
+     * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos
+     */
+    List<Clase> getTeachingClassesOfUser(String email)throws TeachToMePersistenceException;
+
+    /**
+     * Agrega una nueva clase de un usuario dentro de la base de datos
+     *
+     * @param clase - La clase a la cual el usuario se va a agregar
+     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o la clase sea nula
+     */
+
+    void addStudentToAClass(Clase clase, String email) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene las clases que aprende un usuario
+     *
+     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @return Las clases que dicta el usuario
+     * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos
+     */
+
+    List<Clase> getClassesOfAStudent(String email) throws TeachToMePersistenceException;
 
     List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 
@@ -42,4 +72,5 @@ public interface TeachToMePersistence {
     void addUser(User user) throws TeachToMePersistenceException;
 
     User getUser(String email) throws TeachToMePersistenceException;
+
 }

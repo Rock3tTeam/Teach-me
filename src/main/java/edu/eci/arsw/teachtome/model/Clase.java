@@ -1,15 +1,13 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -42,7 +40,13 @@ public class Clase {
 
     @ManyToOne
     @JoinColumn(name = "professor")
+    @JsonBackReference
     private User professor;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "email"))
+    private List<User> students = new ArrayList<User>();
 
 
     public Clase() {
@@ -116,6 +120,14 @@ public class Clase {
 
     public void setDateOfEnd(Timestamp dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
+    }
+
+    public List<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
     }
 
     @Override

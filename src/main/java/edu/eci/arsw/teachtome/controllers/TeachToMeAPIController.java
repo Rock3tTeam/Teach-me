@@ -60,6 +60,19 @@ public class TeachToMeAPIController {
         }
     }
 
+    @PutMapping(value = "/classes/{classId}/users")
+    public ResponseEntity<?> addStudentToAClass(@PathVariable long classId, @RequestBody User userBody) {
+        try {
+            Clase clase = services.getClase(classId);
+            services.addStudentToAClass(clase,userBody.getEmail());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
     @GetMapping(value = "/draws/{className}")
     public ResponseEntity<?> getDrawsOfAClass(@PathVariable String className) {
         try {
@@ -140,6 +153,7 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/users/{email}")
     public ResponseEntity<?> getUser(@PathVariable String email) {
         try {
+            System.out.println(services.getUser(email).getTeachingClasses());
             return new ResponseEntity<>(services.getUser(email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);

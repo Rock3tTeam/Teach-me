@@ -1,13 +1,10 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -35,7 +32,12 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "professor")
+    @JsonManagedReference
     private List<Clase> teachingClasses;
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Clase> studyingClasses = new ArrayList<Clase>();
 
 
     public User() {
@@ -105,6 +107,14 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Clase> getStudyingClasses() {
+        return studyingClasses;
+    }
+
+    public void setStudyingClasses(List<Clase> studyingClasses) {
+        this.studyingClasses = studyingClasses;
     }
 
     @Override

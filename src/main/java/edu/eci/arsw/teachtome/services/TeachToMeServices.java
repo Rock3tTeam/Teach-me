@@ -125,4 +125,30 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    @Override
+    public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getTeachingClassesOfUser(email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException {
+        try {
+            persistence.addStudentToAClass(clase,email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getClassesOfAStudent(email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
 }
