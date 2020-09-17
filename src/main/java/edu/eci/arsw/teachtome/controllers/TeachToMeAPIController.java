@@ -36,7 +36,7 @@ public class TeachToMeAPIController {
      * @param classId - Identificador de la clase
      * @return Una entidad de respuesta con la clase o mensaje de excepción y su código de respuesta HTTP
      */
-    @GetMapping(value = "/clases/{classId}")
+    @GetMapping(value = "/classes/{classId}")
     public ResponseEntity<?> getClass(@PathVariable Long classId) {
         try {
             return new ResponseEntity<>(services.getClase(classId), HttpStatus.ACCEPTED);
@@ -47,7 +47,7 @@ public class TeachToMeAPIController {
     }
 
 
-    @PostMapping(value = "/users/{userEmail}/clases")
+    @PostMapping(value = "/users/{userEmail}/classes")
     public ResponseEntity<?> addClase(@RequestBody Clase clase, @PathVariable String userEmail) {
         if (clase.getNombre() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
@@ -162,8 +162,17 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/users/{email}")
     public ResponseEntity<?> getUser(@PathVariable String email) {
         try {
-            System.out.println(services.getUser(email).getTeachingClasses());
             return new ResponseEntity<>(services.getUser(email), HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/users/{email}/teachingClasses")
+    public ResponseEntity<?> getTeachingClasses(@PathVariable String email) {
+        try {
+            return new ResponseEntity<>(services.getTeachingClassesOfUser(email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

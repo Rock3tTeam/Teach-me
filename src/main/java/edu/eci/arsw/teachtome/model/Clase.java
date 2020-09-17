@@ -2,12 +2,23 @@ package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -44,7 +55,7 @@ public class Clase {
     private User professor;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "email"))
     private List<User> students = new ArrayList<User>();
 
@@ -62,9 +73,13 @@ public class Clase {
         this.dateOfEnd = dateOfEnd;
     }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public User getProfessor() {
         return professor;
@@ -140,5 +155,23 @@ public class Clase {
                 ", dateOfInit=" + dateOfInit +
                 ", dateOfEnd=" + dateOfEnd +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clase clase = (Clase) o;
+        return capacity == clase.capacity &&
+                amountOfStudents == clase.amountOfStudents &&
+                Objects.equals(nombre, clase.nombre) &&
+                Objects.equals(description, clase.description) &&
+                Objects.equals(dateOfInit, clase.dateOfInit) &&
+                Objects.equals(dateOfEnd, clase.dateOfEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, capacity, description, amountOfStudents, dateOfInit, dateOfEnd, professor, students);
     }
 }

@@ -1,9 +1,16 @@
 package edu.eci.arsw.teachtome.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +43,7 @@ public class User {
     private List<Clase> teachingClasses;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Clase> studyingClasses = new ArrayList<Clase>();
 
 
@@ -122,7 +129,6 @@ public class User {
         return "{email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", teachingClasses=" + teachingClasses +
                 '}';
@@ -136,7 +142,6 @@ public class User {
         return Objects.equals(email, user.email) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(description, user.description) &&
                 Objects.equals(teachingClasses, user.teachingClasses);
     }

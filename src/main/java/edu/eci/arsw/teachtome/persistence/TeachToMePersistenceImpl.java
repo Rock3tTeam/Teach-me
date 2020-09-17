@@ -50,10 +50,15 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void addStudentToAClass(Clase clase, String email) throws TeachToMePersistenceException {
         User user = getUser(email);
         if (clase == null) throw new TeachToMePersistenceException("La clase no puede ser nula");
-        for(User student : clase.getStudents()){
-            if(student.getEmail().equals(email)){
-                throw new TeachToMePersistenceException("El usuario con el email "+email+" ya se encuentra en la clase");
+        boolean isAlreadyEnrolled = false;
+        for (User student : clase.getStudents()) {
+            if (student.equals(user)) {
+                isAlreadyEnrolled = true;
+                break;
             }
+        }
+        if (isAlreadyEnrolled) {
+            throw new TeachToMePersistenceException("El usuario con el email " + email + " ya se encuentra en la clase");
         }
         clase.getStudents().add(user);
         user.getStudyingClasses().add(clase);
@@ -79,7 +84,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public List<Clase> getTeachingClassesOfUser(String email)throws TeachToMePersistenceException{
+    public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMePersistenceException {
         User user = getUser(email);
         return user.getTeachingClasses();
     }

@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -87,7 +89,7 @@ public class APIControllerTest implements ClassGenerator {
     public void shouldNotGetAClassById() throws Exception {
         long id = 200;
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get("/api/clases/" + id)
+                MockMvcRequestBuilders.get("/api/classes/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isNotFound())
@@ -105,7 +107,7 @@ public class APIControllerTest implements ClassGenerator {
                         .content(gson.toJson(user)))
                 .andExpect(status().isCreated());
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/clases")
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isBadRequest())
@@ -117,22 +119,83 @@ public class APIControllerTest implements ClassGenerator {
     @Test
     public void shouldAddAClass() throws Exception {
         User user = new User("teacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        Clase clase = getClase("Controlador");
+        Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isCreated());
-        System.out.println("Antes: " + clase);
         mvc.perform(
-                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/clases")
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
                 .andExpect(status().isCreated());
-        System.out.println("Después: " + clase);
-        //FALTA EL GET DE LA CLASE
-        //MvcResult result = MockMvcRequestBuilders.get("/api/clases"+clase.getId())
     }
+
+    @Test
+    public void shouldNotGetTheClassesOfANonExistingTeacher() throws Exception {
+        String email = "noexiste@gmail.com";
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get("/api/users/" + email + "/teachingClasses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe el usuario con el email " + email, bodyResult);
+    }
+
+    @Test
+    public void shouldGetTheClassesOfATeacher() throws Exception {
+        List<Clase> classes = new ArrayList<>();
+        Clase clase;
+        User user = new User("felipemartinez@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        for (int i = 1; i < 3; i++) {
+            clase = getClase("Español " + i, "Español " + i);
+            classes.add(clase);
+            mvc.perform(
+                    MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(getJsonClase(clase)))
+                    .andExpect(status().isCreated());
+        }
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get("/api/users/" + user.getEmail() + "/teachingClasses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andDo(print())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        System.out.println(bodyResult);
+        //Falta deserializar la lista y comparar
+        //List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
+        //IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
+    }
+
+    /*
+
+    @Test
+    public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
+        List<Clase> classes = new ArrayList<>();
+        Clase clase;
+        User user = new User("julioprofe@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
+        for (int i = 1; i < 3; i++) {
+            clase = getClase("Matemática " + i, "Matemática " + i);
+            classes.add(clase);
+            services.addClase(clase, user);
+        }
+        List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
+        IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
+    }
+
+     */
 
     private String getJsonClase(Clase clase) {
         return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getNombre(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));

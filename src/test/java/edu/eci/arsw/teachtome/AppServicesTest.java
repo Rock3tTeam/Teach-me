@@ -14,6 +14,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -108,7 +112,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAClassWithANullTeacher() {
-        Clase clase = getClase("Mala clase");
+        Clase clase = getClase("Mala clase", "No debería insertar una clase con un profesor nulo");
         try {
             services.addClase(clase, null);
             fail("Debió fallar por insertar una clase con un profesor nulo");
@@ -120,13 +124,47 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldAddAndGetAClass() throws TeachToMeServiceException {
-        Clase clase = getClase("Nueva Clase");
+        Clase clase = getClase("Nueva Clase", "Prueba Exitosa de Inserción");
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
         services.addClase(clase, user);
-        //FALTA EL GET
-        //Clase clasePrueba = services.getClase(1L);
-        //assertEquals("Nueva Clase", clasePrueba.getNombre());
+        Clase clasePrueba = services.getClase(clase.getId());
+        assertEquals(clase, clasePrueba);
+    }
+
+    @Test
+    public void shouldNotGetTheClassesOfATeacherWithANullEmail() {
+        try {
+            services.getTeachingClassesOfUser(null);
+            fail("Debió fallar por enviar un email nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El email no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetTheClassesOfANonExistingTeacher() {
+        String email = "noexiste@gmail.com";
+        try {
+            services.getTeachingClassesOfUser(email);
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe el usuario con el email " + email, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
+        List<Clase> classes = new ArrayList<>();
+        Clase clase;
+        User user = new User("julioprofe@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        services.addUser(user);
+        for (int i = 1; i < 3; i++) {
+            clase = getClase("Matemática " + i, "Matemática " + i);
+            classes.add(clase);
+            services.addClase(clase, user);
+        }
+        List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
+        IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
     }
 
 }
