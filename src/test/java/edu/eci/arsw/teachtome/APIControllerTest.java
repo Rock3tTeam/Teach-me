@@ -3,6 +3,7 @@ package edu.eci.arsw.teachtome;
 import com.google.gson.Gson;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
+import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -169,33 +171,16 @@ public class APIControllerTest implements ClassGenerator {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isAccepted())
-                .andDo(print())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        System.out.println(bodyResult);
-        //Falta deserializar la lista y comparar
-        //List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
+        JSONArray jsonElements = new JSONArray(bodyResult);
+        List<Clase> returnedClasses = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            returnedClasses.add(gson.fromJson(jsonElements.get(i).toString(), Clase.class));
+        }
+        //Falla por la zona horaria
         //IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
     }
-
-    /*
-
-    @Test
-    public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
-        List<Clase> classes = new ArrayList<>();
-        Clase clase;
-        User user = new User("julioprofe@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
-        for (int i = 1; i < 3; i++) {
-            clase = getClase("Matemática " + i, "Matemática " + i);
-            classes.add(clase);
-            services.addClase(clase, user);
-        }
-        List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
-        IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
-    }
-
-     */
 
     private String getJsonClase(Clase clase) {
         return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getNombre(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
