@@ -92,6 +92,28 @@ public class TeachToMeAPIController {
         }
     }
 
+
+    @GetMapping(value = "/users/{email}/classes/{classId}/requests")
+    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email , @PathVariable long classId , @RequestBody Request request) {
+        try {
+            return new ResponseEntity<>(services.getRequestsOfAClass(classId, email), HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/users/{email}/classes/{classId}/requests")
+    public ResponseEntity<?> sendRequest(@PathVariable String email , @PathVariable long classId , @RequestBody Request request) {
+        try {
+            services.sendRequest(request);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (TeachToMeServiceException ex) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
     @PostMapping(value = "/draws/{className}")
     public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable String className) {
         try {
@@ -125,6 +147,7 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
 
     @PostMapping(value = "/messages")
     public ResponseEntity<?> sendMessage(@RequestBody Message message) {
@@ -163,16 +186,6 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> getUser(@PathVariable String email) {
         try {
             return new ResponseEntity<>(services.getUser(email), HttpStatus.ACCEPTED);
-        } catch (TeachToMeServiceException e) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping(value = "/users/{email}/teachingClasses")
-    public ResponseEntity<?> getTeachingClasses(@PathVariable String email) {
-        try {
-            return new ResponseEntity<>(services.getTeachingClassesOfUser(email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

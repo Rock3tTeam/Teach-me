@@ -5,6 +5,7 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface TeachToMeServicesInterface {
     /**
      * Obtiene las clases de un usuario
      *
-     * @param email - El mail del usuario del cual se van a obtener las clases
+     * @param email  - El mail del usuario del cual se van a obtener las clases
      * @return Las clases que dicta el usuario
      * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
      */
@@ -43,7 +44,7 @@ public interface TeachToMeServicesInterface {
      * Agrega una nueva clase de un usuario dentro de la base de datos
      *
      * @param clase - La clase a la cual el usuario se va a agregar
-     * @param email - El mail del usuario del cual se van a obtener las clases
+     * @param email  - El mail del usuario del cual se van a obtener las clases
      * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos o la clase sea nula
      */
 
@@ -52,18 +53,37 @@ public interface TeachToMeServicesInterface {
     /**
      * Obtiene las clases que aprende un usuario
      *
-     * @param email - El mail del usuario del cual se van a obtener las clases
+     * @param email  - El mail del usuario del cual se van a obtener las clases
      * @return Las clases que dicta el usuario
      * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
      */
 
     List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException;
 
+    /**
+     * Realiza una request de un estudiante a una clase
+     *
+     * @param request  - La request con el usuario y la clase a la cual quiere unirse
+     * @throws TeachToMeServiceException - Cuando el usuario o la clase no existan en la base de datos.
+     */
+
+    void sendRequest(Request request) throws TeachToMeServiceException;
+
+    /**
+     * Obtiene las requests que se han hecho a una clase
+     *
+     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @param classId  - El id de la clase que se está buscando
+     * @return Los requests que se han hecho a esa clase
+     * @throws TeachToMeServiceException - Cuando el usuario o la clase no existen en la base de datos
+     */
+
+    List<Request> getRequestsOfAClass(long classId , String email) throws TeachToMeServiceException;
+
     List<Draw> getDrawsOfAClass(String className) throws TeachToMeServiceException;
 
     void addDraw(String className, Draw draw) throws TeachToMeServiceException;
 
-    void sendRequest(Request request) throws TeachToMeServiceException;
 
     void updateRequest(Request request) throws TeachToMeServiceException;
 

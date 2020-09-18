@@ -1,30 +1,68 @@
 package edu.eci.arsw.teachtome.model;
 
+import javax.persistence.*;
+
 /**
  * Clase que representa una solicitud de un usuario dentro de una clase en la aplicación TeachToMe
  */
-public class Request {
-    private Class clase;
-    private User user;
 
-    public Request(Class clase, User user) {
-        this.clase = clase;
-        this.user = user;
+@Entity(name = "Request")
+@Table(name = "requests")
+public class Request {
+
+    @EmbeddedId
+    private RequestPK requestId;
+
+    @Column(name="accepted")
+    private Boolean accepted;
+
+    @ManyToOne
+    @MapsId("id")
+    @JoinColumn(name = "class")
+    private Clase clase = new Clase();
+
+    @ManyToOne
+    @MapsId("email")
+    @JoinColumn(name = "student")
+    private User student = new User();
+
+
+    public Request() {
     }
 
-    public Class getClase() {
+    public Request(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public RequestPK getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(RequestPK requestId) {
+        this.requestId = requestId;
+    }
+
+    public Clase getClase() {
         return clase;
     }
 
-    public void setClase(Class clase) {
+    public void setClase(Clase clase) {
         this.clase = clase;
     }
 
-    public User getUser() {
-        return user;
+    public User getStudent() {
+        return student;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStudent(User student) {
+        this.student = student;
     }
 }

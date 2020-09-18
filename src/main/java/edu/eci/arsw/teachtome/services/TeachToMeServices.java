@@ -80,6 +80,15 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+
+    @Override
+    public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getRequestsOfAClass(classId,email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
     @Override
     public void updateRequest(Request request) throws TeachToMeServiceException {
         try {
@@ -151,4 +160,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
+
+
 }

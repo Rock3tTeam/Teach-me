@@ -1,16 +1,9 @@
 package edu.eci.arsw.teachtome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Clase que representa un usuario dentro de la aplicación TeachToMe
  */
-@Entity
+@Entity(name = "user")
 @Table(name = "users")
 public class User {
     @Id
@@ -44,8 +37,8 @@ public class User {
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "student"), inverseJoinColumns = @JoinColumn(name = "class"))
     private List<Clase> studyingClasses = new ArrayList<Clase>();
-
 
     public User() {
     }
@@ -124,11 +117,13 @@ public class User {
         this.studyingClasses = studyingClasses;
     }
 
+
     @Override
     public String toString() {
         return "{email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", teachingClasses=" + teachingClasses +
                 '}';
@@ -142,6 +137,7 @@ public class User {
         return Objects.equals(email, user.email) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
+                Objects.equals(password, user.password) &&
                 Objects.equals(description, user.description) &&
                 Objects.equals(teachingClasses, user.teachingClasses);
     }

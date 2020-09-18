@@ -57,11 +57,30 @@ public interface TeachToMePersistence {
 
     List<Clase> getClassesOfAStudent(String email) throws TeachToMePersistenceException;
 
+    /**
+     * Realiza una request de un estudiante a una clase
+     *
+     * @param request  - La request con el usuario y la clase a la cual quiere unirse
+     * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existan en la base de datos.
+     */
+
+    void sendRequest(Request request) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene las requests que se han hecho a una clase
+     *
+     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @param classId  - El id de la clase que se está buscando
+     * @return Los requests que se han hecho a esa clase
+     * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existen en la base de datos
+     */
+
+    List<Request> getRequestsOfAClass(long classId , String email) throws TeachToMePersistenceException;
+
     List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 
     void addClase(String className, Draw draw) throws TeachToMePersistenceException;
 
-    void sendRequest(Request request) throws TeachToMePersistenceException;
 
     void updateRequest(Request request) throws TeachToMePersistenceException;
 
