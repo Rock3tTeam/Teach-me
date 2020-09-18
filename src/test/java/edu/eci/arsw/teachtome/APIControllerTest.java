@@ -22,8 +22,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -149,6 +151,7 @@ public class APIControllerTest implements ClassGenerator {
     @Test
     public void shouldGetTheClassesOfATeacher() throws Exception {
         List<Clase> classes = new ArrayList<>();
+        long delta = 1000;
         Clase clase;
         User user = new User("felipemartinez@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         mvc.perform(
@@ -177,8 +180,17 @@ public class APIControllerTest implements ClassGenerator {
         for (int i = 0; i < 2; i++) {
             returnedClasses.add(gson.fromJson(jsonElements.get(i).toString(), Clase.class));
         }
-        //Falla por la zona horaria
-        //IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
+        IntStream.range(0, 2).forEach(i -> {
+            Clase originalClass = classes.get(i);
+            Clase actualClass = returnedClasses.get(i);
+            assertTrue(originalClass.lazyEquals(actualClass));
+            long originalDateOfInit = originalClass.getDateOfInit().getTime();
+            long originalDateOfEnd = originalClass.getDateOfEnd().getTime();
+            long actualDateOfInit = actualClass.getDateOfInit().getTime();
+            long actualDateOfEnd = actualClass.getDateOfEnd().getTime();
+            assertEquals(originalDateOfInit, actualDateOfInit, delta);
+            assertEquals(originalDateOfEnd, actualDateOfEnd, delta);
+        });
     }
 
     private String getJsonClase(Clase clase) {

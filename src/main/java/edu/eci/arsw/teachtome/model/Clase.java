@@ -145,6 +145,13 @@ public class Clase {
         this.students = students;
     }
 
+    public boolean lazyEquals(Clase clase) {
+        return capacity == clase.capacity &&
+                amountOfStudents == clase.amountOfStudents &&
+                Objects.equals(nombre, clase.nombre) &&
+                Objects.equals(description, clase.description);
+    }
+
     @Override
     public String toString() {
         return "{id=" + id +
@@ -174,4 +181,6 @@ public class Clase {
     public int hashCode() {
         return Objects.hash(id, nombre, capacity, description, amountOfStudents, dateOfInit, dateOfEnd, professor, students);
     }
+
+
 }
