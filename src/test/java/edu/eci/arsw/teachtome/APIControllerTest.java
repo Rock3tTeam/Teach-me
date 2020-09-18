@@ -151,7 +151,6 @@ public class APIControllerTest implements ClassGenerator {
     @Test
     public void shouldGetTheClassesOfATeacher() throws Exception {
         List<Clase> classes = new ArrayList<>();
-        long delta = 1000;
         Clase clase;
         User user = new User("felipemartinez@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         mvc.perform(
@@ -188,8 +187,8 @@ public class APIControllerTest implements ClassGenerator {
             long originalDateOfEnd = originalClass.getDateOfEnd().getTime();
             long actualDateOfInit = actualClass.getDateOfInit().getTime();
             long actualDateOfEnd = actualClass.getDateOfEnd().getTime();
-            assertEquals(originalDateOfInit, actualDateOfInit, delta);
-            assertEquals(originalDateOfEnd, actualDateOfEnd, delta);
+            assertTrue(Math.abs(originalDateOfInit - actualDateOfInit) < 1000);
+            assertTrue(Math.abs(originalDateOfEnd - actualDateOfEnd) < 1000);
         });
     }
 
