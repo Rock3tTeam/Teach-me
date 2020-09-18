@@ -46,6 +46,16 @@ public class TeachToMeAPIController {
         }
     }
 
+    @GetMapping(value = "/users/{email}/teachingClasses")
+    public ResponseEntity<?> getTeachingClasses(@PathVariable String email) {
+        try {
+            return new ResponseEntity<>(services.getTeachingClassesOfUser(email), HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping(value = "/users/{userEmail}/classes")
     public ResponseEntity<?> addClase(@RequestBody Clase clase, @PathVariable String userEmail) {

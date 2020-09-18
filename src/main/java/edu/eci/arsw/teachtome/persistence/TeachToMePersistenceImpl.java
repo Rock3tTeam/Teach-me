@@ -127,6 +127,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         return requests;
     }
+
     @Override
     public List<Clase> getClassesOfAStudent(String email) throws TeachToMePersistenceException {
         User user = getUser(email);

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -130,6 +131,30 @@ public class Clase {
         this.students = students;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clase clase = (Clase) o;
+        return capacity == clase.capacity &&
+                amountOfStudents == clase.amountOfStudents &&
+                Objects.equals(nombre, clase.nombre) &&
+                Objects.equals(description, clase.description) &&
+                Objects.equals(dateOfInit, clase.dateOfInit) &&
+                Objects.equals(dateOfEnd, clase.dateOfEnd);
+    }
+
+    public boolean lazyEquals(Clase clase) {
+        return capacity == clase.capacity &&
+                amountOfStudents == clase.amountOfStudents &&
+                Objects.equals(nombre, clase.nombre) &&
+                Objects.equals(description, clase.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, capacity, description, amountOfStudents, dateOfInit, dateOfEnd, professor, students);
+    }
 
     @Override
     public String toString() {
