@@ -187,7 +187,8 @@ public class APIControllerTest implements ClassGenerator {
             long originalDateOfEnd = originalClass.getDateOfEnd().getTime();
             long actualDateOfInit = actualClass.getDateOfInit().getTime();
             long actualDateOfEnd = actualClass.getDateOfEnd().getTime();
-            System.out.println(Math.abs(originalDateOfInit - actualDateOfInit));
+            System.out.println(originalClass.getDateOfInit());
+            System.out.println(actualClass.getDateOfInit());
             assertTrue(Math.abs(originalDateOfInit - actualDateOfInit) < 10000);
             assertTrue(Math.abs(originalDateOfEnd - actualDateOfEnd) < 10000);
         });
