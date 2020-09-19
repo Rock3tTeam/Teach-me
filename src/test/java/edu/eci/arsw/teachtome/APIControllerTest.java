@@ -2,6 +2,8 @@ package edu.eci.arsw.teachtome;
 
 import com.google.gson.Gson;
 import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import org.json.JSONArray;
 import org.junit.Test;
@@ -190,6 +192,99 @@ public class APIControllerTest implements ClassGenerator {
             assertTrue(Math.abs(originalDateOfInit - actualDateOfInit) < 1000);
             assertTrue(Math.abs(originalDateOfEnd - actualDateOfEnd) < 1000);
         });
+    }
+
+    @Test
+    public void shouldNotSendAEmptyRequest() throws Exception {
+        User user = new User("A@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClase("C1", "Clase C1");
+        Request request = new Request();
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes/" + 1 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("JSON Bad Format", bodyResult);
+    }
+
+    @Test
+    public void shouldNotSendARequestOfANonExistingStudent() throws Exception {
+        Request request = new Request(new RequestPK("noexiste@gmail.com", 1));
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/noexiste@gmail.com/classes/" + 1 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe el usuario con el email noexiste@gmail.com", bodyResult);
+    }
+
+    @Test
+    public void shouldNotSendARequestWithANonExistingClass() throws Exception {
+        User user = new User("B@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        Request request = new Request(new RequestPK(user.getEmail(), 200));
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/" + user.getEmail() + "/classes/" + 200 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + 200, bodyResult);
+    }
+
+    @Test
+    public void shouldNotGetTheRequestsOfANonExistingClass() throws Exception {
+        User user = new User("C@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get("/api/users/" + user.getEmail() + "/classes/" + 200 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + 200, bodyResult);
+    }
+
+    @Test
+    public void shouldNotAddAStudentToANonExistingClass() throws Exception {
+        User student = new User("noexiste@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(student)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/api/classes/"+200+"/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(student)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + 200, bodyResult);
     }
 
     private String getJsonClase(Clase clase) {

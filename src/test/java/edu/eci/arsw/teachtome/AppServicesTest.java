@@ -168,7 +168,6 @@ public class AppServicesTest implements ClassGenerator {
         IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
     }
 
-    //-----------------------------------------------------
     @Test
     public void shouldNotSendANullRequest() {
         try {

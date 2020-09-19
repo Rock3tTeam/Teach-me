@@ -70,7 +70,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PutMapping(value = "/classes/{classId}/users")
+    @PostMapping(value = "/classes/{classId}/users")
     public ResponseEntity<?> addStudentToAClass(@PathVariable long classId, @RequestBody User userBody) {
         try {
             Clase clase = services.getClase(classId);
@@ -104,7 +104,7 @@ public class TeachToMeAPIController {
 
 
     @GetMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email , @PathVariable long classId , @RequestBody Request request) {
+    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email , @PathVariable long classId) {
         try {
             return new ResponseEntity<>(services.getRequestsOfAClass(classId, email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
@@ -115,6 +115,7 @@ public class TeachToMeAPIController {
 
     @PostMapping(value = "/users/{email}/classes/{classId}/requests")
     public ResponseEntity<?> sendRequest(@PathVariable String email , @PathVariable long classId , @RequestBody Request request) {
+        if(request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             services.sendRequest(request);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -128,17 +129,6 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable String className) {
         try {
             services.addDraw(className, draw);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (TeachToMeServiceException ex) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
-
-    @PostMapping(value = "/requests")
-    public ResponseEntity<?> sendRequest(@RequestBody Request request) {
-        try {
-            services.sendRequest(request);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
