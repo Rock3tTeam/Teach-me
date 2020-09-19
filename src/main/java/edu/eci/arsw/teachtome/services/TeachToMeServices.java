@@ -1,10 +1,6 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,11 +80,12 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     @Override
     public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException {
         try {
-            return persistence.getRequestsOfAClass(classId,email);
+            return persistence.getRequestsOfAClass(classId, email);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
+
     @Override
     public void updateRequest(Request request) throws TeachToMeServiceException {
         try {
@@ -127,11 +124,14 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Override
     public User getUser(String email) throws TeachToMeServiceException {
+        User user;
         try {
-            return persistence.getUser(email);
+            user = persistence.getUser(email);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
+        user.setPassword("null");
+        return user;
     }
 
     @Override
@@ -146,7 +146,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     @Override
     public void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException {
         try {
-            persistence.addStudentToAClass(clase,email);
+            persistence.addStudentToAClass(clase, email);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

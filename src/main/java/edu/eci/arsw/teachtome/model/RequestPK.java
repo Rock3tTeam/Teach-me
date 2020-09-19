@@ -7,10 +7,10 @@ import java.util.Objects;
 
 @Embeddable
 public class RequestPK implements Serializable {
-    @Column(name="student")
+    @Column(name = "student")
     private String student;
 
-    @Column(name="class")
+    @Column(name = "class")
     private long clase;
 
     public RequestPK() {

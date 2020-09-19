@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -123,7 +122,6 @@ public class User {
         return "{email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", teachingClasses=" + teachingClasses +
                 '}';
@@ -137,7 +135,6 @@ public class User {
         return Objects.equals(email, user.email) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(description, user.description) &&
                 Objects.equals(teachingClasses, user.teachingClasses);
     }

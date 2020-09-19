@@ -1,11 +1,9 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.TeachToMeAPIApplication;
 import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,12 +52,12 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void addStudentToAClass(Clase clase, String email) throws TeachToMePersistenceException {
         User user = getUser(email);
         if (clase == null) throw new TeachToMePersistenceException("La clase no puede ser nula");
-        if(email.equals(clase.getProfessor().getEmail())){
-            throw new TeachToMePersistenceException("El profesor no puede ser añadido a la clase");
+        if (email.equals(clase.getProfessor().getEmail())) {
+            throw new TeachToMePersistenceException("El profesor no puede ser añadido a su propia clase");
         }
-        for(User student : clase.getStudents()){
-            if(student.getEmail().equals(email)){
-                throw new TeachToMePersistenceException("El usuario con el email "+email+" ya se encuentra en la clase");
+        for (User student : clase.getStudents()) {
+            if (student.getEmail().equals(email)) {
+                throw new TeachToMePersistenceException("El usuario con el email " + email + " ya se encuentra en la clase");
             }
         }
         clase.getStudents().add(user);
@@ -69,12 +67,13 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (request.isPresent()) {
             request.get().setAccepted(true);
         } else {
-            throw new TeachToMePersistenceException("El usuario con el email "+ email +" no ha solicitado unirse a la clase con el nombre "+ clase.getNombre());
+            throw new TeachToMePersistenceException("El usuario con el email " + email + " no ha solicitado unirse a la clase con el nombre " + clase.getNombre());
         }
         claseRepository.save(clase);
         userRepository.save(user);
         requestRepository.save(request.get());
     }
+
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
@@ -93,39 +92,42 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public List<Clase> getTeachingClassesOfUser(String email)throws TeachToMePersistenceException{
+    public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMePersistenceException {
         User user = getUser(email);
         return user.getTeachingClasses();
     }
 
     @Override
     public void sendRequest(Request request) throws TeachToMePersistenceException {
+        if (request == null) throw new TeachToMePersistenceException("La solicitud no puede ser nula");
+        if (request.getRequestId() == null) {
+            throw new TeachToMePersistenceException("La solicitud no puede estar vacía");
+        }
         User student = getUser(request.getRequestId().getStudent());
         Clase clase = getClase(request.getRequestId().getClase());
-        if(clase.getProfessor().getEmail().equals(student.getEmail())){
+        if (clase.getProfessor().getEmail().equals(student.getEmail())) {
             throw new TeachToMePersistenceException("El profesor no puede hacer un request a su misma clase");
         }
         request.setClase(clase);
         request.setStudent(student);
-        request.setAccepted(false);
         requestRepository.save(request);
     }
 
     @Override
-    public List<Request> getRequestsOfAClass(long classId , String email ) throws TeachToMePersistenceException {
+    public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMePersistenceException {
         Clase clase = getClase(classId);
         User professor = getUser(email);
-        if(!(clase.getProfessor().getEmail().equals(professor.getEmail()))){
+        if (!(clase.getProfessor().getEmail().equals(professor.getEmail()))) {
             throw new TeachToMePersistenceException("No tiene permitido ver los requests a esta clase");
         }
         List<Request> requests = requestRepository.findAll();
         List<Request> requestsOfClass = new ArrayList<>();
-        for(Request request : requests){
-            if(request.getRequestId().getClase() == classId){
+        for (Request request : requests) {
+            if (request.getRequestId().getClase() == classId) {
                 requestsOfClass.add(request);
             }
         }
-        return requests;
+        return requestsOfClass;
     }
 
     @Override

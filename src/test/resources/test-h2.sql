@@ -1,12 +1,13 @@
 DROP TABLE IF EXISTS classes;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS requests;
 
 CREATE TABLE IF NOT EXISTS users (
    email VARCHAR(255) PRIMARY KEY,
    first_name VARCHAR(255)  NOT NULL,
    last_name VARCHAR(255)  NOT NULL,
    password VARCHAR(255)  NOT NULL,
-   description VARCHAR(255)  UNIQUE NOT NULL
+   description VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS classes (
@@ -20,7 +21,23 @@ CREATE TABLE IF NOT EXISTS classes (
    professor VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS requests (
+   class INTEGER(10) NOT NULL,
+   student VARCHAR(255) NOT NULL,
+   accepted BOOLEAN,
+   primary key(class,student)
+);
+
 ALTER TABLE classes ADD CONSTRAINT FK_PROFESSOR
   foreign key (professor)
   references users (email);
+
+ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_STUDENT
+  foreign key (student)
+  references users (email);
+
+ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_CLASS
+  foreign key (class)
+  references classes (id);
+
 
