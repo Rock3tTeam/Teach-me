@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * Controlador API REST de la aplicación TeachToMe
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/v1")
 public class TeachToMeAPIController {
     @Autowired
     private TeachToMeServicesInterface services;
