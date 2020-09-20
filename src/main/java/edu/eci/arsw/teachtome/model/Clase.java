@@ -56,7 +56,7 @@ public class Clase {
     private User professor;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "class"), inverseJoinColumns = @JoinColumn(name = "student"))
     private List<User> students = new ArrayList<User>();
 

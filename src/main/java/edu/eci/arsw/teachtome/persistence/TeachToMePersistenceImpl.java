@@ -64,6 +64,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         user.getStudyingClasses().add(clase);
         Request request = getRequest(clase.getId(),user.getEmail());
         request.setAccepted(true);
+        claseRepository.save(clase);
         requestRepository.save(request);
     }
 
@@ -72,7 +73,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if(nameFilter==null){
             throw new TeachToMePersistenceException("El nombre no puede ser nulo");
         }
-        System.out.println(nameFilter);
         return claseRepository.filterByName(nameFilter);
     }
     @Override

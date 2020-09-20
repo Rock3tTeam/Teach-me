@@ -43,7 +43,7 @@ public class User {
     @JsonManagedReference
     private List<Clase> teachingClasses;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)
     private List<Clase> studyingClasses = new ArrayList<Clase>();
 
     public User() {
