@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Clase que representa un usuario dentro de la aplicación TeachToMe
  */
-@Entity(name = "user")
+@Entity
 @Table(name = "users")
 public class User {
     @Id
@@ -43,9 +43,7 @@ public class User {
     @JsonManagedReference
     private List<Clase> teachingClasses;
 
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "student"), inverseJoinColumns = @JoinColumn(name = "class"))
+    @ManyToMany(mappedBy = "students")
     private List<Clase> studyingClasses = new ArrayList<Clase>();
 
     public User() {

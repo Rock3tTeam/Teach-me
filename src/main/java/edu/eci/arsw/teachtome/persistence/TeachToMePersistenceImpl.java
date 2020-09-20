@@ -62,18 +62,19 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         clase.getStudents().add(user);
         user.getStudyingClasses().add(clase);
-        RequestPK requestPK = new RequestPK(email, clase.getId());
-        Optional<Request> request = requestRepository.findById(requestPK);
-        if (request.isPresent()) {
-            request.get().setAccepted(true);
-        } else {
-            throw new TeachToMePersistenceException("El usuario con el email " + email + " no ha solicitado unirse a la clase con el nombre " + clase.getNombre());
-        }
-        claseRepository.save(clase);
-        userRepository.save(user);
-        requestRepository.save(request.get());
+        Request request = getRequest(clase.getId(),user.getEmail());
+        request.setAccepted(true);
+        requestRepository.save(request);
     }
 
+    @Override
+    public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException {
+        if(nameFilter==null){
+            throw new TeachToMePersistenceException("El nombre no puede ser nulo");
+        }
+        System.out.println(nameFilter);
+        return claseRepository.filterByName(nameFilter);
+    }
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
@@ -137,6 +138,36 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
+    public Request getRequest(long classId, String emailStudent) throws TeachToMePersistenceException {
+        User student = getUser(emailStudent);
+        Clase clase = getClase(classId);
+        RequestPK requestPK = new RequestPK(student.getEmail(), clase.getId());
+        Optional<Request> request = requestRepository.findById(requestPK);
+        if (!(request.isPresent())) {
+            throw new TeachToMePersistenceException("El usuario con el email " + emailStudent + " no ha solicitado unirse a la clase con el nombre " + clase.getNombre());
+        }
+        return request.get();
+    }
+
+    @Override
+    public void updateRequest(Long classId, String email, Request request) throws TeachToMePersistenceException {
+        User student = getUser(request.getRequestId().getStudent());
+        Clase clase = getClase(request.getRequestId().getClase());
+        if(!(email.equals(clase.getProfessor().getEmail()))){
+            throw new TeachToMePersistenceException("No tiene permitido actualizar el request de esta clase");
+        }
+        boolean accepted = request.isAccepted();
+        if(accepted){
+            addStudentToAClass(clase,student.getEmail());
+        }
+        else{
+            request = getRequest(clase.getId(), student.getEmail());
+            request.setAccepted(false);
+            requestRepository.save(request);
+        }
+    }
+
+    @Override
     public List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException {
         return null;
     }
@@ -146,11 +177,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     }
 
-
-    @Override
-    public void updateRequest(Request request) throws TeachToMePersistenceException {
-
-    }
 
     @Override
     public void sendMessage(Message message) throws TeachToMePersistenceException {

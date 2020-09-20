@@ -28,6 +28,7 @@ import java.util.Objects;
 public class Clase {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
@@ -55,7 +56,7 @@ public class Clase {
     private User professor;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "class"), inverseJoinColumns = @JoinColumn(name = "student"))
     private List<User> students = new ArrayList<User>();
 

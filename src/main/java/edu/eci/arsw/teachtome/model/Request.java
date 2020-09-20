@@ -45,7 +45,7 @@ public class Request {
         this.accepted = accepted;
     }
 
-    public boolean isAccepted() {
+    public Boolean isAccepted() {
         return accepted;
     }
 

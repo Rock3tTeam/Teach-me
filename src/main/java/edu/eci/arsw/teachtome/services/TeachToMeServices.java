@@ -90,14 +90,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
-    @Override
-    public void updateRequest(Request request) throws TeachToMeServiceException {
-        try {
-            persistence.updateRequest(request);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
 
     @Override
     public void sendMessage(Message message) throws TeachToMeServiceException {
@@ -165,5 +157,21 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    @Override
+    public void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException {
+        try {
+            persistence.updateRequest(classId,email,request);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
 
+    @Override
+    public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException {
+        try {
+            return persistence.getFilteredClassesByName(nameFilter);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
 }

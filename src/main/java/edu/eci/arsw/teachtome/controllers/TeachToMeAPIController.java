@@ -10,13 +10,7 @@ import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +34,16 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> getClass(@PathVariable Long classId) {
         try {
             return new ResponseEntity<>(services.getClase(classId), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/classes")
+    public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value="name") String nameFilter) {
+        try {
+            return new ResponseEntity<>(services.getFilteredClassesByName(nameFilter), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -70,7 +74,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PostMapping(value = "/classes/{classId}/users")
+    /*@PostMapping(value = "/classes/{classId}/users")
     public ResponseEntity<?> addStudentToAClass(@PathVariable long classId, @RequestBody User userBody) {
         try {
             Clase clase = services.getClase(classId);
@@ -84,7 +88,7 @@ public class TeachToMeAPIController {
                 return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
             }
         }
-    }
+    }*/
 
     @GetMapping(value = "/draws/{className}")
     public ResponseEntity<?> getDrawsOfAClass(@PathVariable String className) {
@@ -137,6 +141,22 @@ public class TeachToMeAPIController {
         }
     }
 
+    @PutMapping(value = "/users/{email}/classes/{classId}/requests")
+    public ResponseEntity<?> updateRequest(@PathVariable String email, @PathVariable long classId, @RequestBody Request request) {
+        if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+        try {
+            services.updateRequest(classId, email,request);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (TeachToMeServiceException ex) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            if (ex.getMessage().equals("No tiene permitido actualizar el request de esta clase")) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+            }
+        }
+    }
+
     @PostMapping(value = "/draws/{className}")
     public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable String className) {
         try {
@@ -147,19 +167,6 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
-
-    @PutMapping(value = "/requests")
-    public ResponseEntity<?> updateRequest(@RequestBody Request request) {
-        try {
-            services.updateRequest(request);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (TeachToMeServiceException ex) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            //REVISAR CÓDIGO DE RESPUESTA
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
-
 
     @PostMapping(value = "/messages")
     public ResponseEntity<?> sendMessage(@RequestBody Message message) {

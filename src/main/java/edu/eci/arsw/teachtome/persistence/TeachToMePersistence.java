@@ -77,12 +77,38 @@ public interface TeachToMePersistence {
 
     List<Request> getRequestsOfAClass(long classId , String email) throws TeachToMePersistenceException;
 
+    /**
+     * Obtiene las request de un usuario a una clase
+     *
+     * @param emailStudent  - El mail del usuario del cual se va a obtener el request
+     * @param classId  - El id de la clase que se está buscando
+     * @return La request de un estudiante a una clase
+     * @throws TeachToMePersistenceException - Cuando el usuario no ha hecho request a esa clase
+     */
+
+    Request getRequest(long classId , String emailStudent) throws TeachToMePersistenceException;
+
+    /**
+     * Actualiza la request de una clase
+     *
+     * @param email  - El mail del usuario del cual se va a obtener el request
+     * @param classId  - El id de la clase que se está buscando
+     * @throws TeachToMePersistenceException - En caso de que un usuario inautorizado intente actualizar el request
+     */
+    void updateRequest(Long classId , String email  , Request request) throws TeachToMePersistenceException;
+
+    /**
+     * Consulta las clases que contengan cierta palabra
+     *
+     * @param nameFilter  - nombre de la clase
+     * @return La lista de clases que contengan esa palabra
+     * @throws TeachToMePersistenceException - Si la clase no existe en la base de datos
+     */
+    List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException;
+
     List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
 
     void addClase(String className, Draw draw) throws TeachToMePersistenceException;
-
-
-    void updateRequest(Request request) throws TeachToMePersistenceException;
 
     void sendMessage(Message message) throws TeachToMePersistenceException;
 
