@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -525,4 +523,244 @@ public class AppServicesTest implements ClassGenerator {
         assertTrue(foundRequest);
     }
 
+    @Test
+    public void shouldNotUpdateTheRequestOfAClassIfIsNotTheTeacher() {
+        String email = "studentM@gmail.com";
+        Clase clase = getClase("Clase M", "Clase M");
+        User user = new User("teacherM@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        try {
+            services.updateRequest(clase.getId(), email, request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase sin ser su profesor");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No tiene permitido actualizar el request de esta clase", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotUpdateTheRequestOfANonExistingClass() {
+        long id = 200;
+        String email = "studentN@gmail.com";
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = new RequestPK(email, 200);
+        Request request = new Request(requestPK, true);
+        try {
+            services.addUser(student);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar al usuario");
+        }
+        try {
+            services.updateRequest(id, email, request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase sin ser su profesor");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe la clase con el id " + id, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotUpdateTheRequestOfAClassWithANullTeacherEmail() {
+        String email = "studentO@gmail.com";
+        Clase clase = getClase("Clase O", "Clase O");
+        User user = new User("teacherO@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), null, request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase con el amil del maestro nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El correo del maestro no debe ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotUpdateTheRequestOfAClassWithANonExistingTeacher() {
+        String email = "studentP@gmail.com";
+        Clase clase = getClase("Clase P", "Clase P");
+        User user = new User("teacherP@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), "noexiste@gmail.com", request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase con el email de un maestro que no existe");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No tiene permitido actualizar el request de esta clase", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotUpdateWithABadConstructRequest() {
+        String email = "studentQ@gmail.com";
+        Clase clase = getClase("Clase Q", "Clase Q");
+        User user = new User("teacherQ@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        requestPK = new RequestPK();
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), "teacherQ@gmail.com", request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase con la petición sin email");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El email no puede ser nulo", e.getMessage());
+        }
+        requestPK = new RequestPK(email, 200);
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), "teacherQ@gmail.com", request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase con la petición sin una clase existente");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe la clase con el id " + 200, e.getMessage());
+        }
+        requestPK = new RequestPK("noexiste@gmail.com", clase.getId());
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), "teacherQ@gmail.com", request);
+            fail("Debió fallar al intentar actualizar la solicitud de una clase con la petición sin una clase existente");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe el usuario con el email noexiste@gmail.com", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldUpdateARequestToTrue() throws TeachToMeServiceException {
+        String email = "studentR@gmail.com";
+        Clase clase = getClase("Clase R", "Clase R");
+        User user = new User("teacherR@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        request = new Request(requestPK, true);
+        services.updateRequest(clase.getId(), "teacherR@gmail.com", request);
+        boolean foundRequest = false;
+        List<Request> requests = services.getRequestsOfAClass(clase.getId(), "teacherR@gmail.com");
+        for (Request returnedRequest : requests) {
+            if (returnedRequest.getClase().lazyEquals(clase)) {
+                foundRequest = true;
+                assertTrue(request.isAccepted());
+                assertEquals(student.getEmail(), request.getRequestId().getStudent());
+                break;
+            }
+        }
+        assertTrue(foundRequest);
+    }
+
+    @Test
+    public void shouldUpdateARequestToFalse() throws TeachToMeServiceException {
+        String email = "studentS@gmail.com";
+        Clase clase = getClase("Clase S", "Clase S");
+        User user = new User("teacherS@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios, ni a la clase, ni al solicitar unirse a la clase");
+        }
+        request = new Request(requestPK, false);
+        services.updateRequest(clase.getId(), "teacherS@gmail.com", request);
+        boolean foundRequest = false;
+        List<Request> requests = services.getRequestsOfAClass(clase.getId(), "teacherS@gmail.com");
+        for (Request returnedRequest : requests) {
+            if (returnedRequest.getClase().lazyEquals(clase)) {
+                foundRequest = true;
+                assertFalse(request.isAccepted());
+                assertEquals(student.getEmail(), request.getRequestId().getStudent());
+                break;
+            }
+        }
+        assertTrue(foundRequest);
+    }
+
+    @Test
+    public void shouldNotConsultTheClassesByNameWithoutTheFilter() {
+        try {
+            services.getFilteredClassesByName(null);
+            fail("Debió fallar por usar un filtro nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El nombre no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldConsultTheClassesByName() throws TeachToMeServiceException {
+        Clase clase = getClase("Ejemplo T", "Ejemplo T");
+        Clase clase2 = getClase("Ejemplo U", "Ejemplo U");
+        User user = new User("teacherT@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User user2 = new User("teacherU@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        try {
+            services.addUser(user);
+            services.addUser(user2);
+            services.addClase(clase, user);
+            services.addClase(clase2, user2);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar a los usuarios ni las clases");
+        }
+        String nameFilter = "Ejemplo";
+        List<Clase> clases = services.getFilteredClassesByName(nameFilter);
+        for (Clase returnedClass : clases) {
+            assertTrue(returnedClass.getNombre().contains(nameFilter));
+        }
+    }
 }

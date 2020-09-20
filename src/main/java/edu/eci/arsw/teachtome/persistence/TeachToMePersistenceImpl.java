@@ -153,13 +153,12 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void updateRequest(Long classId, String email, Request request) throws TeachToMePersistenceException {
         User student = getUser(request.getRequestId().getStudent());
         Clase clase = getClase(request.getRequestId().getClase());
+        if(email==null) throw new TeachToMePersistenceException("El correo del maestro no debe ser nulo");
         if(!(email.equals(clase.getProfessor().getEmail()))){
             throw new TeachToMePersistenceException("No tiene permitido actualizar el request de esta clase");
         }
         boolean accepted = request.isAccepted();
-        if(accepted){
-            addStudentToAClass(clase,student.getEmail());
-        }
+        if(accepted) addStudentToAClass(clase, student.getEmail());
         else{
             request = getRequest(clase.getId(), student.getEmail());
             request.setAccepted(false);

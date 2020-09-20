@@ -41,6 +41,11 @@ public class Request {
         this.requestId = requestId;
     }
 
+    public Request(RequestPK requestId, Boolean accepted) {
+        this.requestId = requestId;
+        this.accepted = accepted;
+    }
+
     public Request(boolean accepted) {
         this.accepted = accepted;
     }
