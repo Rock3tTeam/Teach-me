@@ -1,22 +1,12 @@
 package edu.eci.arsw.teachtome.controllers;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,11 +64,15 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> addStudentToAClass(@PathVariable long classId, @RequestBody User userBody) {
         try {
             Clase clase = services.getClase(classId);
-            services.addStudentToAClass(clase,userBody.getEmail());
+            services.addStudentToAClass(clase, userBody.getEmail());
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+            if (ex.getMessage().equals("El profesor no puede ser añadido a su propia clase")) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+            }
         }
     }
 
@@ -104,24 +98,32 @@ public class TeachToMeAPIController {
 
 
     @GetMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email , @PathVariable long classId) {
+    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email, @PathVariable long classId) {
         try {
             return new ResponseEntity<>(services.getRequestsOfAClass(classId, email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            if (e.getMessage().equals("No tiene permitido ver los requests a esta clase")) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
         }
     }
 
     @PostMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> sendRequest(@PathVariable String email , @PathVariable long classId , @RequestBody Request request) {
-        if(request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> sendRequest(@PathVariable String email, @PathVariable long classId, @RequestBody Request request) {
+        if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             services.sendRequest(request);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+            if (ex.getMessage().equals("El profesor no puede hacer un request a su misma clase")) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+            }
         }
     }
 
