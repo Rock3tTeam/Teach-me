@@ -6,6 +6,7 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -268,6 +268,102 @@ public class APIControllerTest implements ClassGenerator {
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
         assertEquals("No existe la clase con el id " + 200, bodyResult);
+    }
+
+    @Test
+    public void shouldNotUpdateTheRequestOfANonExistingClass() throws Exception {
+        String email = "studentM@gmail.com";
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(student)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.put(apiRoot + "/users/" + email + "/classes/" + 200 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(new Request(new RequestPK(email, 200)))))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + 200, bodyResult);
+    }
+
+    @Test
+    public void shouldNotUpdateWithABadConstructRequest() throws Exception {
+        String email = "studentM@gmail.com";
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(student)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.put(apiRoot + "/users/" + email + "/classes/" + 1 + "/requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(new Request())))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("JSON Bad Format", bodyResult);
+    }
+
+    @Test
+    public void shouldConsultTheClassesByName() throws Exception {
+        String nameFilter = "Controlador";
+        Clase clase = getClase("Controlador T", "Controlador T");
+        Clase clase2 = getClase("Controlador U", "Controlador U");
+        User user = new User("teacherT2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User user2 = new User("teacherU2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user2)))
+                .andExpect(status().isCreated());
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isCreated());
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users/" + user2.getEmail() + "/classes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase2)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/classes?name=" + nameFilter)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        JSONArray jsonElements = new JSONArray(bodyResult);
+        IntStream.range(0, 2).forEach(i -> {
+            try {
+                assertTrue(gson.fromJson(jsonElements.get(i).toString(), Clase.class).getNombre().contains(nameFilter));
+            } catch (JSONException e) {
+                fail("No debió fallar al convertir las clases de JSON a Java");
+            }
+        });
+    }
+
+    @Test
+    public void shouldNotConsultTheClassesByName() throws Exception {
+        String nameFilter = "Ejemplo";
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/classes?name=" + nameFilter)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        JSONArray jsonElements = new JSONArray(bodyResult);
+        assertEquals(0, jsonElements.length());
     }
 
     private String getJsonClase(Clase clase) {
