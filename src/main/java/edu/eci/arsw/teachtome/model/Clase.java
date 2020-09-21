@@ -146,6 +146,20 @@ public class Clase {
         this.students = students;
     }
 
+    public void increaseAmount() {
+        amountOfStudents++;
+    }
+
+    public boolean isFull() {
+        return amountOfStudents == capacity;
+    }
+
+    public boolean lazyEquals(Clase clase) {
+        return capacity == clase.capacity &&
+                Objects.equals(nombre, clase.nombre) &&
+                Objects.equals(description, clase.description);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,13 +171,6 @@ public class Clase {
                 Objects.equals(description, clase.description) &&
                 Objects.equals(dateOfInit, clase.dateOfInit) &&
                 Objects.equals(dateOfEnd, clase.dateOfEnd);
-    }
-
-    public boolean lazyEquals(Clase clase) {
-        return capacity == clase.capacity &&
-                amountOfStudents == clase.amountOfStudents &&
-                Objects.equals(nombre, clase.nombre) &&
-                Objects.equals(description, clase.description);
     }
 
     @Override

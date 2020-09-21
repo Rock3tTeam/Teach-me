@@ -65,7 +65,11 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
                 throw new TeachToMePersistenceException("El usuario con el email " + email + " ya se encuentra en la clase");
             }
         }
+        if (clase.isFull()) {
+            throw new TeachToMePersistenceException("Esa clase ya no tiene cupos");
+        }
         clase.getStudents().add(user);
+        clase.increaseAmount();
         user.getStudyingClasses().add(clase);
         Request request = getRequest(clase.getId(), user.getEmail());
         request.setAccepted(true);
@@ -114,6 +118,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         Clase clase = getClase(request.getRequestId().getClase());
         if (clase.getProfessor().getEmail().equals(student.getEmail())) {
             throw new TeachToMePersistenceException("El profesor no puede hacer un request a su misma clase");
+        }
+        if (clase.isFull()) {
+            throw new TeachToMePersistenceException("Esa clase ya no tiene cupos");
         }
         request.setClase(clase);
         request.setStudent(student);
@@ -164,8 +171,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException("No tiene permitido actualizar el request de esta clase");
         }
         boolean accepted = request.isAccepted();
-        if (accepted) addStudentToAClass(clase, student.getEmail());
-        else {
+        if (accepted) {
+            addStudentToAClass(clase, student.getEmail());
+        } else {
             request = getRequest(clase.getId(), student.getEmail());
             request.setAccepted(false);
             requestRepository.save(request);

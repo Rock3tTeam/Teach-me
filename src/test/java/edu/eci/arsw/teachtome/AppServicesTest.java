@@ -20,10 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -489,6 +486,35 @@ public class AppServicesTest implements ClassGenerator {
     }
 
     @Test
+    public void shouldNotAddAStudentToAClassWithoutSeats() {
+        String email = "studentW@gmail.com";
+        Clase clase = getClase("Clase W", "Clase W", 30, 29);
+        User user = new User("teacherW@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        User student2 = new User("studentW2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addUser(student2);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            services.sendRequest(new Request(requestPK));
+            requestPK = new RequestPK("studentW2@gmail.com", clase.getId());
+            services.sendRequest(new Request(requestPK));
+            services.addStudentToAClass(clase, email);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar los recursos");
+        }
+        try {
+            services.addStudentToAClass(clase, "studentW2@gmail.com");
+            fail("Debió fallar por intentar añadir un estudiante en una clase sin cupos");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Esa clase ya no tiene cupos", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldAddStudentToAClass() throws TeachToMeServiceException {
         String email = "studentE@gmail.com";
         Clase clase = getClase("Clase E", "Clase E");
@@ -667,6 +693,41 @@ public class AppServicesTest implements ClassGenerator {
             fail("Debió fallar al intentar actualizar la solicitud de una clase con la petición sin una clase existente");
         } catch (TeachToMeServiceException e) {
             assertEquals("No existe el usuario con el email noexiste@gmail.com", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotUpdateARequestIfTheClassDoNotHaveCapacity() {
+        String email = "studentV@gmail.com";
+        Clase clase = getClase("Clase V", "Clase V", 30, 29);
+        User user = new User("teacherV@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        User student2 = new User("studentV2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        RequestPK requestPK = null;
+        Request request = null;
+        try {
+            services.addUser(user);
+            services.addUser(student);
+            services.addUser(student2);
+            services.addClase(clase, user);
+            requestPK = new RequestPK(email, clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+            requestPK = new RequestPK("studentV2@gmail.com", clase.getId());
+            request = new Request(requestPK);
+            services.sendRequest(request);
+            request = new Request(requestPK, true);
+            services.updateRequest(clase.getId(), "teacherV@gmail.com", request);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar los recursos iniciales");
+        }
+        requestPK = new RequestPK(email, clase.getId());
+        request = new Request(requestPK, true);
+        try {
+            services.updateRequest(clase.getId(), "teacherV@gmail.com", request);
+            fail("Debió fallar al intentar aceptar un estudiante en una clase sin cupos");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Esa clase ya no tiene cupos", e.getMessage());
         }
     }
 
