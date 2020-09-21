@@ -1,6 +1,11 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
@@ -62,7 +67,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         clase.getStudents().add(user);
         user.getStudyingClasses().add(clase);
-        Request request = getRequest(clase.getId(),user.getEmail());
+        Request request = getRequest(clase.getId(), user.getEmail());
         request.setAccepted(true);
         claseRepository.save(clase);
         requestRepository.save(request);
@@ -70,11 +75,12 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException {
-        if(nameFilter==null){
+        if (nameFilter == null) {
             throw new TeachToMePersistenceException("El nombre no puede ser nulo");
         }
         return claseRepository.filterByName(nameFilter);
     }
+
     @Override
     public void addUser(User user) throws TeachToMePersistenceException {
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
@@ -153,13 +159,13 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void updateRequest(Long classId, String email, Request request) throws TeachToMePersistenceException {
         User student = getUser(request.getRequestId().getStudent());
         Clase clase = getClase(request.getRequestId().getClase());
-        if(email==null) throw new TeachToMePersistenceException("El correo del maestro no debe ser nulo");
-        if(!(email.equals(clase.getProfessor().getEmail()))){
+        if (email == null) throw new TeachToMePersistenceException("El correo del maestro no debe ser nulo");
+        if (!(email.equals(clase.getProfessor().getEmail()))) {
             throw new TeachToMePersistenceException("No tiene permitido actualizar el request de esta clase");
         }
         boolean accepted = request.isAccepted();
-        if(accepted) addStudentToAClass(clase, student.getEmail());
-        else{
+        if (accepted) addStudentToAClass(clase, student.getEmail());
+        else {
             request = getRequest(clase.getId(), student.getEmail());
             request.setAccepted(false);
             requestRepository.save(request);

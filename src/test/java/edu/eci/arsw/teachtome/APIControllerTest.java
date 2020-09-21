@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -53,7 +54,6 @@ public class APIControllerTest implements ClassGenerator {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isNotFound())
-                .andDo(print())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
         assertEquals("No existe el usuario con el email " + email, bodyResult);

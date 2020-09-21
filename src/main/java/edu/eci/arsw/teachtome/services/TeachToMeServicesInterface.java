@@ -5,7 +5,6 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 
 import java.util.List;
 
@@ -84,16 +83,16 @@ public interface TeachToMeServicesInterface {
     /**
      * Actualiza la request de una clase
      *
-     * @param email  - El mail del usuario del cual se va a obtener el request
-     * @param classId  - El id de la clase que se está buscando
+     * @param email   - El mail del usuario del cual se va a obtener el request
+     * @param classId - El id de la clase que se está buscando
      * @throws TeachToMeServiceException - En caso de que un usuario inautorizado intente actualizar el request
      */
-    void updateRequest(Long classId , String email  , Request request) throws TeachToMeServiceException;
+    void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException;
 
     /**
      * Consulta las clases que contengan cierta palabra
      *
-     * @param nameFilter  - nombre de la clase
+     * @param nameFilter - nombre de la clase
      * @return La lista de clases que contengan esa palabra
      * @throws TeachToMeServiceException - Si la clase no existe en la base de datos
      */
