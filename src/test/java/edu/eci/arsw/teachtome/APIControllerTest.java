@@ -123,6 +123,44 @@ public class APIControllerTest implements ClassGenerator {
     }
 
     @Test
+    public void shouldNotAddAClassThatAlreadyStart() throws Exception {
+        User user = new User("badteacher2@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClaseAntigua("Controlador", "Clase con mal horario");
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No se puede programar una clase antes de la hora actual", bodyResult);
+    }
+
+    @Test
+    public void shouldNotAddAClassThatDesfasedStart() throws Exception {
+        User user = new User("badteacher3@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClaseDesfasada("Mal horario", "Clase con horario desfasado");
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("Una clase no puede iniciar después de su fecha de finalización", bodyResult);
+    }
+
+    @Test
     public void shouldAddAClass() throws Exception {
         User user = new User("teacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
