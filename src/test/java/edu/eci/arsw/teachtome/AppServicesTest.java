@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 @RunWith(SpringRunner.class)
@@ -119,6 +122,30 @@ public class AppServicesTest implements ClassGenerator {
             fail("Debió fallar por insertar una clase con un profesor nulo");
         } catch (TeachToMeServiceException e) {
             assertEquals("El usuario no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotAddAClassWithAInvalidDate() {
+        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
+        try {
+            services.addUser(user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al agregar al usuario");
+        }
+        try {
+            services.addClase(clase, user);
+            fail("Debió fallar por insertar una clase que inicia antes de la hora actual");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede programar una clase antes de la hora actual", e.getMessage());
+        }
+        clase = getClaseDesfasada("Clase desfasada", "Horario desfasado");
+        try {
+            services.addClase(clase, user);
+            fail("Debió fallar por insertar una clase cuya hora de fin es previa a la hora de inicio");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Una clase no puede iniciar después de su fecha de finalización", e.getMessage());
         }
     }
 

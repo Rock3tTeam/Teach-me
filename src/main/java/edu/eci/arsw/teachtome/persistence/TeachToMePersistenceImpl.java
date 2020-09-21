@@ -12,7 +12,9 @@ import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,12 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void addClase(Clase clase, User user) throws TeachToMePersistenceException {
         if (clase == null) throw new TeachToMePersistenceException("La clase no puede ser nula");
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
+        if (clase.getDateOfInit().before(new Timestamp(new Date().getTime()))) {
+            throw new TeachToMePersistenceException("No se puede programar una clase antes de la hora actual");
+        }
+        if (clase.getDateOfInit().after(clase.getDateOfEnd())) {
+            throw new TeachToMePersistenceException("Una clase no puede iniciar después de su fecha de finalización");
+        }
         user.getTeachingClasses().add(clase);
         clase.setProfessor(user);
         User userSaved = userRepository.save(user);
@@ -118,6 +126,13 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         Clase clase = getClase(request.getRequestId().getClase());
         if (clase.getProfessor().getEmail().equals(student.getEmail())) {
             throw new TeachToMePersistenceException("El profesor no puede hacer un request a su misma clase");
+        }
+        Timestamp actualDate = new Timestamp(new Date().getTime());
+        if (clase.getDateOfInit().before(actualDate)) {
+            throw new TeachToMePersistenceException("No se puede solicitar cupo para una clase que ya inició");
+        }
+        if (actualDate.after(clase.getDateOfEnd())) {
+            throw new TeachToMePersistenceException("No se puede solicitar cupo para una clase que ya terminó");
         }
         if (clase.isFull()) {
             throw new TeachToMePersistenceException("Esa clase ya no tiene cupos");
