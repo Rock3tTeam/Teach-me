@@ -11,7 +11,16 @@ import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,6 +190,7 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> addUser(@RequestBody User user) {
         if (user.getEmail() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             services.addUser(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
@@ -203,9 +213,9 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> login(@RequestBody loginRequest request) {
         try {
             loginRequest login = services.login(request);
-            //if (!BCryptPasswordEncoder().matches(request.getPassword(), login.getPassword()) {
-            //return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            //}
+            if (!new BCryptPasswordEncoder().matches(request.getPassword(), login.getPassword())) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             //Aquí iria lo del token para loguearse
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
