@@ -5,6 +5,7 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.security.loginRequest;
 
 import java.util.List;
 
@@ -110,6 +111,7 @@ public interface TeachToMeServicesInterface {
     void addUser(User user) throws TeachToMeServiceException;
 
     User getUser(String email) throws TeachToMeServiceException;
-    //FALTA METODO DE AUTENTICACION
+
+    loginRequest login(loginRequest request) throws TeachToMeServiceException;
 
 }

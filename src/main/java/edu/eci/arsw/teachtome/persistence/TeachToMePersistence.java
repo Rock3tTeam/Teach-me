@@ -5,6 +5,7 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.security.loginRequest;
 
 import java.util.List;
 
@@ -118,4 +119,5 @@ public interface TeachToMePersistence {
 
     User getUser(String email) throws TeachToMePersistenceException;
 
+    loginRequest login(loginRequest request) throws TeachToMePersistenceException;
 }

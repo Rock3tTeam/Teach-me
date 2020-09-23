@@ -5,27 +5,24 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.security.loginRequest;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 
 /**
  * Controlador API REST de la aplicación TeachToMe
  */
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping(value = "/api/v1")
 public class TeachToMeAPIController {
     @Autowired
@@ -48,7 +45,7 @@ public class TeachToMeAPIController {
     }
 
     @GetMapping(value = "/classes")
-    public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value="name") String nameFilter) {
+    public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value = "name") String nameFilter) {
         try {
             return new ResponseEntity<>(services.getFilteredClassesByName(nameFilter), HttpStatus.ACCEPTED);
         } catch (Exception e) {
@@ -136,7 +133,7 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> updateRequest(@PathVariable String email, @PathVariable long classId, @RequestBody Request request) {
         if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
-            services.updateRequest(classId, email,request);
+            services.updateRequest(classId, email, request);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,6 +196,21 @@ public class TeachToMeAPIController {
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody loginRequest request) {
+        try {
+            loginRequest login = services.login(request);
+            //if (!BCryptPasswordEncoder().matches(request.getPassword(), login.getPassword()) {
+            //return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            //}
+            //Aquí iria lo del token para loguearse
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (TeachToMeServiceException ex) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
 

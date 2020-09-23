@@ -9,6 +9,7 @@ import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
+import edu.eci.arsw.teachtome.security.loginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,6 +109,16 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         if (user == null) throw new TeachToMePersistenceException("No existe el usuario con el email " + email);
         return user;
+    }
+
+    @Override
+    public loginRequest login(loginRequest request) throws TeachToMePersistenceException {
+        if(request==null) throw new TeachToMePersistenceException("La solicitud de login no puede estar vacía");
+        if(request.getPassword()==null){
+            throw new TeachToMePersistenceException("La contraseña no puede ser nula");
+        }
+        User user = getUser(request.getName());
+        return new loginRequest(user.getEmail(),user.getPassword());
     }
 
     @Override
