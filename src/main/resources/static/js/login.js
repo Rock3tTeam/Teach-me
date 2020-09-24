@@ -4,7 +4,7 @@
 var login = (function () {
 
     //Esta se cambia por la del heroku antes de desplegar 'http://localhost:8080'
-    const url = 'https://teach2-me.herokuapp.com/'
+    const urlAPI = 'https://teach2-me.herokuapp.com/';
 
     function loginPost() {
         var email = $("#your_email").val();
@@ -25,7 +25,18 @@ var login = (function () {
         }).catch(e => {
             console.log(e); // error
         });*/
-         const promise = new Promise((resolve,reject) => {
+        var promise = $.post({
+            url:urlAPI+'/api/v1/login',
+            data: loginRequest,
+            contentType: "application/json"
+        });
+
+        promise.then(function(data){
+            console.log(data.token);
+        },function(data){
+            alert("Error, correo electrónico o contraseña inválidos.");
+        });
+         /*const promise = new Promise((resolve,reject) => {
             $.ajax({
                 url: url+'/api/v1/login',
                 type: 'POST',
@@ -43,7 +54,7 @@ var login = (function () {
          })
          .catch(error => {
             alert(error);
-         });
+         });*/
     }
 
     return {
