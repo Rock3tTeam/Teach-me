@@ -1,10 +1,10 @@
 package edu.eci.arsw.teachtome.security;
 
-public class loginRequest {
+public class LoginRequest {
     private String name;
     private String password;
 
-    public loginRequest(String name, String password) {
+    public LoginRequest(String name, String password) {
         this.name = name;
         this.password = password;
     }
@@ -23,5 +23,13 @@ public class loginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginRequest{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

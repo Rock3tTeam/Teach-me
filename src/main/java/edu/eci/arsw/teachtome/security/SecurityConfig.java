@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,9 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
+                .addFilterAfter(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/","/api/v1").permitAll()
-                //.anyRequest().authenticated()
+                .antMatchers("/signup.html","/login.html","/api/v1/login","/api/v1/users","/css","/css/**","/js/","/js/**","/images/","/images/**","/fonts/","/fonts/**").permitAll()//Aquí van las paginas que no están restringidas
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login.html")

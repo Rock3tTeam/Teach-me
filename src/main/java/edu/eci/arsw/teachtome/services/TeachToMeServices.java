@@ -7,7 +7,7 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
-import edu.eci.arsw.teachtome.security.loginRequest;
+import edu.eci.arsw.teachtome.security.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -132,7 +132,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public loginRequest login(loginRequest request) throws TeachToMeServiceException {
+    public LoginRequest login(LoginRequest request) throws TeachToMeServiceException {
         try {
             return persistence.login(request);
         } catch (TeachToMePersistenceException e) {

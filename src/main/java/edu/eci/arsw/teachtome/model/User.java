@@ -34,7 +34,7 @@ public class User {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @Column(name = "description", length = 255, nullable = false)
+    @Column(name = "description", length = 255)
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -63,6 +63,14 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.description = description;
+        this.teachingClasses = new CopyOnWriteArrayList<>();
+    }
+
+    public User(String email, String firstName, String lastName, String password) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
         this.teachingClasses = new CopyOnWriteArrayList<>();
     }
 
