@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Token {
+public class TokenHelper {
 
     public static final long TOKEN_TIMEOUT_IN_MILLIS = 14400000;
     private static final String PREFIX = "TToken ";

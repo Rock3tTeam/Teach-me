@@ -1,16 +1,28 @@
 package edu.eci.arsw.teachtome.controllers;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.security.LoginRequest;
 import edu.eci.arsw.teachtome.security.LoginResponse;
-import edu.eci.arsw.teachtome.security.Token;
+import edu.eci.arsw.teachtome.security.TokenHelper;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -205,7 +217,7 @@ public class TeachToMeAPIController {
             if (!new BCryptPasswordEncoder().matches(request.getPassword(), login.getPassword())) {
                 return new ResponseEntity<>("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
             }
-            String token = Token.getJWTToken(request.getName());
+            String token = TokenHelper.getJWTToken(request.getName());
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
