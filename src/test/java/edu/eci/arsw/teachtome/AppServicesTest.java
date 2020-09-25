@@ -678,7 +678,7 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldUpdateARequestToTrue() throws TeachToMeServiceException {
         Clase clase = addClassAndTeacher("teacherR@gmail.com","Clase R","Clase R");
-        String email = "studentR@gmail.com";;
+        String email = "studentR@gmail.com";
         User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
         RequestPK requestPK = null;
         Request request = null;
