@@ -100,12 +100,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddANullClass() {
-        User user = new User("badteacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar por agregar un nuevo usuario");
-        }
+        User user = addUser("badteacher@gmail.com");
         try {
             services.addClase(null, user);
             fail("Debió fallar por insertar una clase nula");
@@ -127,13 +122,8 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAClassWithAInvalidDate() {
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User user = addUser("nuevoB@gmail.com");
         Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al agregar al usuario");
-        }
         try {
             services.addClase(clase, user);
             fail("Debió fallar por insertar una clase que inicia antes de la hora actual");
@@ -153,8 +143,8 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldAddAndGetAClass() throws TeachToMeServiceException {
         Clase clase = getClase("Nueva Clase", "Prueba Exitosa de Inserción");
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
+        String email = "nuevo@gmail.com";
+        User user = addUser(email);
         services.addClase(clase, user);
         Clase clasePrueba = services.getClase(clase.getId());
         assertEquals(clase, clasePrueba);
@@ -184,14 +174,14 @@ public class AppServicesTest implements ClassGenerator {
     public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
         List<Clase> classes = new ArrayList<>();
         Clase clase;
-        User user = new User("julioprofe@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
+        String email = "julioprofe@gmail.com";
+        User user = addUser(email);
         for (int i = 1; i < 3; i++) {
             clase = getClase("Matemática " + i, "Matemática " + i);
             classes.add(clase);
             services.addClase(clase, user);
         }
-        List<Clase> returnedClasses = services.getTeachingClassesOfUser("julioprofe@gmail.com");
+        List<Clase> returnedClasses = services.getTeachingClassesOfUser(email);
         IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
     }
 
@@ -217,7 +207,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotSendARequestWithANullStudent() {
-        Clase clase = addClassAndTeacher("teacherF@gmail.com","Clase F","Clase F");
+        Clase clase = addClassAndTeacher("teacherF@gmail.com", "Clase F", "Clase F");
         try {
             services.sendRequest(new Request(new RequestPK(null, clase.getId())));
             fail("Debió fallar al enviar una solicitud sin estudiante");
@@ -229,7 +219,7 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotSendARequestOfANonExistingStudent() {
         String email = "noexiste@gmail.com";
-        Clase clase = addClassAndTeacher("teacherG@gmail.com","Clase G","Clase G");
+        Clase clase = addClassAndTeacher("teacherG@gmail.com", "Clase G", "Clase G");
         try {
             services.sendRequest(new Request(new RequestPK(email, clase.getId())));
             fail("Debió fallar al enviar una solicitud con un estudiante que no existe");
@@ -241,7 +231,7 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotSendARequestTheTeacherInHisClass() {
         String email = "teacherH@gmail.com";
-        Clase clase = addClassAndTeacher(email,"Clase H","Clase H");
+        Clase clase = addClassAndTeacher(email, "Clase H", "Clase H");
         try {
             services.sendRequest(new Request(new RequestPK(email, clase.getId())));
             fail("Debió fallar por enviar una solicitud como estudiante por parte de su profesor");
@@ -254,12 +244,7 @@ public class AppServicesTest implements ClassGenerator {
     public void shouldNotSendARequestWithANonExistingClass() {
         String email = "studentF@gmail.com";
         long id = 200;
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(student);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al estudiante");
-        }
+        addUser(email);
         try {
             services.sendRequest(new Request(new RequestPK(email, id)));
             fail("Debió fallar al enviar una solicitud a una clase que no existe");
@@ -272,12 +257,7 @@ public class AppServicesTest implements ClassGenerator {
     public void shouldNotGetTheRequestsOfANonExistingClass() {
         String email = "studentI@gmail.com";
         long id = 200;
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al usuario");
-        }
+        addUser(email);
         try {
             services.getRequestsOfAClass(id, email);
             fail("Debió fallar por buscar las solicitudes de una clase que no existe");
@@ -288,7 +268,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotGetTheRequestsOfANullUser() {
-        Clase clase = addClassAndTeacher("teacherI@gmail.com","Clase I","Clase I");
+        Clase clase = addClassAndTeacher("teacherI@gmail.com", "Clase I", "Clase I");
         try {
             services.getRequestsOfAClass(clase.getId(), null);
             fail("Debió fallar por buscar las solicitudes con un email nulo");
@@ -300,7 +280,7 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotGetTheRequestsOfANonExistingUser() {
         String email = "noexiste@gmail.com";
-        Clase clase = addClassAndTeacher("teacherJ@gmail.com","Clase J","Clase J");
+        Clase clase = addClassAndTeacher("teacherJ@gmail.com", "Clase J", "Clase J");
         try {
             services.getRequestsOfAClass(clase.getId(), email);
             fail("Debió fallar por buscar las solicitudes con un email no registrado");
@@ -312,13 +292,8 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotGetTheRequestsOfAClassWithoutBeingTheTeacher() {
         String email = "studentK@gmail.com";
-        Clase clase = addClassAndTeacher("teacherK@gmail.com","Clase K","Clase K");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(student);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al estudiante");
-        }
+        Clase clase = addClassAndTeacher("teacherK@gmail.com", "Clase K", "Clase K");
+        addUser(email);
         try {
             services.getRequestsOfAClass(clase.getId(), email);
             fail("Debió fallar por buscar las solicitudes con un email distinto al del profesor");
@@ -330,17 +305,16 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldSendAndGetTheRequestsOfAClass() throws TeachToMeServiceException {
         String email = "studentL@gmail.com";
-        Clase clase = addClassAndTeacher("teacherL@gmail.com","Clase L","Clase L");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherL@gmail.com", "Clase L", "Clase L");
+        addUser(email);
         RequestPK requestPK;
         Request request = new Request();
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         boolean found = false;
         List<Request> requests = services.getRequestsOfAClass(clase.getId(), "teacherL@gmail.com");
@@ -356,14 +330,10 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAStudentToANullClass() {
-        User user = new User("badstudent@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        String email = "badstudent@gmail.com";
+        addUser(email);
         try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al insertar el usuario");
-        }
-        try {
-            services.addStudentToAClass(null, "badstudent@gmail.com");
+            services.addStudentToAClass(null, email);
             fail("Debió fallar al intentar añadir un estudiante a una clase nula");
         } catch (TeachToMeServiceException e) {
             assertEquals("La clase no puede ser nula", e.getMessage());
@@ -373,7 +343,7 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotAddANonExistingStudentToAClass() {
         String email = "noexiste@gmail.com";
-        Clase clase = addClassAndTeacher("sadteacher@gmail.com","Clase vacía","Clase sin alumnos");
+        Clase clase = addClassAndTeacher("sadteacher@gmail.com", "Clase vacía", "Clase sin alumnos");
         try {
             services.addStudentToAClass(clase, email);
             fail("Debió fallar al intentar añadir un estudiante que no existe a una clase");
@@ -384,7 +354,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAStudentWithNullEmailToAClass() {
-        Clase clase = addClassAndTeacher("teacherA@gmail.com","Clase A","Clase A");
+        Clase clase = addClassAndTeacher("teacherA@gmail.com", "Clase A", "Clase A");
         try {
             services.addStudentToAClass(clase, null);
             fail("Debió fallar al intentar añadir un estudiante que no existe a una clase");
@@ -395,7 +365,7 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddTheTeacherAsAStudentToAClass() {
-        Clase clase = addClassAndTeacher("teacherB@gmail.com","Clase B","Clase B");
+        Clase clase = addClassAndTeacher("teacherB@gmail.com", "Clase B", "Clase B");
         try {
             services.addStudentToAClass(clase, "teacherB@gmail.com");
             fail("Debió fallar al intentar añadir el profesor como estudiante");
@@ -407,16 +377,15 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotAddAnAlreadyEnrolledStudentToAClass() {
         String email = "studentC@gmail.com";
-        Clase clase = addClassAndTeacher("teacherC@gmail.com","Clase C","Clase C");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherC@gmail.com", "Clase C", "Clase C");
+        addUser(email);
         RequestPK requestPK;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             services.sendRequest(new Request(requestPK));
             services.addStudentToAClass(clase, email);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         try {
             services.addStudentToAClass(clase, email);
@@ -429,13 +398,8 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotAddStudentToAClassThatDoNotRequestIt() {
         String email = "studentD@gmail.com";
-        Clase clase = addClassAndTeacher("teacherD@gmail.com","Clase D","Clase D");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(student);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al estudiante");
-        }
+        Clase clase = addClassAndTeacher("teacherD@gmail.com", "Clase D", "Clase D");
+        addUser(email);
         try {
             services.addStudentToAClass(clase, email);
             fail("Debió fallar al intentar añadir un estudiante que no lo solicitó");
@@ -447,23 +411,19 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotAddAStudentToAClassWithoutSeats() {
         String email = "studentW@gmail.com";
-        Clase clase = getClase("Clase W", "Clase W", 30, 29);
-        User user = new User("teacherW@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        User student2 = new User("studentW2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        String email2 = "studentW2@gmail.com";
+        Clase clase = addClassAndTeacher("teacherW@gmail.com","Clase W","Clase W",30,29);
+        addUser(email);
+        addUser(email2);
         RequestPK requestPK;
         try {
-            services.addUser(user);
-            services.addUser(student);
-            services.addUser(student2);
-            services.addClase(clase, user);
             requestPK = new RequestPK(email, clase.getId());
             services.sendRequest(new Request(requestPK));
-            requestPK = new RequestPK("studentW2@gmail.com", clase.getId());
+            requestPK = new RequestPK(email2, clase.getId());
             services.sendRequest(new Request(requestPK));
             services.addStudentToAClass(clase, email);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar los recursos");
+            fail("No debió fallar al realizar las solicitudes");
         }
         try {
             services.addStudentToAClass(clase, "studentW2@gmail.com");
@@ -476,15 +436,14 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldAddStudentToAClass() throws TeachToMeServiceException {
         String email = "studentE@gmail.com";
-        Clase clase = addClassAndTeacher("teacherE@gmail.com","Clase E","Clase E");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherE@gmail.com", "Clase E", "Clase E");
+        addUser(email);
         RequestPK requestPK;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             services.sendRequest(new Request(requestPK));
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         services.addStudentToAClass(clase, email);
         boolean found = false;
@@ -511,17 +470,16 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotUpdateTheRequestOfAClassIfIsNotTheTeacher() {
         String email = "studentM@gmail.com";
-        Clase clase = addClassAndTeacher("teacherM@gmail.com","Clase M","Clase M");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherM@gmail.com", "Clase M", "Clase M");
+        addUser(email);
         RequestPK requestPK;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         try {
             services.updateRequest(clase.getId(), email, request);
@@ -535,14 +493,9 @@ public class AppServicesTest implements ClassGenerator {
     public void shouldNotUpdateTheRequestOfANonExistingClass() {
         long id = 200;
         String email = "studentN@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        addUser(email);
         RequestPK requestPK = new RequestPK(email, 200);
         Request request = new Request(requestPK, true);
-        try {
-            services.addUser(student);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al usuario");
-        }
         try {
             services.updateRequest(id, email, request);
             fail("Debió fallar al intentar actualizar la solicitud de una clase sin ser su profesor");
@@ -554,17 +507,16 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotUpdateTheRequestOfAClassWithANullTeacherEmail() {
         String email = "studentO@gmail.com";
-        Clase clase = addClassAndTeacher("teacherO@gmail.com","Clase O","Clase O");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherO@gmail.com", "Clase O", "Clase O");
+        addUser(email);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         request = new Request(requestPK, true);
         try {
@@ -578,17 +530,16 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotUpdateTheRequestOfAClassWithANonExistingTeacher() {
         String email = "studentP@gmail.com";
-        Clase clase = addClassAndTeacher("teacherP@gmail.com","Clase P","Clase P");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = addClassAndTeacher("teacherP@gmail.com", "Clase P", "Clase P");
+        addUser(email);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         request = new Request(requestPK, true);
         try {
@@ -601,18 +552,17 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldNotUpdateWithABadConstructRequest() {
-        Clase clase = addClassAndTeacher("teacherQ@gmail.com","Clase Q","Clase Q");
+        Clase clase = addClassAndTeacher("teacherQ@gmail.com", "Clase Q", "Clase Q");
         String email = "studentQ@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        addUser(email);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         requestPK = new RequestPK();
         request = new Request(requestPK, true);
@@ -643,27 +593,23 @@ public class AppServicesTest implements ClassGenerator {
     @Test
     public void shouldNotUpdateARequestIfTheClassDoNotHaveCapacity() {
         String email = "studentV@gmail.com";
-        Clase clase = getClase("Clase V", "Clase V", 30, 29);
-        User user = new User("teacherV@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        User student2 = new User("studentV2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        String email2 = "studentV2@gmail.com";
+        Clase clase = addClassAndTeacher("teacherV@gmail.com", "Clase V", "Clase V", 30, 29);
+        addUser(email);
+        addUser(email2);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(user);
-            services.addUser(student);
-            services.addUser(student2);
-            services.addClase(clase, user);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
-            requestPK = new RequestPK("studentV2@gmail.com", clase.getId());
+            requestPK = new RequestPK(email2, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
             request = new Request(requestPK, true);
             services.updateRequest(clase.getId(), "teacherV@gmail.com", request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar los recursos iniciales");
+            fail("No debió fallar al realizar las solicitudes");
         }
         requestPK = new RequestPK(email, clase.getId());
         request = new Request(requestPK, true);
@@ -677,18 +623,17 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldUpdateARequestToTrue() throws TeachToMeServiceException {
-        Clase clase = addClassAndTeacher("teacherR@gmail.com","Clase R","Clase R");
+        Clase clase = addClassAndTeacher("teacherR@gmail.com", "Clase R", "Clase R");
         String email = "studentR@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        addUser(email);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         request = new Request(requestPK, true);
         services.updateRequest(clase.getId(), "teacherR@gmail.com", request);
@@ -698,7 +643,7 @@ public class AppServicesTest implements ClassGenerator {
             if (returnedRequest.getClase().lazyEquals(clase)) {
                 foundRequest = true;
                 assertTrue(request.isAccepted());
-                assertEquals(student.getEmail(), request.getRequestId().getStudent());
+                assertEquals(email, request.getRequestId().getStudent());
                 break;
             }
         }
@@ -707,18 +652,17 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldUpdateARequestToFalse() throws TeachToMeServiceException {
-        Clase clase = addClassAndTeacher("teacherS@gmail.com","Clase S","Clase S");
+        Clase clase = addClassAndTeacher("teacherS@gmail.com", "Clase S", "Clase S");
         String email = "studentS@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        addUser(email);
         RequestPK requestPK = null;
         Request request = null;
         try {
-            services.addUser(student);
             requestPK = new RequestPK(email, clase.getId());
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar el estudiante ni al solicitar unirse a la clase");
+            fail("No debió fallar al realizar la solicitud");
         }
         request = new Request(requestPK, false);
         services.updateRequest(clase.getId(), "teacherS@gmail.com", request);
@@ -728,7 +672,7 @@ public class AppServicesTest implements ClassGenerator {
             if (returnedRequest.getClase().lazyEquals(clase)) {
                 foundRequest = true;
                 assertFalse(request.isAccepted());
-                assertEquals(student.getEmail(), request.getRequestId().getStudent());
+                assertEquals(email, request.getRequestId().getStudent());
                 break;
             }
         }
@@ -747,8 +691,8 @@ public class AppServicesTest implements ClassGenerator {
 
     @Test
     public void shouldConsultTheClassesByName() throws TeachToMeServiceException {
-        addClassAndTeacher("teacherT@gmail.com","Ejemplo T","Ejemplo T");
-        addClassAndTeacher("teacherU@gmail.com","Ejemplo U","Ejemplo U");
+        addClassAndTeacher("teacherT@gmail.com", "Ejemplo T", "Ejemplo T",30,0);
+        addClassAndTeacher("teacherU@gmail.com", "Ejemplo U", "Ejemplo U",20,0);
         String nameFilter = "Ejemplo";
         List<Clase> clases = services.getFilteredClassesByName(nameFilter);
         for (Clase returnedClass : clases) {
@@ -756,15 +700,37 @@ public class AppServicesTest implements ClassGenerator {
         }
     }
 
-    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription){
+    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) {
         User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
         Clase clase = getClase(className, classDescription);
         try {
             services.addUser(user);
             services.addClase(clase, user);
         } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar a los usuarios ni las clases");
+            fail("No debió fallar al ingresar al profesor ni a su clase");
         }
         return clase;
+    }
+
+    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription, int capacity, int amount) {
+        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClase(className, classDescription, capacity, amount);
+        try {
+            services.addUser(user);
+            services.addClase(clase, user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar al profesor ni a su clase");
+        }
+        return clase;
+    }
+
+    private User addUser(String email) {
+        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        try {
+            services.addUser(user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar al usuario");
+        }
+        return user;
     }
 }
