@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.persistence;
 
+import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -9,7 +10,6 @@ import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
-import edu.eci.arsw.teachtome.security.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,8 +117,8 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if(request.getPassword()==null){
             throw new TeachToMePersistenceException("La contraseña no puede ser nula");
         }
-        User user = getUser(request.getName());
-        return new LoginRequest(user.getEmail(),user.getPassword());
+        User user = getUser(request.getUsername());
+        return null;
     }
 
     @Override

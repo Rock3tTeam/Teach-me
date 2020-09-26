@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.services;
 
+import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -7,7 +8,6 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
-import edu.eci.arsw.teachtome.security.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,7 +127,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
-        user.setPassword("null");
         return user;
     }
 

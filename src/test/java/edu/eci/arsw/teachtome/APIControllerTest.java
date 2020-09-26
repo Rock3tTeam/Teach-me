@@ -1,11 +1,11 @@
 package edu.eci.arsw.teachtome;
 
 import com.google.gson.Gson;
+import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.security.LoginRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

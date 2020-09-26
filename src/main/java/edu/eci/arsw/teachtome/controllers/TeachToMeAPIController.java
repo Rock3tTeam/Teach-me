@@ -1,19 +1,18 @@
 package edu.eci.arsw.teachtome.controllers;
 
+import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.security.LoginRequest;
-import edu.eci.arsw.teachtome.security.LoginResponse;
-import edu.eci.arsw.teachtome.security.TokenHelper;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +36,9 @@ import java.util.logging.Logger;
 public class TeachToMeAPIController {
     @Autowired
     private TeachToMeServicesInterface services;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Obtiene la clase con el Id especificado
@@ -191,7 +193,7 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> addUser(@RequestBody User user) {
         if (user.getEmail() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             services.addUser(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
@@ -214,14 +216,10 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             LoginRequest login = services.login(request);
-            if (!new BCryptPasswordEncoder().matches(request.getPassword(), login.getPassword())) {
-                return new ResponseEntity<>("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
-            }
-            String token = TokenHelper.getJWTToken(request.getName());
-            return ResponseEntity.ok(new LoginResponse(token));
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            if (ex.getMessage().equals("No existe el usuario con el email " + request.getName())) {
+            if (ex.getMessage().equals("No existe el usuario con el email " + request.getUsername())) {
                 return new ResponseEntity<>("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
             } else {
                 return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
@@ -230,4 +228,3 @@ public class TeachToMeAPIController {
     }
 
 }
-

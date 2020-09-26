@@ -1,11 +1,11 @@
 package edu.eci.arsw.teachtome.services;
 
+import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.security.LoginRequest;
 
 import java.util.List;
 
