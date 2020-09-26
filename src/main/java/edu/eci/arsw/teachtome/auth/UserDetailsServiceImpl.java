@@ -29,6 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = null;
         try {
             user = services.getUser(username);
+            user.setPassword(user.getPassword());
         } catch (TeachToMeServiceException e) {
             throw new UsernameNotFoundException("El usuario con el email "+user+" no existe");
         }

@@ -32,13 +32,14 @@ import java.util.logging.Logger;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/")
 public class TeachToMeAPIController {
     @Autowired
     private TeachToMeServicesInterface services;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     /**
      * Obtiene la clase con el Id especificado
@@ -211,20 +212,8 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-    @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        try {
-            LoginRequest login = services.login(request);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (TeachToMeServiceException ex) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            if (ex.getMessage().equals("No existe el usuario con el email " + request.getUsername())) {
-                return new ResponseEntity<>("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
-            } else {
-                return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-            }
-        }
+    @GetMapping(value = "../../login")
+    public String getLoginPage(){
+        return "login";
     }
-
 }
