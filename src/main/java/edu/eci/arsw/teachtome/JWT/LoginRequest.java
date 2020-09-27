@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.JWT;
+/*package edu.eci.arsw.teachtome.JWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,3 +34,5 @@ public class LoginRequest {
         this.password = password;
     }
 }
+
+ */

@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -32,17 +31,17 @@ public interface TeachToMePersistence {
     /**
      * Obtiene las clases que enseña un usuario
      *
-     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @param email - El mail del usuario del cual se van a obtener las clases
      * @return Las clases que dicta el usuario
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos
      */
-    List<Clase> getTeachingClassesOfUser(String email)throws TeachToMePersistenceException;
+    List<Clase> getTeachingClassesOfUser(String email) throws TeachToMePersistenceException;
 
     /**
      * Agrega una nueva clase de un usuario dentro de la base de datos
      *
      * @param clase - La clase a la cual el usuario se va a agregar
-     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @param email - El mail del usuario del cual se van a obtener las clases
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o la clase sea nula
      */
 
@@ -51,7 +50,7 @@ public interface TeachToMePersistence {
     /**
      * Obtiene las clases que aprende un usuario
      *
-     * @param email  - El mail del usuario del cual se van a obtener las clases
+     * @param email - El mail del usuario del cual se van a obtener las clases
      * @return Las clases que dicta el usuario
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos
      */
@@ -61,7 +60,7 @@ public interface TeachToMePersistence {
     /**
      * Realiza una request de un estudiante a una clase
      *
-     * @param request  - La request con el usuario y la clase a la cual quiere unirse
+     * @param request - La request con el usuario y la clase a la cual quiere unirse
      * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existan en la base de datos.
      */
 
@@ -70,38 +69,38 @@ public interface TeachToMePersistence {
     /**
      * Obtiene las requests que se han hecho a una clase
      *
-     * @param email  - El mail del usuario del cual se van a obtener las clases
-     * @param classId  - El id de la clase que se está buscando
+     * @param email   - El mail del usuario del cual se van a obtener las clases
+     * @param classId - El id de la clase que se está buscando
      * @return Los requests que se han hecho a esa clase
      * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existen en la base de datos
      */
 
-    List<Request> getRequestsOfAClass(long classId , String email) throws TeachToMePersistenceException;
+    List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMePersistenceException;
 
     /**
      * Obtiene las request de un usuario a una clase
      *
-     * @param emailStudent  - El mail del usuario del cual se va a obtener el request
-     * @param classId  - El id de la clase que se está buscando
+     * @param emailStudent - El mail del usuario del cual se va a obtener el request
+     * @param classId      - El id de la clase que se está buscando
      * @return La request de un estudiante a una clase
      * @throws TeachToMePersistenceException - Cuando el usuario no ha hecho request a esa clase
      */
 
-    Request getRequest(long classId , String emailStudent) throws TeachToMePersistenceException;
+    Request getRequest(long classId, String emailStudent) throws TeachToMePersistenceException;
 
     /**
      * Actualiza la request de una clase
      *
-     * @param email  - El mail del usuario del cual se va a obtener el request
-     * @param classId  - El id de la clase que se está buscando
+     * @param email   - El mail del usuario del cual se va a obtener el request
+     * @param classId - El id de la clase que se está buscando
      * @throws TeachToMePersistenceException - En caso de que un usuario inautorizado intente actualizar el request
      */
-    void updateRequest(Long classId , String email  , Request request) throws TeachToMePersistenceException;
+    void updateRequest(Long classId, String email, Request request) throws TeachToMePersistenceException;
 
     /**
      * Consulta las clases que contengan cierta palabra
      *
-     * @param nameFilter  - nombre de la clase
+     * @param nameFilter - nombre de la clase
      * @return La lista de clases que contengan esa palabra
      * @throws TeachToMePersistenceException - Si la clase no existe en la base de datos
      */
@@ -119,5 +118,5 @@ public interface TeachToMePersistence {
 
     User getUser(String email) throws TeachToMePersistenceException;
 
-    LoginRequest login(LoginRequest request) throws TeachToMePersistenceException;
+    /*LoginRequest login(LoginRequest request) throws TeachToMePersistenceException;*/
 }

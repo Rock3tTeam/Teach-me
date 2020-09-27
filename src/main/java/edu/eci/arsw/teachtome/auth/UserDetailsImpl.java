@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.auth;
+/*package edu.eci.arsw.teachtome.auth;
 
 import edu.eci.arsw.teachtome.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,3 +64,5 @@ public class UserDetailsImpl implements UserDetails {
 
 
 }
+
+ */

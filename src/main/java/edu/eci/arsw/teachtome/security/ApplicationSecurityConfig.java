@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.security;
+/*package edu.eci.arsw.teachtome.security;
 
 import edu.eci.arsw.teachtome.JWT.JwtAuthenticationFilter;
 import edu.eci.arsw.teachtome.JWT.JwtConfig;
@@ -61,7 +61,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Ignore spring security in these paths
-        web.ignoring().antMatchers("/login","/login.html","/css/**","/js/**","/fonts/**","/images/**","/api/v1/users","/favicon.ico");
+        web.ignoring().antMatchers("/login.html","/signup.html","/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
     }
 
     @Override
@@ -77,3 +77,4 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 }
+*/

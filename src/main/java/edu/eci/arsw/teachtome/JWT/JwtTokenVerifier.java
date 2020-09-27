@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.JWT;
+/*package edu.eci.arsw.teachtome.JWT;
 
 import com.google.common.base.Strings;
 import io.jsonwebtoken.*;
@@ -49,3 +49,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+
+
+ */

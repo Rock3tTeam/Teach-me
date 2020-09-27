@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.controllers;
+/*package edu.eci.arsw.teachtome.controllers;
 
 
 import edu.eci.arsw.teachtome.model.Clase;
@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Controlador API REST de la aplicación TeachToMe
- */
 @RestController
 @RequestMapping(value = "/")
 public class AuthController {
@@ -24,3 +21,6 @@ public class AuthController {
     }
 
 }
+
+ */
+

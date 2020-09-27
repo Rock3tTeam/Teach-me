@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -111,7 +110,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return user;
     }
 
-    @Override
+    /*@Override
     public LoginRequest login(LoginRequest request) throws TeachToMePersistenceException {
         if(request==null) throw new TeachToMePersistenceException("La solicitud de login no puede estar vacía");
         if(request.getPassword()==null){
@@ -120,6 +119,8 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         User user = getUser(request.getUsername());
         return null;
     }
+
+     */
 
     @Override
     public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMePersistenceException {

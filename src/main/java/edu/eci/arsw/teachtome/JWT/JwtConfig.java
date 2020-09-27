@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.JWT;
+/*package edu.eci.arsw.teachtome.JWT;
 
 import com.google.common.net.HttpHeaders;
 import io.jsonwebtoken.security.Keys;
@@ -48,3 +48,5 @@ public class JwtConfig {
         return HttpHeaders.AUTHORIZATION;
     }
 }
+
+ */

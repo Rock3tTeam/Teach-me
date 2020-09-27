@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.JWT;
+/*package edu.eci.arsw.teachtome.JWT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -54,3 +54,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(jwtConfig.getAuthorizationHeader(),jwtConfig.getTokenPrefix()+token);
     }
 }
+
+ */

@@ -33,7 +33,9 @@ var login = (function () {
         });
 
         promise.then(function(data){
+            console.log(data);
             console.log("logueado");
+            httpChannel.setRequestHeader("Authorization", "World", false);
         },function(data){
             alert("Error, correo electrónico o contraseña inválidos.");
         });

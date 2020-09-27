@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -112,6 +111,6 @@ public interface TeachToMeServicesInterface {
 
     User getUser(String email) throws TeachToMeServiceException;
 
-    LoginRequest login(LoginRequest request) throws TeachToMeServiceException;
+    //LoginRequest login(LoginRequest request) throws TeachToMeServiceException;
 
 }

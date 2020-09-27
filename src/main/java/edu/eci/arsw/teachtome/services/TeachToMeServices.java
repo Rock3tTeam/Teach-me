@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.JWT.LoginRequest;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
@@ -130,7 +129,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         return user;
     }
 
-    @Override
+    /*@Override
     public LoginRequest login(LoginRequest request) throws TeachToMeServiceException {
         try {
             return persistence.login(request);
@@ -138,6 +137,8 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
+
+     */
 
     @Override
     public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
