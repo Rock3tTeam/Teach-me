@@ -31,7 +31,7 @@ var Modulesearch = (function () {
             console.log(c);
             $("#table_class > tbody").append(
                 "<tr>" +
-                "<td>" + c.nombre + "</td>"+
+                "<td>" +"<a href='#'>"+ c.nombre+"</a>" + "</td>"+
                 "<td>" + c.description + "</td>"+
 
                 "</tr>"

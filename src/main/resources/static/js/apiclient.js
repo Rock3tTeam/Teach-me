@@ -12,7 +12,7 @@ apiclient = (function () {
     }
 
     function getClassByName(class_name, callback) {
-        $.getJSON("http://localhost:8080/api/v1/classes?name="+class_name, function (data) {
+        $.getJSON("https://teach2-me.herokuapp.com/api/v1/classes?name="+class_name, function (data) {
             callback(data);
         });
     }
