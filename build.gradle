@@ -20,6 +20,7 @@ application {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
     //compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.4.0'
     //compile group: 'org.thymeleaf', name: 'thymeleaf', version: '2.0.5'
     compile group: 'org.webjars', name: 'webjars-locator', version: '0.14'
