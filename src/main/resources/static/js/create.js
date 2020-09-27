@@ -22,7 +22,7 @@ var ModuleCreate = (function () {
 
 
 
-    function prepareData(){
+    function createClass(){
 
         var datastring=parseDate("datetimepickercreate_input");
         console.log(datastring);
@@ -55,7 +55,7 @@ var ModuleCreate = (function () {
 
 
     return {
-        prepareData: prepareData
+        createClass: createClass
 
     };
 })();
