@@ -12,25 +12,26 @@ var Modulesearch = (function () {
         apiclient.getClassByName(localStorage.getItem("name"),_table);
     }
 
-
+    function formatDate(fecha){
+        var datasplit=fecha.split("T");
+        var datastring=datasplit.join(" ").split(".")[0].slice(0,-3);
+        return datastring;
+    }
 
     function _map(list){
         return mapList = list.map(function(clase){
             return {
                 nombre:clase.nombre,
                 description:clase.description,
-                fecha_inicio:parseDate(clase.dateOfInit),
-                fecha_fin:parseDate(clase.dateOfEnd)
+                fechaInicio:formatDate(clase.dateOfInit),
+                fechaFin:formatDate(clase.dateOfEnd),
+                capacity:clase.capacity
 
             }
         })
     }
 
-    function parseDate(fecha){
-        var datasplit=fecha.split("T");
-        var datastring=datasplit.join(" ").split(".")[0].slice(0,-3);
-        return datastring
-    }
+
 
     function _table(classes){
         functions = _map(classes);
@@ -41,8 +42,9 @@ var Modulesearch = (function () {
                 "<tr>" +
                 "<td>" +"<a href='#'>"+ c.nombre+"</a>" + "</td>"+
                 "<td>" + c.description + "</td>"+
-                "<td>" + c.fecha_inicio + "</td>"+
-                "<td>" + c.fecha_fin + "</td>"+
+                "<td>" + c.fechaInicio + "</td>"+
+                "<td>" + c.fechaFin + "</td>"+
+                "<td>" + c.capacity + "</td>"+
 
                 "</tr>"
             );

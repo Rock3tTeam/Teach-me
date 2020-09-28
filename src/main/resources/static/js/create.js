@@ -20,13 +20,21 @@ $("#datetimepicker_create1").datetimepicker();
 
 var ModuleCreate = (function () {
 
+    function formatDate(element){
+        var data = document.getElementById(element).value;
+        var datasplit=data.split(" ");
+        var datastring=datasplit.join("T");
+        console.log(datastring);
+        return datastring;
 
+    }
 
+    
     function createClass(){
 
-        var datastring=parseDate("datetimepickercreate_input");
+        var datastring=formatDate("datetimepickercreate_input");
         console.log(datastring);
-        var datastring1=parseDate("datetimepickercreate_input1");
+        var datastring1=formatDate("datetimepickercreate_input1");
         console.log(datastring1);
         var name = document.getElementById("class_name").value;
         var description = document.getElementById("description_class").value;
@@ -44,14 +52,7 @@ var ModuleCreate = (function () {
             });
         };
 
-    function parseDate(element){
-        var data = document.getElementById(element).value;
-        var datasplit=data.split(" ");
-        var datastring=datasplit.join("T")
-        console.log(datastring);
-        return datastring
 
-    }
 
 
     return {
