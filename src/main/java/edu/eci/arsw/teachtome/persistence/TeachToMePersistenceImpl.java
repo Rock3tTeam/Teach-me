@@ -97,16 +97,27 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void addUser(User user) throws TeachToMePersistenceException {
         if (user == null) throw new TeachToMePersistenceException("El usuario no puede ser nulo");
         userRepository.save(user);
+        User savedUser = getUser(user.getEmail());
+        user.setId(savedUser.getId());
     }
 
     @Override
     public User getUser(String email) throws TeachToMePersistenceException {
-        User user = null;
         if (email == null) throw new TeachToMePersistenceException("El email no puede ser nulo");
-        if (userRepository.existsById(email)) {
-            user = userRepository.findById(email).get();
+        List<User> users = userRepository.getUserByEmail(email);
+        if(users.isEmpty()){
+            throw new TeachToMePersistenceException("No existe el usuario con el email " + email);
         }
-        if (user == null) throw new TeachToMePersistenceException("No existe el usuario con el email " + email);
+        return users.get(0);
+    }
+
+    @Override
+    public User getUserById(long id) throws TeachToMePersistenceException {
+        User user = null;
+        if(userRepository.existsById(id)){
+            user = userRepository.findById(id).get();
+        }
+        if (user == null) throw new TeachToMePersistenceException("No existe el usuario con el id " + id);
         return user;
     }
 
@@ -134,7 +145,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (request.getRequestId() == null) {
             throw new TeachToMePersistenceException("La solicitud no puede estar vacía");
         }
-        User student = getUser(request.getRequestId().getStudent());
+        User student = getUserById(request.getRequestId().getStudent());
         Clase clase = getClase(request.getRequestId().getClase());
         if (clase.getProfessor().getEmail().equals(student.getEmail())) {
             throw new TeachToMePersistenceException("El profesor no puede hacer un request a su misma clase");
@@ -181,7 +192,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public Request getRequest(long classId, String emailStudent) throws TeachToMePersistenceException {
         User student = getUser(emailStudent);
         Clase clase = getClase(classId);
-        RequestPK requestPK = new RequestPK(student.getEmail(), clase.getId());
+        RequestPK requestPK = new RequestPK(student.getId(), clase.getId());
         Optional<Request> request = requestRepository.findById(requestPK);
         if (!(request.isPresent())) {
             throw new TeachToMePersistenceException("El usuario con el email " + emailStudent + " no ha solicitado unirse a la clase con el nombre " + clase.getNombre());
@@ -191,7 +202,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public void updateRequest(Long classId, String email, Request request) throws TeachToMePersistenceException {
-        User student = getUser(request.getRequestId().getStudent());
+        User student = getUserById(request.getRequestId().getStudent());
         Clase clase = getClase(request.getRequestId().getClase());
         if (email == null) throw new TeachToMePersistenceException("El correo del maestro no debe ser nulo");
         if (!(email.equals(clase.getProfessor().getEmail()))) {

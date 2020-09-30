@@ -118,5 +118,7 @@ public interface TeachToMePersistence {
 
     User getUser(String email) throws TeachToMePersistenceException;
 
+    User getUserById(long id) throws TeachToMePersistenceException;
+
     /*LoginRequest login(LoginRequest request) throws TeachToMePersistenceException;*/
 }

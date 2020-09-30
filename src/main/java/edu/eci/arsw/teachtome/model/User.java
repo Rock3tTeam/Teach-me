@@ -2,15 +2,7 @@ package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +14,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    @Column(name = "email", length = 255, unique = true)
     private String email;
 
     @Column(name = "first_name", length = 255, nullable = false)
@@ -72,6 +70,14 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.teachingClasses = new CopyOnWriteArrayList<>();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public List<Clase> getTeachingClasses() {
@@ -133,11 +139,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "{email='" + email + '\'' +
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", teachingClasses=" + teachingClasses +
+                ", studyingClasses=" + studyingClasses +
                 '}';
     }
 
@@ -149,8 +159,7 @@ public class User {
         return Objects.equals(email, user.email) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(description, user.description) &&
-                Objects.equals(teachingClasses, user.teachingClasses);
+                Objects.equals(description, user.description);
     }
 
     @Override

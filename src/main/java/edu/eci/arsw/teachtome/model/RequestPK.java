@@ -8,7 +8,7 @@ import java.util.Objects;
 @Embeddable
 public class RequestPK implements Serializable {
     @Column(name = "student")
-    private String student;
+    private long student;
 
     @Column(name = "class")
     private long clase;
@@ -16,16 +16,16 @@ public class RequestPK implements Serializable {
     public RequestPK() {
     }
 
-    public RequestPK(String student, long clase) {
+    public RequestPK(long student, long clase) {
         this.student = student;
         this.clase = clase;
     }
 
-    public String getStudent() {
+    public long getStudent() {
         return student;
     }
 
-    public void setStudent(String student) {
+    public void setStudent(long student) {
         this.student = student;
     }
 

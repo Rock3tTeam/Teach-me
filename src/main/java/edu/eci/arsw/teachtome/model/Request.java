@@ -29,7 +29,7 @@ public class Request {
     private Clase clase = new Clase();
 
     @ManyToOne
-    @MapsId("email")
+    @MapsId("id")
     @JoinColumn(name = "student")
     private User student = new User();
 
