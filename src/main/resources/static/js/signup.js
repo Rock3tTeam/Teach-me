@@ -5,22 +5,38 @@ var ModuleSignup = (function () {
 
         if (firstName=="") {
             bool = false;
-            console.log("nombre")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'The name cannot be empty'
+            })
         }
 
         else if (lastName==""){
             bool = false;
-            console.log("ape")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'The last name cannot be empty'
+            })
         }
 
         else if (password==""){
             bool = false;
-            console.log("pass")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'The password cannot be empty'
+            })
         }
 
         else if (!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
             bool = false;
-            console.log("email")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Enter a valid email'
+            })
         }
 
         return bool;
@@ -49,11 +65,29 @@ var ModuleSignup = (function () {
             console.log(user);
             apiclient.postUser(user).then(function (){
                 console.log("post succesful");
-            });
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    width: 300,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed in successfully'
+                })
+
+            }).catch(e => {
+                console.log("error post")
+            })
         }
-
-
-
 
 
     };
@@ -65,3 +99,4 @@ var ModuleSignup = (function () {
     };
 
 })();
+

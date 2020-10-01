@@ -53,6 +53,12 @@ mont {
   font-family: 'Montserrat', sans-serif ;
 }
 
+.swal2-title {
+  font-size: 1.5em !important ;
+}
+
+
+
 img {
   max-width: 100%;
   height: auto; }

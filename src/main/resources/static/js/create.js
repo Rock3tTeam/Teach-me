@@ -49,6 +49,11 @@ var ModuleCreate = (function () {
             };
         apiclient.postClass("nicolas@gmail.com",clase).then(function (){
             console.log("post succesful");
+            Swal.fire({
+                icon: 'success',
+                title: 'Yeah!',
+                text: 'Class created'
+            })
             });
         };
 
