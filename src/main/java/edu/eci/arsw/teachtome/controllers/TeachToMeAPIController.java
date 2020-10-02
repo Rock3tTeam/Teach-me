@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * Controlador API REST de la aplicación TeachToMe
  */
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",allowedHeaders="*")
 @RequestMapping(value = "/api/v1/")
 public class TeachToMeAPIController {
     @Autowired
