@@ -69,7 +69,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Ignore spring security in these paths
-        web.ignoring().antMatchers("/","/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
+        web.ignoring().antMatchers("/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
     }
 
     @Override
