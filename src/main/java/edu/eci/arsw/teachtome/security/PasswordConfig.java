@@ -1,4 +1,4 @@
-/*package edu.eci.arsw.teachtome.security;
+package edu.eci.arsw.teachtome.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,4 +14,4 @@ public class PasswordConfig {
     }
 }
 
- */
+

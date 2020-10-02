@@ -1,4 +1,4 @@
-/*package edu.eci.arsw.teachtome.JWT;
+package edu.eci.arsw.teachtome.JWT;
 
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +22,3 @@ public class JwtSecretKey {
         return Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes());
     }
 }
-}
- */

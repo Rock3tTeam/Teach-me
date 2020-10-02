@@ -13,7 +13,6 @@ apiclient = (function () {
 
     function postUser(user){
         var data = $.ajax({
-
             url: "https://teach2-me.herokuapp.com/api/v1/users",
             type: 'POST',
             data: JSON.stringify(user),
@@ -21,6 +20,17 @@ apiclient = (function () {
         });
         return data;
     }
+
+    function postLogin(loginRequest){
+        var data = $.ajax({
+            url: "http://localhost:8080/login",
+            type: 'POST',
+            data: JSON.stringify(loginRequest),
+            contentType: "application/json"
+        });
+        return data;
+    }
+
 
     function getClassByName(class_name, callback) {
         $.getJSON("https://teach2-me.herokuapp.com/api/v1/classes?name="+class_name, function (data) {
@@ -31,7 +41,8 @@ apiclient = (function () {
     return {
         postClass:postClass,
         getClassByName:getClassByName,
-        postUser:postUser
+        postUser:postUser,
+        postLogin:postLogin
     };
 
 })();

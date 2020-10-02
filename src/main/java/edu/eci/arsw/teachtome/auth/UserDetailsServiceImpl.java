@@ -1,4 +1,4 @@
-/*package edu.eci.arsw.teachtome.auth;
+package edu.eci.arsw.teachtome.auth;
 
 
 import edu.eci.arsw.teachtome.model.User;
@@ -36,5 +36,3 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 }
-
- */

@@ -21,13 +21,13 @@ application {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
-    //compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.4.0'
-    //compile group: 'org.thymeleaf', name: 'thymeleaf', version: '2.0.5'
+    compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.4.0'
+    compile group: 'org.thymeleaf', name: 'thymeleaf', version: '2.0.5'
     compile group: 'org.webjars', name: 'webjars-locator', version: '0.14'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
     compile group: 'org.webjars', name: 'bootstrap', version: '4.5.2'
     compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
-    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
     compile 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtime 'io.jsonwebtoken:jjwt-impl:0.11.2',
             'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson    testCompile group: 'junit', name: 'junit', version: '4.12'

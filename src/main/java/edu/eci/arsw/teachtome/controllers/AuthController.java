@@ -1,26 +1,18 @@
-/*package edu.eci.arsw.teachtome.controllers;
+package edu.eci.arsw.teachtome.controllers;
 
-
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-@RestController
-@RequestMapping(value = "/")
+@Controller
 public class AuthController {
 
-    @GetMapping(value = "login")
-    public String login(){
-        return "login";
+    @RequestMapping(method = RequestMethod.GET, value = "/")
+    public ModelAndView welcome() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("authenticate.html");
+        return modelAndView;
     }
-
 }
-
- */
 

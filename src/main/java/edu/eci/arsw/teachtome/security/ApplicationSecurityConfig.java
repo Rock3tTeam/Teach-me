@@ -1,4 +1,4 @@
-/*package edu.eci.arsw.teachtome.security;
+package edu.eci.arsw.teachtome.security;
 
 import edu.eci.arsw.teachtome.JWT.JwtAuthenticationFilter;
 import edu.eci.arsw.teachtome.JWT.JwtConfig;
@@ -48,20 +48,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/api/v1/")
                 .permitAll()
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtAuthenticationFilter.class)
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .usernameParameter("username")
-                .passwordParameter("password");
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, secretKey));
+                //.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Ignore spring security in these paths
-        web.ignoring().antMatchers("/login.html","/signup.html","/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
+        web.ignoring().antMatchers("/","/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
     }
 
     @Override
@@ -77,4 +71,3 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 }
-*/
