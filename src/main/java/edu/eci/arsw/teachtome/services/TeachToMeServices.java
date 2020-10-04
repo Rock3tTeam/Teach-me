@@ -129,6 +129,15 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         return user;
     }
 
+    @Override
+    public Request getRequest(Long classId, Long userId) throws TeachToMeServiceException {
+        try {
+            return persistence.getRequest(classId, userId);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
     /*@Override
     public LoginRequest login(LoginRequest request) throws TeachToMeServiceException {
         try {
@@ -170,7 +179,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     @Override
     public void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException {
         try {
-            persistence.updateRequest(classId,email,request);
+            persistence.updateRequest(classId, email, request);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

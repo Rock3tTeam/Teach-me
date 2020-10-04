@@ -82,6 +82,10 @@ public class Request {
         this.student = student;
     }
 
+    public boolean hasAnswer() {
+        return accepted != null;
+    }
+
     @Override
     public String toString() {
         return "{accepted=" + accepted +
@@ -103,4 +107,6 @@ public class Request {
     public int hashCode() {
         return Objects.hash(requestId, accepted);
     }
+
+
 }

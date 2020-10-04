@@ -10,7 +10,6 @@ import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
  * Controlador API REST de la aplicación TeachToMe
  */
 @RestController
-@CrossOrigin(origins = "*",allowedHeaders="*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(value = "/api/v1/")
 public class TeachToMeAPIController {
     @Autowired
@@ -114,7 +115,15 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/users/{email}/classes/{classId}/requests")
     public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email, @PathVariable long classId) {
         try {
-            return new ResponseEntity<>(services.getRequestsOfAClass(classId, email), HttpStatus.ACCEPTED);
+            List<Request> requests = services.getRequestsOfAClass(classId, email);
+            List<Request> nonAnswerRequests = new CopyOnWriteArrayList<>();
+            for (Request request : requests) {
+                if (!request.hasAnswer()) nonAnswerRequests.add(request);
+            }
+            if (nonAnswerRequests.isEmpty()) {
+                return new ResponseEntity<>("No hay solicitudes pendientes para esta clase", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(nonAnswerRequests, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             if (e.getMessage().equals("No tiene permitido ver los requests a esta clase")) {
@@ -206,6 +215,16 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> getUser(@PathVariable String email) {
         try {
             return new ResponseEntity<>(services.getUser(email), HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/requests/{classId}/{userId}")
+    public ResponseEntity<?> getRequest(@PathVariable Long classId, @PathVariable Long userId) {
+        try {
+            return new ResponseEntity<>(services.getRequest(classId, userId), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

@@ -121,6 +121,18 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return user;
     }
 
+    @Override
+    public Request getRequest(long classId, long userId) throws TeachToMePersistenceException {
+        User user = getUserById(userId);
+        Clase clase = getClase(classId);
+        RequestPK requestPK = new RequestPK(user.getId(),clase.getId());
+        if(!requestRepository.existsById(requestPK)){
+            throw new TeachToMePersistenceException("No existe la solicitud de la clase "+classId+" por parte del usuario "+userId);
+        }
+        Request request = requestRepository.findById(requestPK).get();
+        return request;
+    }
+
     /*@Override
     public LoginRequest login(LoginRequest request) throws TeachToMePersistenceException {
         if(request==null) throw new TeachToMePersistenceException("La solicitud de login no puede estar vacía");

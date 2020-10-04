@@ -111,6 +111,8 @@ public interface TeachToMeServicesInterface {
 
     User getUser(String email) throws TeachToMeServiceException;
 
+    Request getRequest(Long classId, Long userId) throws TeachToMeServiceException;
+
     //LoginRequest login(LoginRequest request) throws TeachToMeServiceException;
 
 }

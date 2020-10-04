@@ -120,5 +120,7 @@ public interface TeachToMePersistence {
 
     User getUserById(long id) throws TeachToMePersistenceException;
 
+    Request getRequest(long classId, long userId) throws TeachToMePersistenceException;
+
     /*LoginRequest login(LoginRequest request) throws TeachToMePersistenceException;*/
 }
