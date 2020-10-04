@@ -1,9 +1,9 @@
 package edu.eci.arsw.teachtome.security;
 
-import edu.eci.arsw.teachtome.JWT.JwtAuthenticationFilter;
-import edu.eci.arsw.teachtome.JWT.JwtConfig;
-import edu.eci.arsw.teachtome.JWT.JwtTokenVerifier;
 import edu.eci.arsw.teachtome.auth.UserDetailsServiceImpl;
+import edu.eci.arsw.teachtome.jwt.JwtAuthenticationFilter;
+import edu.eci.arsw.teachtome.jwt.JwtConfig;
+import edu.eci.arsw.teachtome.jwt.JwtTokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.crypto.SecretKey;
 import java.util.Arrays;
 
-
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,7 +33,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtConfig jwtConfig;
 
     @Autowired
-    public ApplicationSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder, SecretKey secretKey, JwtConfig jwtConfig){
+    public ApplicationSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder, SecretKey secretKey, JwtConfig jwtConfig) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.secretKey = secretKey;
@@ -49,29 +48,29 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/*","/","/api/v1/")
+                .antMatchers(HttpMethod.OPTIONS, "/*", "/", "/api/v1/")
                 .permitAll()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtAuthenticationFilter.class);
+                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtAuthenticationFilter.class);
     }
 
-        @Bean
-        CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(Arrays.asList("*"));
-            configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-            configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
-            configuration.setExposedHeaders(Arrays.asList("Authorization"));
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            return source;
-        }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Ignore spring security in these paths
-        web.ignoring().antMatchers("/css/*","/js/","/js/**","/fonts/","/fonts/**","/images/*","/api/v1/users","/favicon.ico");
+        web.ignoring().antMatchers("/css/*", "/js/", "/js/**", "/fonts/", "/fonts/**", "/images/*", "/api/v1/users", "/favicon.ico");
     }
 
     @Override

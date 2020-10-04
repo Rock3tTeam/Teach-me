@@ -1,19 +1,14 @@
-package edu.eci.arsw.teachtome.JWT;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+package edu.eci.arsw.teachtome.jwt;
 
 public class LoginRequest {
-
 
     private String username;
     private String password;
 
-
     public LoginRequest() {
     }
 
-    public LoginRequest(String username , String password){
+    public LoginRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }

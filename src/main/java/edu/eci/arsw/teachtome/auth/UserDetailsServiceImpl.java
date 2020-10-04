@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.auth;
 
-
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
@@ -10,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -31,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user = services.getUser(username);
             user.setPassword(user.getPassword());
         } catch (TeachToMeServiceException e) {
-            throw new UsernameNotFoundException("El usuario con el email "+user+" no existe");
+            throw new UsernameNotFoundException("El usuario con el email " + user + " no existe");
         }
         return UserDetailsImpl.build(user);
     }

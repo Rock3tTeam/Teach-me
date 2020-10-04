@@ -1,12 +1,8 @@
-package edu.eci.arsw.teachtome.JWT;
+package edu.eci.arsw.teachtome.jwt;
 
 import com.google.common.net.HttpHeaders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.crypto.SecretKey;
 
 @Configuration
 @ConfigurationProperties(prefix = "application.jwt")
@@ -16,7 +12,7 @@ public class JwtConfig {
     private String tokenPrefix;
     private Integer tokenExpirationAfter;
 
-    public JwtConfig(){
+    public JwtConfig() {
     }
 
     public String getSecretKey() {
@@ -44,7 +40,7 @@ public class JwtConfig {
     }
 
 
-    public String getAuthorizationHeader(){
+    public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;
     }
 }

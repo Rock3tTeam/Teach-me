@@ -1,7 +1,9 @@
-package edu.eci.arsw.teachtome.JWT;
+package edu.eci.arsw.teachtome.jwt;
 
-import com.google.common.base.Strings;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +29,11 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
-        if(authorizationHeader==null || authorizationHeader.isEmpty()){
+        if (authorizationHeader == null || authorizationHeader.isEmpty()) {
             throw new ServletException("Token nulo");
         }
-        String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(),"");
-        try{
+        String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
+        try {
             Jws<Claims> claimsJws = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
@@ -42,8 +44,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                     null
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (JwtException e){
-            throw new IllegalStateException("Token %s cannot be truest "+token);
+        } catch (JwtException e) {
+            throw new IllegalStateException("Token %s cannot be truest " + token);
         }
         filterChain.doFilter(request, response);
     }

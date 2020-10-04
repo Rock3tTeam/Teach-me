@@ -1,11 +1,8 @@
 package edu.eci.arsw.teachtome.auth;
 
 import edu.eci.arsw.teachtome.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
@@ -15,9 +12,8 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
 
 
-
     public UserDetailsImpl(String username, String password) {
-        this.password=  password;
+        this.password = password;
         this.username = username;
     }
 
