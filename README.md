@@ -87,10 +87,13 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 * Como profesor quiero decidir qué estudiantes se conectan a la clase para poder saber las personas que estarán en la sesión
 
 
-![](Diagrams/usuario.PNG)
+![](Diagrams/USUARIO.PNG)
 
-* Como Usuario quiero registrarme en la plataforma para poder acceder a las funcionalidades de la misma
-* Como Usuario quiero loguearme en la plataforma para poder acceder a las funcionalidades que poseo en ella
+* Como Usuario quiero enviar mensajes por chat interativo para poder comunicarme con los otros usuarios
+* Como Usuario quiero visualizar chat interativo para poder ver lo que comentan otros usuarios
+* Como Usuario quiero dibujar en el tablero interactivo para poder interactuar con los otros usuarios
+* Como Usuario quiero visualizar el tablero interactivo para poder ver lo que dibujan otros usuarios
+
 
 ## Diagrama de clases
 
