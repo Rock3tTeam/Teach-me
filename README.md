@@ -97,7 +97,7 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ## Diagrama de clases
 
-![](Diagrams/class.PNG)
+![](Diagrams/clases.PNG)
 
 ## Diagrama entidad relacion
 
