@@ -131,6 +131,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Override
     public Request getRequest(Long classId, Long userId) throws TeachToMeServiceException {
+        if(classId == null || userId == null){
+            throw new TeachToMeServiceException("Los identificadores no pueden ser nulos");
+        }
         try {
             return persistence.getRequest(classId, userId);
         } catch (TeachToMePersistenceException e) {

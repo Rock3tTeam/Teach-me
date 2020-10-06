@@ -411,6 +411,25 @@ public class AppServicesTest implements ClassGenerator {
     }
 
     @Test
+    public void shouldNotGetTheClassesOfANonExistingStudent() {
+        String email = "noexiste@gmail.com";
+        try {
+            services.getClassesOfAStudent(email);
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe el usuario con el email " + email, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetTheClassesWithANullEmail() {
+        try {
+            services.getClassesOfAStudent(null);
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El email no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldAddStudentToAClass() throws TeachToMeServiceException {
         String email = "studentE@gmail.com";
         Clase clase = addClassAndTeacher("teacherE@gmail.com", "Clase E", "Clase E");
@@ -617,6 +636,54 @@ public class AppServicesTest implements ClassGenerator {
         for (Clase returnedClass : clases) {
             assertTrue(returnedClass.getNombre().contains(nameFilter));
         }
+    }
+
+    @Test
+    public void shouldNotGetARequestOfANonExistingUser() {
+        Clase clase = addClassAndTeacher("teacherX@gmail.com", "Clase X", "Clase X");
+        long id = 200;
+        try {
+            services.getRequest(clase.getId(), id);
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe el usuario con el id " + id, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetARequestOfANonExistingClass() {
+        User user = addUser("studentX@gmail.com");
+        long id = 200;
+        try {
+            services.getRequest(id, user.getId());
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe la clase con el id " + id, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetARequestWithNullParameters() {
+        User user = addUser("studentY@gmail.com");
+        Clase clase = addClassAndTeacher("teacherY@gmail.com", "Clase Y", "Clase Y");
+        try {
+            services.getRequest(clase.getId(), null);
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Los identificadores no pueden ser nulos", e.getMessage());
+        }
+        try {
+            services.getRequest(null, user.getId());
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Los identificadores no pueden ser nulos", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldGetARequest() throws TeachToMeServiceException {
+        User user = addUser("studentZ@gmail.com");
+        Clase clase = addClassAndTeacher("teacherZ@gmail.com", "Clase Z", "Clase Z");
+        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        Request expectedRequest = new Request(requestPK);
+        Request request = services.getRequest(clase.getId(), user.getId());
+        assertEquals(expectedRequest, request);
     }
 
     private Clase addClass(User user, String className, String classDescription) {
