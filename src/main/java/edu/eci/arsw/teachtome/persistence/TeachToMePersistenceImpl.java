@@ -133,18 +133,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return request;
     }
 
-    /*@Override
-    public LoginRequest login(LoginRequest request) throws TeachToMePersistenceException {
-        if(request==null) throw new TeachToMePersistenceException("La solicitud de login no puede estar vacía");
-        if(request.getPassword()==null){
-            throw new TeachToMePersistenceException("La contraseña no puede ser nula");
-        }
-        User user = getUser(request.getUsername());
-        return null;
-    }
-
-     */
-
     @Override
     public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMePersistenceException {
         User user = getUser(email);
@@ -231,23 +219,23 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException {
+    public List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException {
         return null;
     }
 
     @Override
-    public void addClase(String className, Draw draw) throws TeachToMePersistenceException {
+    public void addDraw(long classId, Draw draw) throws TeachToMePersistenceException {
 
     }
 
 
     @Override
-    public void sendMessage(Message message) throws TeachToMePersistenceException {
+    public void sendMessage(Message message, long classId) throws TeachToMePersistenceException {
 
     }
 
     @Override
-    public List<Message> getChat(String className) throws TeachToMePersistenceException {
+    public List<Message> getChat(long classId) throws TeachToMePersistenceException {
         return null;
     }
 

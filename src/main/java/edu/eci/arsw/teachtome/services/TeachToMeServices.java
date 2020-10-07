@@ -54,18 +54,18 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public List<Draw> getDrawsOfAClass(String className) throws TeachToMeServiceException {
+    public List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException {
         try {
-            return persistence.getDrawsOfAClass(className);
+            return persistence.getDrawsOfAClass(classId);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addDraw(String className, Draw draw) throws TeachToMeServiceException {
+    public void addDraw(long classId, Draw draw) throws TeachToMeServiceException {
         try {
-            persistence.addClase(className, draw);
+            persistence.addDraw(classId, draw);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
@@ -92,18 +92,18 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
 
     @Override
-    public void sendMessage(Message message) throws TeachToMeServiceException {
+    public void sendMessage(Message message, long classId) throws TeachToMeServiceException {
         try {
-            persistence.sendMessage(message);
+            persistence.sendMessage(message,classId);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Message> getChat(String className) throws TeachToMeServiceException {
+    public List<Message> getChat(long classId) throws TeachToMeServiceException {
         try {
-            return persistence.getChat(className);
+            return persistence.getChat(classId);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

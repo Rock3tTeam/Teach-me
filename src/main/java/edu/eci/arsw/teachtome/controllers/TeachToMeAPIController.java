@@ -91,10 +91,10 @@ public class TeachToMeAPIController {
         }
     }
 
-    @GetMapping(value = "/draws/{className}")
-    public ResponseEntity<?> getDrawsOfAClass(@PathVariable String className) {
+    @GetMapping(value = "/draws/{classId}")
+    public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
         try {
-            return new ResponseEntity<>(services.getDrawsOfAClass(className), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(services.getDrawsOfAClass(classId), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -166,10 +166,10 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PostMapping(value = "/draws/{className}")
-    public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable String className) {
+    @PostMapping(value = "/draws/{classId}")
+    public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
         try {
-            services.addDraw(className, draw);
+            services.addDraw(classId, draw);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,10 +177,10 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PostMapping(value = "/messages")
-    public ResponseEntity<?> sendMessage(@RequestBody Message message) {
+    @PostMapping(value = "/messages/{classId}")
+    public ResponseEntity<?> sendMessage(@RequestBody Message message,@PathVariable long classId) {
         try {
-            services.sendMessage(message);
+            services.sendMessage(message,classId);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,10 +188,10 @@ public class TeachToMeAPIController {
         }
     }
 
-    @GetMapping(value = "/messages/{className}")
-    public ResponseEntity<?> getChat(@PathVariable String className) {
+    @GetMapping(value = "/messages/{classId}")
+    public ResponseEntity<?> getChat(@PathVariable long classId) {
         try {
-            return new ResponseEntity<>(services.getChat(className), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(services.getChat(classId), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

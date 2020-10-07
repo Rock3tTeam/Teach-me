@@ -1,17 +1,20 @@
 package edu.eci.arsw.teachtome.model;
 
-import java.sql.Date;
+import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * Clase que representa un mensaje dentro del chat de una sesión dentro de la aplicación TeachToMe
  */
 public class Message {
     private String content;
-    private Date date;
+    private Timestamp date;
 
-    public Message(String content, Date date) {
+    public Message(){}
+
+    public Message(String content) {
         this.content = content;
-        this.date = date;
+        this.date = new Timestamp(new Date().getTime());
     }
 
     public String getContent() {
@@ -22,11 +25,11 @@ public class Message {
         this.content = content;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

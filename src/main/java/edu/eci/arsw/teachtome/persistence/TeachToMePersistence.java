@@ -106,13 +106,13 @@ public interface TeachToMePersistence {
      */
     List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException;
 
-    List<Draw> getDrawsOfAClass(String className) throws TeachToMePersistenceException;
+    List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException;
 
-    void addClase(String className, Draw draw) throws TeachToMePersistenceException;
+    void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;
 
-    void sendMessage(Message message) throws TeachToMePersistenceException;
+    void sendMessage(Message message, long classId) throws TeachToMePersistenceException;
 
-    List<Message> getChat(String className) throws TeachToMePersistenceException;
+    List<Message> getChat(long classId) throws TeachToMePersistenceException;
 
     void addUser(User user) throws TeachToMePersistenceException;
 
@@ -122,5 +122,4 @@ public interface TeachToMePersistence {
 
     Request getRequest(long classId, long userId) throws TeachToMePersistenceException;
 
-    /*LoginRequest login(LoginRequest request) throws TeachToMePersistenceException;*/
 }

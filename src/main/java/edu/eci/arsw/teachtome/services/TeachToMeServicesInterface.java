@@ -98,21 +98,17 @@ public interface TeachToMeServicesInterface {
      */
     List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException;
 
-    List<Draw> getDrawsOfAClass(String className) throws TeachToMeServiceException;
+    List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException;
 
-    void addDraw(String className, Draw draw) throws TeachToMeServiceException;
+    void addDraw(long classId, Draw draw) throws TeachToMeServiceException;
 
+    void sendMessage(Message message, long classId) throws TeachToMeServiceException;
 
-    void sendMessage(Message message) throws TeachToMeServiceException;
-
-    List<Message> getChat(String className) throws TeachToMeServiceException;
+    List<Message> getChat(long classId) throws TeachToMeServiceException;
 
     void addUser(User user) throws TeachToMeServiceException;
 
     User getUser(String email) throws TeachToMeServiceException;
 
     Request getRequest(Long classId, Long userId) throws TeachToMeServiceException;
-
-    //LoginRequest login(LoginRequest request) throws TeachToMeServiceException;
-
 }
