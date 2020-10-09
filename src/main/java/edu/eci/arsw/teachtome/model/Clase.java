@@ -60,7 +60,6 @@ public class Clase {
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "class"), inverseJoinColumns = @JoinColumn(name = "student"))
     private List<User> students = new ArrayList<User>();
 
-
     public Clase() {
     }
 

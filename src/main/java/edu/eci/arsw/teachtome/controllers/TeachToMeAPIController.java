@@ -49,6 +49,25 @@ public class TeachToMeAPIController {
         }
     }
 
+    @DeleteMapping(value = "/classes/{classId}")
+    public ResponseEntity<?> deleteClass(@PathVariable Long classId,@RequestHeader("x-userEmail") String email) {
+        try {
+            Clase clase = services.getClase(classId);
+            User user = services.getUser(email);
+            services.deleteClase(clase,user);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            if (e.getMessage().equals("El usuario no tiene permiso para eliminar esta clase")) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+
+
     @GetMapping(value = "/classes")
     public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value = "name") String nameFilter) {
         try {

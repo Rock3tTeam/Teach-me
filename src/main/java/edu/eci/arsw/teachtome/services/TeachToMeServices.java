@@ -196,4 +196,13 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void deleteClase(Clase clase, User user) throws TeachToMeServiceException {
+        try {
+            persistence.deleteClase(clase,user);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
 }

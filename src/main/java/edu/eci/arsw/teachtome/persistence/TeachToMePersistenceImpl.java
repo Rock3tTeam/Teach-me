@@ -103,6 +103,13 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
+    public void deleteClase(Clase clase , User user) throws TeachToMePersistenceException {
+        if(user.getId()!=clase.getProfessor().getId()){
+            throw new TeachToMePersistenceException("El usuario no tiene permiso para eliminar esta clase");
+        }
+        claseRepository.deleteClass(clase.getId());
+    }
+    @Override
     public User getUser(String email) throws TeachToMePersistenceException {
         if (email == null) throw new TeachToMePersistenceException("El email no puede ser nulo");
         List<User> users = userRepository.getUserByEmail(email);

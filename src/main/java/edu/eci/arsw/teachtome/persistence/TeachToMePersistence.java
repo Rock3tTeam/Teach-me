@@ -19,6 +19,15 @@ public interface TeachToMePersistence {
     Clase getClase(Long id) throws TeachToMePersistenceException;
 
     /**
+     * Elimina una clase dentro de la base de datos
+     *
+     * @param clase - La clase a ser eliminada
+     * @param user - El usuario que eliminará la clase
+     * @throws TeachToMePersistenceException - Cuando no existe la clase dentro de la base de datos o no la elimina su profesor
+     */
+    void deleteClase(Clase clase , User user) throws TeachToMePersistenceException;
+
+    /**
      * Agrega una nueva clase de un usuario dentro de la base de datos
      *
      * @param clase - La nueva clase que se va a agregar
