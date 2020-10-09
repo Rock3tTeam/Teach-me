@@ -92,18 +92,18 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
 
     @Override
-    public void sendMessage(Message message, long classId) throws TeachToMeServiceException {
+    public void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException {
         try {
-            persistence.sendMessage(message, classId);
+            persistence.sendMessage(message, classId, email);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Message> getChat(long classId) throws TeachToMeServiceException {
+    public List<Message> getChat(long classId, String email) throws TeachToMeServiceException {
         try {
-            return persistence.getChat(classId);
+            return persistence.getChat(classId,email);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

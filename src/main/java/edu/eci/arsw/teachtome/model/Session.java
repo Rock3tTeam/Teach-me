@@ -1,11 +1,10 @@
 package edu.eci.arsw.teachtome.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que representa una sesión de una asignatura dentro de la aplicación TeachToMe
@@ -25,11 +24,18 @@ public class Session {
     @Column(name = "class", length = 10, nullable = false)
     private long classId;
 
-    /*private List<Message> chat;
-    private List<Draw> draws;*/
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "session")
+    @JsonManagedReference
+    private List<Message> chat;
+
+    //private List<Draw> draws;
+
+    public Session(){}
 
     public Session(long classId) {
         this.classId = classId;
+        chat = new ArrayList<>();
     }
 
     public long getId() {
@@ -55,4 +61,28 @@ public class Session {
     public void setClassId(long classId) {
         this.classId = classId;
     }
+
+    public List<Message> getChat() {
+        return chat;
+    }
+
+    public void setChat(List<Message> chat) {
+        this.chat = chat;
+    }
+
+    public void addMessage(Message message) {
+        chat.add(message);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", duration=" + duration +
+                ", classId=" + classId +
+                ", chat=" + chat +
+                '}';
+    }
+
+
 }

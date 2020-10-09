@@ -119,9 +119,9 @@ public interface TeachToMePersistence {
 
     void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;
 
-    void sendMessage(Message message, long classId) throws TeachToMePersistenceException;
+    void sendMessage(Message message, long classId, String email) throws TeachToMePersistenceException;
 
-    List<Message> getChat(long classId) throws TeachToMePersistenceException;
+    List<Message> getChat(long classId, String email) throws TeachToMePersistenceException;
 
     void addUser(User user) throws TeachToMePersistenceException;
 

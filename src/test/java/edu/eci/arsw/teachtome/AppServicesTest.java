@@ -1,9 +1,6 @@
 package edu.eci.arsw.teachtome;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
@@ -712,6 +709,11 @@ public class AppServicesTest implements ClassGenerator {
         services.deleteClass(clase2, teacher);
         List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
         assertTrue(emptyClasses.isEmpty());
+    }
+
+    @Test
+    public void should() throws TeachToMeServiceException {
+        //services.sendMessage(new Message("hola"),20);
     }
 
     private Clase addClass(User user, String className, String classDescription) {

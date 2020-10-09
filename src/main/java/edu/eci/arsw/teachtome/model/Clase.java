@@ -2,7 +2,6 @@ package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -153,6 +152,17 @@ public class Clase {
         return amountOfStudents == capacity;
     }
 
+    public boolean hasStudent(User user) {
+        boolean found = false;
+        for (User student : students) {
+            if (student.equals(user)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
     public boolean lazyEquals(Clase clase) {
         return capacity == clase.capacity &&
                 Objects.equals(nombre, clase.nombre) &&
@@ -188,4 +198,6 @@ public class Clase {
                 ", dateOfEnd=" + dateOfEnd +
                 '}';
     }
+
+
 }

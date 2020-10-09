@@ -102,9 +102,9 @@ public interface TeachToMeServicesInterface {
 
     void addDraw(long classId, Draw draw) throws TeachToMeServiceException;
 
-    void sendMessage(Message message, long classId) throws TeachToMeServiceException;
+    void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException;
 
-    List<Message> getChat(long classId) throws TeachToMeServiceException;
+    List<Message> getChat(long classId, String email) throws TeachToMeServiceException;
 
     void addUser(User user) throws TeachToMeServiceException;
 

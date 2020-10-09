@@ -1,12 +1,6 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
-import edu.eci.arsw.teachtome.model.Session;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -245,13 +239,34 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
 
     @Override
-    public void sendMessage(Message message, long classId) throws TeachToMePersistenceException {
-
+    public void sendMessage(Message message, long classId, String email) throws TeachToMePersistenceException {
+        Session session = sessionRepository.getSessionByClassId(classId);
+        if (session == null) {
+            throw new TeachToMePersistenceException("No existe la clase con el id" + classId);
+        }
+        User user = getUser(email);
+        Clase clase = getClase(classId);
+        if(!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))){
+            throw new TeachToMePersistenceException("Este usuario no tiene acceso para publicar mensajes en este chat");
+        }
+        message.setActualDate();
+        message.setSession(session);
+        session.addMessage(message);
+        sessionRepository.save(session);
     }
 
     @Override
-    public List<Message> getChat(long classId) throws TeachToMePersistenceException {
-        return null;
+    public List<Message> getChat(long classId, String email) throws TeachToMePersistenceException {
+        Session session = sessionRepository.getSessionByClassId(classId);
+        if (session == null) {
+            throw new TeachToMePersistenceException("No existe la clase con el id" + classId);
+        }
+        User user = getUser(email);
+        Clase clase = getClase(classId);
+        if(!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))){
+            throw new TeachToMePersistenceException("Este usuario no tiene acceso para publicar mensajes en este chat");
+        }
+        return session.getChat();
     }
 
 }
