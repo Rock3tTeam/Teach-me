@@ -11,15 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -67,8 +59,8 @@ public class TeachToMeAPIController {
         }
     }
 
-    @GetMapping(value = "/users/{email}/teachingClasses")
-    public ResponseEntity<?> getTeachingClasses(@PathVariable String email) {
+    @GetMapping(value = "/teachingClasses")
+    public ResponseEntity<?> getTeachingClasses(@RequestHeader("x-userEmail") String email) {
         try {
             return new ResponseEntity<>(services.getTeachingClassesOfUser(email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
@@ -78,8 +70,8 @@ public class TeachToMeAPIController {
     }
 
 
-    @PostMapping(value = "/users/{userEmail}/classes")
-    public ResponseEntity<?> addClase(@RequestBody Clase clase, @PathVariable String userEmail) {
+    @PostMapping(value = "/classes")
+    public ResponseEntity<?> addClase(@RequestBody Clase clase, @RequestHeader("x-userEmail") String userEmail) {
         if (clase.getNombre() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             User user = services.getUser(userEmail);
@@ -101,8 +93,8 @@ public class TeachToMeAPIController {
         }
     }
 
-    @GetMapping(value = "/users/{email}/classes/")
-    public ResponseEntity<?> getClassesOfAStudent(@PathVariable String email) {
+    @GetMapping(value = "/studyingClasses")
+    public ResponseEntity<?> getClassesOfAStudent(@RequestHeader("x-userEmail") String email) {
         try {
             return new ResponseEntity<>(services.getClassesOfAStudent(email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
@@ -112,8 +104,8 @@ public class TeachToMeAPIController {
     }
 
 
-    @GetMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> getRequestsOfAClass(@PathVariable String email, @PathVariable long classId) {
+    @GetMapping(value = "/classes/{classId}/requests")
+    public ResponseEntity<?> getRequestsOfAClass(@RequestHeader("x-userEmail") String email, @PathVariable long classId) {
         try {
             List<Request> requests = services.getRequestsOfAClass(classId, email);
             List<Request> nonAnswerRequests = new CopyOnWriteArrayList<>();
@@ -134,8 +126,8 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PostMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> sendRequest(@PathVariable String email, @PathVariable long classId, @RequestBody Request request) {
+    @PostMapping(value = "/classes/{classId}/requests")
+    public ResponseEntity<?> sendRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
         if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             services.sendRequest(request);
@@ -150,8 +142,8 @@ public class TeachToMeAPIController {
         }
     }
 
-    @PutMapping(value = "/users/{email}/classes/{classId}/requests")
-    public ResponseEntity<?> updateRequest(@PathVariable String email, @PathVariable long classId, @RequestBody Request request) {
+    @PutMapping(value = "/classes/{classId}/requests")
+    public ResponseEntity<?> updateRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
         if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
             services.updateRequest(classId, email, request);
