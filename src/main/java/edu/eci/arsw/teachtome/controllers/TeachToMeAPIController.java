@@ -54,7 +54,7 @@ public class TeachToMeAPIController {
         try {
             Clase clase = services.getClase(classId);
             User user = services.getUser(email);
-            services.deleteClase(clase,user);
+            services.deleteClass(clase,user);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
@@ -65,8 +65,6 @@ public class TeachToMeAPIController {
             }
         }
     }
-
-
 
     @GetMapping(value = "/classes")
     public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value = "name") String nameFilter) {

@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -20,10 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -31,7 +27,6 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-@AutoConfigureMockMvc
 public class AppServicesTest implements ClassGenerator {
 
     @Autowired
@@ -684,6 +679,36 @@ public class AppServicesTest implements ClassGenerator {
         Request expectedRequest = new Request(requestPK);
         Request request = services.getRequest(clase.getId(), user.getId());
         assertEquals(expectedRequest, request);
+    }
+
+    @Test
+    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() {
+        String email = "teacherAC@gmail.com";
+        User teacher = addUser(email);
+        User user = addUser("studentAC@gmail.com");
+        Clase clase = addClass(teacher, "Clase AC", "Clase AC");
+        try {
+            services.deleteClass(clase, user);
+            fail("Debió fallar por intentar eliminar una clase sin ser su profesor");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El usuario no tiene permiso para eliminar esta clase", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldDeleteAClass() throws TeachToMeServiceException {
+        String email = "teacherAA@gmail.com";
+        User teacher = addUser(email);
+        Clase clase = addClass(teacher, "Clase AA", "Clase AA");
+        Clase clase2 = addClass(teacher, "Clase AB", "Clase AB");
+        List<Clase> originalClasses = services.getTeachingClassesOfUser(email);
+        services.deleteClass(clase, teacher);
+        List<Clase> classes = services.getTeachingClassesOfUser(email);
+        assertEquals(originalClasses.size() - 1, classes.size());
+        assertEquals(clase2, classes.get(0));
+        services.deleteClass(clase2, teacher);
+        List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
+        assertTrue(emptyClasses.isEmpty());
     }
 
     private Clase addClass(User user, String className, String classDescription) {

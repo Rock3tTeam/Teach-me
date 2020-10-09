@@ -45,11 +45,11 @@ ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_STUDENT
   references users (id);
 
 ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_CLASS
-  foreign key (class)
-  references classes (id);
+  foreign key (class) references classes (id)
+  on delete cascade;
 
 ALTER TABLE sessions ADD CONSTRAINT FK_SESSION_CLASS
-  foreign key (class)
-  references classes (id);
+  foreign key (class) references classes (id)
+  on delete cascade;
 
 

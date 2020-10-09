@@ -5,7 +5,6 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 
 import java.util.List;
 
@@ -41,21 +40,13 @@ public interface TeachToMeServicesInterface {
     List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException;
 
     /**
-     * Agrega una nueva clase de un usuario dentro de la base de datos
-     *
-     * @param clase - La clase a la cual el usuario se va a agregar
-     * @param email - El mail del usuario del cual se van a obtener las clases
-     * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos o la clase sea nula
-     */
-
-    /**
      * Elimina una clase dentro de la base de datos
      *
      * @param clase - La clase a ser eliminada
-     * @param user - El usuario que eliminará la clase
+     * @param user  - El usuario que eliminará la clase
      * @throws TeachToMeServiceException - Cuando no existe la clase dentro de la base de datos o no la elimina su profesor
      */
-    void deleteClase(Clase clase , User user) throws TeachToMeServiceException;
+    void deleteClass(Clase clase, User user) throws TeachToMeServiceException;
 
     void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException;
 
@@ -66,7 +57,6 @@ public interface TeachToMeServicesInterface {
      * @return Las clases que dicta el usuario
      * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
      */
-
     List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException;
 
     /**

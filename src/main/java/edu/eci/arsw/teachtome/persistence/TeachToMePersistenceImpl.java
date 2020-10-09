@@ -1,6 +1,12 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.Session;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -103,17 +109,18 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public void deleteClase(Clase clase , User user) throws TeachToMePersistenceException {
-        if(user.getId()!=clase.getProfessor().getId()){
+    public void deleteClass(Clase clase, User user) throws TeachToMePersistenceException {
+        if (user.getId() != clase.getProfessor().getId()) {
             throw new TeachToMePersistenceException("El usuario no tiene permiso para eliminar esta clase");
         }
         claseRepository.deleteClass(clase.getId());
     }
+
     @Override
     public User getUser(String email) throws TeachToMePersistenceException {
         if (email == null) throw new TeachToMePersistenceException("El email no puede ser nulo");
         List<User> users = userRepository.getUserByEmail(email);
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             throw new TeachToMePersistenceException("No existe el usuario con el email " + email);
         }
         return users.get(0);
@@ -122,7 +129,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     @Override
     public User getUserById(long id) throws TeachToMePersistenceException {
         User user = null;
-        if(userRepository.existsById(id)){
+        if (userRepository.existsById(id)) {
             user = userRepository.findById(id).get();
         }
         if (user == null) throw new TeachToMePersistenceException("No existe el usuario con el id " + id);
@@ -133,9 +140,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public Request getRequest(long classId, long userId) throws TeachToMePersistenceException {
         User user = getUserById(userId);
         Clase clase = getClase(classId);
-        RequestPK requestPK = new RequestPK(user.getId(),clase.getId());
-        if(!requestRepository.existsById(requestPK)){
-            throw new TeachToMePersistenceException("No existe la solicitud de la clase "+classId+" por parte del usuario "+userId);
+        RequestPK requestPK = new RequestPK(user.getId(), clase.getId());
+        if (!requestRepository.existsById(requestPK)) {
+            throw new TeachToMePersistenceException("No existe la solicitud de la clase " + classId + " por parte del usuario " + userId);
         }
         Request request = requestRepository.findById(requestPK).get();
         return request;

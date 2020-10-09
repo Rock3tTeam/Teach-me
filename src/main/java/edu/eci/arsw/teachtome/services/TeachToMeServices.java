@@ -94,7 +94,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     @Override
     public void sendMessage(Message message, long classId) throws TeachToMeServiceException {
         try {
-            persistence.sendMessage(message,classId);
+            persistence.sendMessage(message, classId);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
@@ -131,7 +131,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Override
     public Request getRequest(Long classId, Long userId) throws TeachToMeServiceException {
-        if(classId == null || userId == null){
+        if (classId == null || userId == null) {
             throw new TeachToMeServiceException("Los identificadores no pueden ser nulos");
         }
         try {
@@ -140,17 +140,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
-
-    /*@Override
-    public LoginRequest login(LoginRequest request) throws TeachToMeServiceException {
-        try {
-            return persistence.login(request);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-     */
 
     @Override
     public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
@@ -198,9 +187,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void deleteClase(Clase clase, User user) throws TeachToMeServiceException {
+    public void deleteClass(Clase clase, User user) throws TeachToMeServiceException {
         try {
-            persistence.deleteClase(clase,user);
+            persistence.deleteClass(clase, user);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
