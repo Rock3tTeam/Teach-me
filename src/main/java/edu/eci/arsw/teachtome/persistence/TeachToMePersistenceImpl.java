@@ -1,13 +1,9 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
+import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +29,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     @Autowired
     private RequestRepository requestRepository;
 
+    @Autowired
+    private SessionRepository sessionRepository;
+
     @Override
     public Clase getClase(Long id) throws TeachToMePersistenceException {
         Clase clase = null;
@@ -56,9 +55,11 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         user.getTeachingClasses().add(clase);
         clase.setProfessor(user);
-        User userSaved = userRepository.save(user);
-        long claseId = userSaved.getTeachingClasses().get(0).getId();
+        userRepository.save(user);
+        long claseId = claseRepository.getClaseByDescription(clase.getDescription()).getId();
         clase.setId(claseId);
+        Session session = new Session(claseId);
+        sessionRepository.save(session);
     }
 
     @Override

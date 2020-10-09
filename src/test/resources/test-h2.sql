@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS classes;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS requests;
+DROP TABLE IF EXISTS sessions;
 
 CREATE TABLE IF NOT EXISTS users (
    id serial PRIMARY KEY,
@@ -29,6 +30,12 @@ CREATE TABLE IF NOT EXISTS requests (
    primary key(class,student)
 );
 
+CREATE TABLE IF NOT EXISTS sessions (
+   id serial PRIMARY KEY,
+   duration INTEGER NOT NULL,
+   class INTEGER(10) NOT NULL
+);
+
 ALTER TABLE classes ADD CONSTRAINT FK_PROFESSOR
   foreign key (professor)
   references users (id);
@@ -38,6 +45,10 @@ ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_STUDENT
   references users (id);
 
 ALTER TABLE requests ADD CONSTRAINT FK_REQUEST_CLASS
+  foreign key (class)
+  references classes (id);
+
+ALTER TABLE sessions ADD CONSTRAINT FK_SESSION_CLASS
   foreign key (class)
   references classes (id);
 
