@@ -222,9 +222,4 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-    @GetMapping(value = "../../login")
-    public String getLoginPage() {
-        return "login";
-    }
 }
