@@ -247,6 +247,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException("Este usuario no tiene acceso para publicar mensajes en este chat");
         }
         message.setActualDate();
+        message.setSender(String.format("%s %s", user.getFirstName(), user.getLastName()));
         message.setSession(session);
         session.addMessage(message);
         sessionRepository.save(session);

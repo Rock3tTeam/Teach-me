@@ -32,6 +32,9 @@ public class Message {
     @Column(name = "date_of_message", nullable = false)
     private Timestamp date;
 
+    @Column(name = "sender", nullable = false)
+    private String sender;
+
     @ManyToOne
     @JoinColumn(name = "session")
     @JsonBackReference
@@ -84,6 +87,14 @@ public class Message {
         this.session = session;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
     public void setActualDate() {
         this.date = new Timestamp(new Date().getTime());
     }
@@ -105,9 +116,9 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
+                "content='" + content + '\'' +
                 ", date=" + date +
+                ", sender='" + sender + '\'' +
                 '}';
     }
 }

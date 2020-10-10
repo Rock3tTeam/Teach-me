@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS messages (
    id serial PRIMARY KEY,
    session INTEGER(100) NOT NULL,
    content VARCHAR(255) NOT NULL,
-   date_of_message TIMESTAMP NOT NULL
+   date_of_message TIMESTAMP NOT NULL,
+   sender VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE classes ADD CONSTRAINT FK_PROFESSOR
