@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Clase que representa un mensaje dentro del chat de una sesión dentro de la aplicación TeachToMe
@@ -30,6 +31,12 @@ public class Message {
     private Session session;
 
     public Message() {
+    }
+
+    public Message(String content) {
+        this.content = content;
+        this.session = new Session();
+        this.date = new Timestamp(new Date().getTime());
     }
 
     public Message(String content, Session session) {
@@ -72,5 +79,28 @@ public class Message {
 
     public void setActualDate() {
         this.date = new Timestamp(new Date().getTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(content, message.content) &&
+                Objects.equals(date, message.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(content, date);
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

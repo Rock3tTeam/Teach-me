@@ -242,7 +242,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void sendMessage(Message message, long classId, String email) throws TeachToMePersistenceException {
         Session session = sessionRepository.getSessionByClassId(classId);
         if (session == null) {
-            throw new TeachToMePersistenceException("No existe la clase con el id" + classId);
+            throw new TeachToMePersistenceException("No existe la clase con el id " + classId);
         }
         User user = getUser(email);
         Clase clase = getClase(classId);
@@ -259,7 +259,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public List<Message> getChat(long classId, String email) throws TeachToMePersistenceException {
         Session session = sessionRepository.getSessionByClassId(classId);
         if (session == null) {
-            throw new TeachToMePersistenceException("No existe la clase con el id" + classId);
+            throw new TeachToMePersistenceException("No existe la clase con el id " + classId);
         }
         User user = getUser(email);
         Clase clase = getClase(classId);
