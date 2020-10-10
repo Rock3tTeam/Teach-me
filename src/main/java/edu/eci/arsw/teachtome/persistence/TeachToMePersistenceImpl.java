@@ -170,9 +170,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (clase.getDateOfInit().before(actualDate)) {
             throw new TeachToMePersistenceException("No se puede solicitar cupo para una clase que ya inició");
         }
-        if (actualDate.after(clase.getDateOfEnd())) {
-            throw new TeachToMePersistenceException("No se puede solicitar cupo para una clase que ya terminó");
-        }
         if (clase.isFull()) {
             throw new TeachToMePersistenceException("Esa clase ya no tiene cupos");
         }

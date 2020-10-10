@@ -235,6 +235,39 @@ public class AppServicesTest implements ClassGenerator {
     }
 
     @Test
+    public void shouldNotSendARequestOfAFullClass() {
+        String email = "studentAI@gmail.com";
+        Clase clase = addClassAndTeacher("teacherAI@gmail.com", "Clase AI", "Clase AI", 30, 30);
+        User user = addUser(email);
+        RequestPK requestPK = new RequestPK(user.getId(), clase.getId());
+        ;
+        Request request = new Request(requestPK);
+        try {
+            services.sendRequest(request);
+            fail("Debió fallar por enviar a una solicitud a una clase sin cupos");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Esa clase ya no tiene cupos", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotSendARequestOfAnAlreadyStartedClass() {
+        String email = "studentAJ@gmail.com";
+        Clase clase = addShortClassAndTeacher("teacherAJ@gmail.com", "Clase AJ", "Clase AJ");
+        User user = addUser(email);
+        RequestPK requestPK = new RequestPK(user.getId(), clase.getId());
+        ;
+        Request request = new Request(requestPK);
+        waitAWhile();
+        try {
+            services.sendRequest(request);
+            fail("Debió fallar por enviar a una solicitud a una clase que ya inició");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede solicitar cupo para una clase que ya inició", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotGetTheRequestsOfANonExistingClass() {
         String email = "studentI@gmail.com";
         long id = 200;
@@ -653,6 +686,17 @@ public class AppServicesTest implements ClassGenerator {
     }
 
     @Test
+    public void shouldNotGetANonExistingRequest() {
+        Clase clase = addClassAndTeacher("teacherAL@gmail.com", "Clase AL", "Clase AL");
+        User user = addUser("studentAL@gmail.com");
+        try {
+            services.getRequest(clase.getId(), user.getId());
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existe la solicitud de la clase " + clase.getId() + " por parte del usuario " + user.getId(), e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotGetARequestWithNullParameters() {
         User user = addUser("studentY@gmail.com");
         Clase clase = addClassAndTeacher("teacherY@gmail.com", "Clase Y", "Clase Y");
@@ -848,10 +892,21 @@ public class AppServicesTest implements ClassGenerator {
         return clase;
     }
 
-
     private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription, int capacity, int amount) {
         User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
         Clase clase = getClase(className, classDescription, capacity, amount);
+        try {
+            services.addUser(user);
+            services.addClase(clase, user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar al profesor ni a su clase");
+        }
+        return clase;
+    }
+
+    private Clase addShortClassAndTeacher(String teacherEmail, String className, String classDescription) {
+        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
+        Clase clase = getClassOfShortDuration(className, classDescription, 30, 0);
         try {
             services.addUser(user);
             services.addClase(clase, user);
@@ -882,5 +937,13 @@ public class AppServicesTest implements ClassGenerator {
             fail("No debió fallar al ingresar al usuario");
         }
         return user;
+    }
+
+    private void waitAWhile() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
