@@ -1,6 +1,12 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.Session;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -9,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -181,14 +186,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (!(clase.getProfessor().getEmail().equals(professor.getEmail()))) {
             throw new TeachToMePersistenceException("No tiene permitido ver los requests a esta clase");
         }
-        List<Request> requests = requestRepository.findAll();
-        List<Request> requestsOfClass = new ArrayList<>();
-        for (Request request : requests) {
-            if (request.getRequestId().getClase() == classId) {
-                requestsOfClass.add(request);
-            }
-        }
-        return requestsOfClass;
+        return requestRepository.getRequestsByClassId(classId);
     }
 
     @Override
@@ -246,7 +244,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         User user = getUser(email);
         Clase clase = getClase(classId);
-        if(!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))){
+        if (!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))) {
             throw new TeachToMePersistenceException("Este usuario no tiene acceso para publicar mensajes en este chat");
         }
         message.setActualDate();
@@ -263,7 +261,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         User user = getUser(email);
         Clase clase = getClase(classId);
-        if(!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))){
+        if (!(clase.getProfessor().equals(user)) && !(clase.hasStudent(user))) {
             throw new TeachToMePersistenceException("Este usuario no tiene acceso para publicar mensajes en este chat");
         }
         return session.getChat();
