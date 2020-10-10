@@ -40,6 +40,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtConfig = jwtConfig;
     }
 
+
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -57,9 +60,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","DELETE"));
+        configuration.addAllowedOrigin("*");
+        configuration.setAllowedMethods(Arrays.asList("POST", "PUT", "GET", "OPTIONS", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-userEmail", "x-useremail"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

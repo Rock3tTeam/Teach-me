@@ -19,6 +19,7 @@ public class TeachToMeAPIApplication {
         SpringApplication.run(TeachToMeAPIApplication.class, args);
     }
 
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
