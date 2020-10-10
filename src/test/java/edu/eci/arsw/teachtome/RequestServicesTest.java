@@ -5,10 +5,8 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -28,10 +26,7 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class RequestServicesTest implements ClassGenerator {
-
-    @Autowired
-    private TeachToMeServicesInterface services;
+public class RequestServicesTest extends BasicServicesUtilities implements ClassGenerator {
 
     @Test
     public void shouldNotSendANullRequest() {
@@ -576,82 +571,5 @@ public class RequestServicesTest implements ClassGenerator {
         Request expectedRequest = new Request(requestPK);
         Request request = services.getRequest(clase.getId(), user.getId());
         assertEquals(expectedRequest, request);
-    }
-
-    private Clase addClass(User user, String className, String classDescription) {
-        Clase clase = getClase(className, classDescription);
-        try {
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar la clase");
-        }
-        return clase;
-    }
-
-    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
-        Clase clase = getClase(className, classDescription);
-        try {
-            services.addUser(user);
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al profesor ni a su clase");
-        }
-        return clase;
-    }
-
-    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription, int capacity, int amount) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
-        Clase clase = getClase(className, classDescription, capacity, amount);
-        try {
-            services.addUser(user);
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al profesor ni a su clase");
-        }
-        return clase;
-    }
-
-    private Clase addShortClassAndTeacher(String teacherEmail, String className, String classDescription) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
-        Clase clase = getClassOfShortDuration(className, classDescription, 30, 0);
-        try {
-            services.addUser(user);
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al profesor ni a su clase");
-        }
-        return clase;
-    }
-
-    private RequestPK sendRequest(long userId, long classId) {
-        RequestPK requestPK = null;
-        Request request;
-        try {
-            requestPK = new RequestPK(userId, classId);
-            request = new Request(requestPK);
-            services.sendRequest(request);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al realizar la solicitud");
-        }
-        return requestPK;
-    }
-
-    private User addUser(String email) {
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al usuario");
-        }
-        return user;
-    }
-
-    private void waitAWhile() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

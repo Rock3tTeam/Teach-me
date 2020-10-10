@@ -3,10 +3,8 @@ package edu.eci.arsw.teachtome;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -17,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 @RunWith(SpringRunner.class)
@@ -25,10 +25,7 @@ import static org.junit.Assert.*;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class ClassServicesTest implements ClassGenerator {
-
-    @Autowired
-    private TeachToMeServicesInterface services;
+public class ClassServicesTest extends BasicServicesUtilities implements ClassGenerator {
 
     @Test
     public void shouldNotGetAClassById() {
@@ -142,7 +139,7 @@ public class ClassServicesTest implements ClassGenerator {
     public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() {
         String email = "teacherAC@gmail.com";
         User teacher = addUser(email);
-        User user = addUser("studentAC@gmail.com");
+        addUser("studentAC@gmail.com");
         Clase clase = addClass(teacher, "Clase AC", "Clase AC");
         try {
             services.deleteClass(clase.getId(), "studentAC@gmail.com");
@@ -166,25 +163,5 @@ public class ClassServicesTest implements ClassGenerator {
         services.deleteClass(clase2.getId(), email);
         List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
         assertTrue(emptyClasses.isEmpty());
-    }
-
-    private Clase addClass(User user, String className, String classDescription) {
-        Clase clase = getClase(className, classDescription);
-        try {
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar la clase");
-        }
-        return clase;
-    }
-
-    private User addUser(String email) {
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al usuario");
-        }
-        return user;
     }
 }

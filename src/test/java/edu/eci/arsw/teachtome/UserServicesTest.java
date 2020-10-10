@@ -2,10 +2,8 @@ package edu.eci.arsw.teachtome;
 
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -21,10 +19,7 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class UserServicesTest {
-
-    @Autowired
-    private TeachToMeServicesInterface services;
+public class UserServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldNotGetAUserByEmail() {

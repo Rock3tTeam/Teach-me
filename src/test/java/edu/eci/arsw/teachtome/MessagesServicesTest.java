@@ -6,10 +6,8 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -27,10 +25,7 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class MessagesServicesTest implements ClassGenerator {
-
-    @Autowired
-    private TeachToMeServicesInterface services;
+public class MessagesServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldNotSendAMessageToANonExistingClass() {
@@ -148,40 +143,5 @@ public class MessagesServicesTest implements ClassGenerator {
         messages = services.getChat(clase.getId(), "studentAF@gmail.com");
         assertEquals(2, messages.size());
         assertEquals(message2, messages.get(1));
-    }
-
-    private Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
-        Clase clase = getClase(className, classDescription);
-        try {
-            services.addUser(user);
-            services.addClase(clase, user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al profesor ni a su clase");
-        }
-        return clase;
-    }
-
-    private RequestPK sendRequest(long userId, long classId) {
-        RequestPK requestPK = null;
-        Request request;
-        try {
-            requestPK = new RequestPK(userId, classId);
-            request = new Request(requestPK);
-            services.sendRequest(request);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al realizar la solicitud");
-        }
-        return requestPK;
-    }
-
-    private User addUser(String email) {
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        try {
-            services.addUser(user);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al ingresar al usuario");
-        }
-        return user;
     }
 }
