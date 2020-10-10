@@ -62,9 +62,7 @@ public class TeachToMeAPIController {
     @DeleteMapping(value = "/classes/{classId}")
     public ResponseEntity<?> deleteClass(@PathVariable Long classId, @RequestHeader("x-userEmail") String email) {
         try {
-            Clase clase = services.getClase(classId);
-            User user = services.getUser(email);
-            services.deleteClass(clase, user);
+            services.deleteClass(classId, email);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);

@@ -187,7 +187,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void deleteClass(Clase clase, User user) throws TeachToMeServiceException {
+    public void deleteClass(long clase, String user) throws TeachToMeServiceException {
         try {
             persistence.deleteClass(clase, user);
         } catch (TeachToMePersistenceException e) {

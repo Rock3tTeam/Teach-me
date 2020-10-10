@@ -108,7 +108,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public void deleteClass(Clase clase, User user) throws TeachToMePersistenceException {
+    public void deleteClass(long classId, String email) throws TeachToMePersistenceException {
+        User user = getUser(email);
+        Clase clase = getClase(classId);
         if (user.getId() != clase.getProfessor().getId()) {
             throw new TeachToMePersistenceException("El usuario no tiene permiso para eliminar esta clase");
         }

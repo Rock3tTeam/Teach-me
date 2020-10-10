@@ -46,7 +46,7 @@ public interface TeachToMeServicesInterface {
      * @param user  - El usuario que eliminará la clase
      * @throws TeachToMeServiceException - Cuando no existe la clase dentro de la base de datos o no la elimina su profesor
      */
-    void deleteClass(Clase clase, User user) throws TeachToMeServiceException;
+    void deleteClass(long clase, String user) throws TeachToMeServiceException;
 
     void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException;
 

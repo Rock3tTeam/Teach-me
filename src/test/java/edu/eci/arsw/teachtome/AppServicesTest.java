@@ -688,7 +688,7 @@ public class AppServicesTest implements ClassGenerator {
         User user = addUser("studentAC@gmail.com");
         Clase clase = addClass(teacher, "Clase AC", "Clase AC");
         try {
-            services.deleteClass(clase, user);
+            services.deleteClass(clase.getId(), "studentAC@gmail.com");
             fail("Debió fallar por intentar eliminar una clase sin ser su profesor");
         } catch (TeachToMeServiceException e) {
             assertEquals("El usuario no tiene permiso para eliminar esta clase", e.getMessage());
@@ -702,11 +702,11 @@ public class AppServicesTest implements ClassGenerator {
         Clase clase = addClass(teacher, "Clase AA", "Clase AA");
         Clase clase2 = addClass(teacher, "Clase AB", "Clase AB");
         List<Clase> originalClasses = services.getTeachingClassesOfUser(email);
-        services.deleteClass(clase, teacher);
+        services.deleteClass(clase.getId(), email);
         List<Clase> classes = services.getTeachingClassesOfUser(email);
         assertEquals(originalClasses.size() - 1, classes.size());
         assertEquals(clase2, classes.get(0));
-        services.deleteClass(clase2, teacher);
+        services.deleteClass(clase2.getId(), email);
         List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
         assertTrue(emptyClasses.isEmpty());
     }
