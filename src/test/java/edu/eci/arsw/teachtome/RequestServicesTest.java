@@ -1,6 +1,9 @@
 package edu.eci.arsw.teachtome;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
 import org.junit.Test;
@@ -12,11 +15,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 @RunWith(SpringRunner.class)
@@ -24,158 +28,10 @@ import static org.junit.Assert.*;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class AppServicesTest implements ClassGenerator {
+public class RequestServicesTest implements ClassGenerator {
 
     @Autowired
     private TeachToMeServicesInterface services;
-
-
-    @Test
-    public void shouldNotGetAUserByEmail() {
-        String email = "noexiste@gmail.com";
-        try {
-            services.getUser(email);
-            fail("Debió fallar al buscar un usuario que no existe en la base de datos");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe el usuario con el email " + email, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetAUserWithANullEmail() {
-        try {
-            services.getUser(null);
-            fail("Debió fallar la buscar un usuario con email nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El email no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotAddANullUser() {
-        try {
-            services.addUser(null);
-            fail("Debió fallar al intentar agregar un usuario nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El usuario no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldAddAndGetANewUser() throws TeachToMeServiceException {
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        services.addUser(user);
-        User databaseUser = services.getUser("nuevo@gmail.com");
-        assertEquals(user, databaseUser);
-    }
-
-    @Test
-    public void shouldNotGetAClassById() {
-        long id = 200;
-        try {
-            services.getClase(id);
-            fail("Debió fallar al buscar una clase con id inexistente");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe la clase con el id " + id, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetAClassWithANullId() {
-        try {
-            services.getClase(null);
-            fail("Debió fallar la buscar una clase con id nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El id no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotAddANullClass() {
-        User user = addUser("badteacher@gmail.com");
-        try {
-            services.addClase(null, user);
-            fail("Debió fallar por insertar una clase nula");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("La clase no puede ser nula", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotAddAClassWithANullTeacher() {
-        Clase clase = getClase("Mala clase", "No debería insertar una clase con un profesor nulo");
-        try {
-            services.addClase(clase, null);
-            fail("Debió fallar por insertar una clase con un profesor nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El usuario no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotAddAClassWithAInvalidDate() {
-        User user = addUser("nuevoB@gmail.com");
-        Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
-        try {
-            services.addClase(clase, user);
-            fail("Debió fallar por insertar una clase que inicia antes de la hora actual");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No se puede programar una clase antes de la hora actual", e.getMessage());
-        }
-        clase = getClaseDesfasada("Clase desfasada", "Horario desfasado");
-        try {
-            services.addClase(clase, user);
-            fail("Debió fallar por insertar una clase cuya hora de fin es previa a la hora de inicio");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("Una clase no puede iniciar después de su fecha de finalización", e.getMessage());
-        }
-    }
-
-
-    @Test
-    public void shouldAddAndGetAClass() throws TeachToMeServiceException {
-        Clase clase = getClase("Nueva Clase", "Prueba Exitosa de Inserción");
-        String email = "nuevo@gmail.com";
-        User user = addUser(email);
-        services.addClase(clase, user);
-        Clase clasePrueba = services.getClase(clase.getId());
-        assertEquals(clase, clasePrueba);
-    }
-
-    @Test
-    public void shouldNotGetTheClassesOfATeacherWithANullEmail() {
-        try {
-            services.getTeachingClassesOfUser(null);
-            fail("Debió fallar por enviar un email nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El email no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetTheClassesOfANonExistingTeacher() {
-        String email = "noexiste@gmail.com";
-        try {
-            services.getTeachingClassesOfUser(email);
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe el usuario con el email " + email, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
-        List<Clase> classes = new ArrayList<>();
-        Clase clase;
-        String email = "julioprofe@gmail.com";
-        User user = addUser(email);
-        for (int i = 1; i < 3; i++) {
-            clase = getClase("Matemática " + i, "Matemática " + i);
-            classes.add(clase);
-            services.addClase(clase, user);
-        }
-        List<Clase> returnedClasses = services.getTeachingClassesOfUser(email);
-        IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
-    }
 
     @Test
     public void shouldNotSendANullRequest() {
@@ -720,154 +576,6 @@ public class AppServicesTest implements ClassGenerator {
         Request expectedRequest = new Request(requestPK);
         Request request = services.getRequest(clase.getId(), user.getId());
         assertEquals(expectedRequest, request);
-    }
-
-    @Test
-    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() {
-        String email = "teacherAC@gmail.com";
-        User teacher = addUser(email);
-        User user = addUser("studentAC@gmail.com");
-        Clase clase = addClass(teacher, "Clase AC", "Clase AC");
-        try {
-            services.deleteClass(clase.getId(), "studentAC@gmail.com");
-            fail("Debió fallar por intentar eliminar una clase sin ser su profesor");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El usuario no tiene permiso para eliminar esta clase", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldDeleteAClass() throws TeachToMeServiceException {
-        String email = "teacherAA@gmail.com";
-        User teacher = addUser(email);
-        Clase clase = addClass(teacher, "Clase AA", "Clase AA");
-        Clase clase2 = addClass(teacher, "Clase AB", "Clase AB");
-        List<Clase> originalClasses = services.getTeachingClassesOfUser(email);
-        services.deleteClass(clase.getId(), email);
-        List<Clase> classes = services.getTeachingClassesOfUser(email);
-        assertEquals(originalClasses.size() - 1, classes.size());
-        assertEquals(clase2, classes.get(0));
-        services.deleteClass(clase2.getId(), email);
-        List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
-        assertTrue(emptyClasses.isEmpty());
-    }
-
-    @Test
-    public void shouldNotSendAMessageToANonExistingClass() {
-        long id = 200;
-        Message message = new Message("hola");
-        try {
-            services.sendMessage(message, id, "aaa");
-            fail("Debió fallar por enviar un mensaje a una clase que no existe");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe la clase con el id " + id, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotSendAMessageWithANonExistingUser() {
-        String email = "noexiste@gmail.com";
-        Clase clase = addClassAndTeacher("teacherAD@gmail.com", "Clase AD", "Clase AD");
-        Message message = new Message("hola");
-        try {
-            services.sendMessage(message, clase.getId(), email);
-            fail("Debió fallar por enviar un mensaje con un usuario que no existe");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe el usuario con el email " + email, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotSendAMessageWithAUserThatIsNotPartOfTheClass() throws TeachToMeServiceException {
-        String email = "studentAE@gmail.com";
-        Clase clase = addClassAndTeacher("teacherAE@gmail.com", "Clase AE", "Clase AE");
-        addUser(email);
-        Message message = new Message("hola");
-        try {
-            services.sendMessage(message, clase.getId(), email);
-            fail("Debió fallar por enviar un mensaje con un usuario que no pertenece a la clase");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("Este usuario no tiene acceso para publicar mensajes en este chat", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetTheChatWithANonExistingUser() {
-        String email = "teacherAF@gmail.com";
-        Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
-        Message message = new Message("hola estudiantes");
-        try {
-            services.sendMessage(message, clase.getId(), email);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al enviar el mensaje");
-        }
-        try {
-            services.getChat(clase.getId(), "noexiste@gmail.com");
-            fail("Debió fallar por consultar los mensajes de un chat con un usuario que no existe");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe el usuario con el email noexiste@gmail.com", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetTheChatOfANonExistingClass() {
-        long id = 200;
-        String email = "teacherAG@gmail.com";
-        Clase clase = addClassAndTeacher(email, "Clase AG", "Clase AG");
-        Message message = new Message("hola estudiantes");
-        try {
-            services.sendMessage(message, clase.getId(), email);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al enviar el mensaje");
-        }
-        try {
-            services.getChat(id, email);
-            fail("Debió fallar por consultar los mensajes de un chat que no existe");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe la clase con el id " + id, e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldNotGetTheChatWithAUserThatIsNotPartOfTheClass() {
-        String email = "teacherAF@gmail.com";
-        addUser("studentAF@gmail.com");
-        Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
-        Message message = new Message("hola estudiantes");
-        try {
-            services.sendMessage(message, clase.getId(), email);
-        } catch (TeachToMeServiceException e) {
-            fail("No debió fallar al enviar el mensaje");
-        }
-        try {
-            services.getChat(clase.getId(), "studentAF@gmail.com");
-            fail("Debió fallar por consultar los mensajes de un chat que no existe");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("Este usuario no tiene acceso para publicar mensajes en este chat", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldSendAndGetMessages() throws TeachToMeServiceException {
-        String email = "teacherAF@gmail.com";
-        User user = addUser("studentAF@gmail.com");
-        Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
-        Message message = new Message("hola estudiantes");
-        services.sendMessage(message, clase.getId(), email);
-        List<Message> messages = services.getChat(clase.getId(), email);
-        assertEquals(1, messages.size());
-        assertEquals(message, messages.get(0));
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
-        Request request = new Request(requestPK, true);
-        services.updateRequest(clase.getId(), email, request);
-        Message message2 = new Message("hola profe");
-        services.sendMessage(message2, clase.getId(), "studentAF@gmail.com");
-        messages = services.getChat(clase.getId(), email);
-        assertEquals(2, messages.size());
-        assertEquals(message2, messages.get(1));
-        messages = services.getChat(clase.getId(), "studentAF@gmail.com");
-        assertEquals(2, messages.size());
-        assertEquals(message2, messages.get(1));
     }
 
     private Clase addClass(User user, String className, String classDescription) {
