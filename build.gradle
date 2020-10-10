@@ -29,6 +29,8 @@ dependencies {
     compile group: 'org.webjars', name: 'bootstrap', version: '4.5.2'
     compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.3.4.RELEASE'
     compile 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtime 'io.jsonwebtoken:jjwt-impl:0.11.2',
             'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson    testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -37,6 +39,11 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.postgresql:postgresql')
+    implementation 'org.webjars:webjars-locator-core'
+    implementation 'org.webjars:sockjs-client:1.0.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3'
+    implementation 'org.webjars:bootstrap:3.3.7'
+    implementation 'org.webjars:jquery:3.1.1-1'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
