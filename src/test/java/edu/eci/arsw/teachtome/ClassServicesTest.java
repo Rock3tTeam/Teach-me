@@ -25,7 +25,7 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class ClassServicesTest extends BasicServicesUtilities implements ClassGenerator {
+public class ClassServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldNotGetAClassById() {

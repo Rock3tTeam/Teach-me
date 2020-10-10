@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class RequestServicesTest extends BasicServicesUtilities implements ClassGenerator {
+public class RequestServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldNotSendANullRequest() {
@@ -91,7 +91,6 @@ public class RequestServicesTest extends BasicServicesUtilities implements Class
         Clase clase = addClassAndTeacher("teacherAI@gmail.com", "Clase AI", "Clase AI", 30, 30);
         User user = addUser(email);
         RequestPK requestPK = new RequestPK(user.getId(), clase.getId());
-        ;
         Request request = new Request(requestPK);
         try {
             services.sendRequest(request);
@@ -107,14 +106,13 @@ public class RequestServicesTest extends BasicServicesUtilities implements Class
         Clase clase = addShortClassAndTeacher("teacherAJ@gmail.com", "Clase AJ", "Clase AJ");
         User user = addUser(email);
         RequestPK requestPK = new RequestPK(user.getId(), clase.getId());
-        ;
         Request request = new Request(requestPK);
         waitAWhile();
         try {
             services.sendRequest(request);
             fail("Debió fallar por enviar a una solicitud a una clase que ya inició");
         } catch (TeachToMeServiceException e) {
-            assertEquals("No se puede solicitar cupo para una clase que ya inició", e.getMessage());
+            assertEquals("El período de solicitudes de esta clase ya concluyó", e.getMessage());
         }
     }
 
