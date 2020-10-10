@@ -40,9 +40,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtConfig = jwtConfig;
     }
 
-
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
