@@ -24,7 +24,7 @@ public class TeachToMeAPIApplication {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*","/chat/**").allowedHeaders("*").exposedHeaders("Authorization");
+                registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").exposedHeaders("Authorization");
             }
         };
     }
