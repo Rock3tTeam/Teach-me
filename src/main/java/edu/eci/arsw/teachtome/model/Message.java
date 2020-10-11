@@ -43,6 +43,11 @@ public class Message {
     public Message() {
     }
 
+    public Message(String content , String sender){
+        this.content=content;
+        this.sender=sender;
+    }
+
     public Message(String content) {
         this.content = content;
         this.session = new Session();
