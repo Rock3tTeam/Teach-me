@@ -58,7 +58,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("*","/chat/**"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-userEmail", "x-useremail"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
