@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.CascadeType;
@@ -40,6 +41,7 @@ public class User {
     private String lastName;
 
     @Column(name = "password", length = 255, nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "description", length = 255)
