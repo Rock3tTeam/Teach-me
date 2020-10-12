@@ -41,7 +41,6 @@ public class User {
     private String lastName;
 
     @Column(name = "password", length = 255, nullable = false)
-    @JsonIgnore
     private String password;
 
     @Column(name = "description", length = 255)
