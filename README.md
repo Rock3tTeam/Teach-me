@@ -10,6 +10,8 @@
 
 [Enlace Taiga](https://tree.taiga.io/project/nicolasaguilera9906-eduapp/backlog)
 
+[Manual de Uso](https://daniwalteros596.gitbook.io/teach-to-me/)
+
 ## Asignatura 
 
 Arquitecturas de software (ARSW) 2020-2 
