@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ClaseRepository extends JpaRepository<Clase, Long> {
 
-    @Query(value = "select * from classes where name LIKE CONCAT('%',:filter,'%')", nativeQuery = true)
+    @Query(value = "select * from classes where date_of_init > now() AND name LIKE CONCAT('%',:filter,'%')", nativeQuery = true)
     List<Clase> filterByName(@Param("filter") String name);
 
     @Query(value = "select * from classes where description = :descr", nativeQuery = true)
