@@ -76,6 +76,9 @@ public class TeachToMeAPIController {
 
     @GetMapping(value = "/classes")
     public ResponseEntity<?> getFilteredClassesByName(@RequestParam(value = "name") String nameFilter) {
+        if (nameFilter.equals("")) {
+            return new ResponseEntity<>("El valor para filtrar no puede estar vacío", HttpStatus.BAD_REQUEST);
+        }
         try {
             return new ResponseEntity<>(services.getFilteredClassesByName(nameFilter), HttpStatus.ACCEPTED);
         } catch (Exception e) {
@@ -195,7 +198,7 @@ public class TeachToMeAPIController {
     }
 
     @PostMapping(value = "/messages/{classId}")
-    public ResponseEntity<?> sendMessage(@RequestBody Message message, @PathVariable long classId,@RequestHeader("x-userEmail") String email) {
+    public ResponseEntity<?> sendMessage(@RequestBody Message message, @PathVariable long classId, @RequestHeader("x-userEmail") String email) {
         try {
             services.sendMessage(message, classId, email);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -206,9 +209,9 @@ public class TeachToMeAPIController {
     }
 
     @GetMapping(value = "/messages/{classId}")
-    public ResponseEntity<?> getChat(@PathVariable long classId,@RequestHeader("x-userEmail") String email) {
+    public ResponseEntity<?> getChat(@PathVariable long classId, @RequestHeader("x-userEmail") String email) {
         try {
-            return new ResponseEntity<>(services.getChat(classId,email), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(services.getChat(classId, email), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -219,7 +222,6 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> addUser(@RequestBody User user) {
         if (user.getEmail() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
         try {
-            System.out.println(user.getPassword());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             services.addUser(user);
             return new ResponseEntity<>(HttpStatus.CREATED);

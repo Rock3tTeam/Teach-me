@@ -96,7 +96,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (nameFilter == null) {
             throw new TeachToMePersistenceException("El nombre no puede ser nulo");
         }
-        return claseRepository.filterByName(nameFilter);
+        List<Clase> nonCapitalResults = claseRepository.filterByName(nameFilter);
+        nonCapitalResults.addAll(claseRepository.filterByName(nameFilter.toUpperCase()));
+        return nonCapitalResults;
     }
 
     @Override
@@ -145,8 +147,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (!requestRepository.existsById(requestPK)) {
             throw new TeachToMePersistenceException("No existe la solicitud de la clase " + classId + " por parte del usuario " + userId);
         }
-        Request request = requestRepository.findById(requestPK).get();
-        return request;
+        return requestRepository.findById(requestPK).get();
     }
 
     @Override
