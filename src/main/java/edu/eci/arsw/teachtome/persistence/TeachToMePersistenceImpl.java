@@ -97,7 +97,12 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException("El nombre no puede ser nulo");
         }
         List<Clase> nonCapitalResults = claseRepository.filterByName(nameFilter.toLowerCase());
-        nonCapitalResults.addAll(claseRepository.filterByName(nameFilter.toUpperCase()));
+        List<Clase> capitalResults = claseRepository.filterByName(nameFilter.toUpperCase());
+        for (Clase clase : capitalResults) {
+            if (!nonCapitalResults.contains(clase)) {
+                nonCapitalResults.add(clase);
+            }
+        }
         return nonCapitalResults;
     }
 
