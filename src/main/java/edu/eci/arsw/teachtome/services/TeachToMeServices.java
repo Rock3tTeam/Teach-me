@@ -53,6 +53,221 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    /**
+     * Realiza una request de un estudiante a una clase
+     *
+     * @param request - La request con el usuario y la clase a la cual quiere unirse
+     * @throws TeachToMeServiceException - Cuando el usuario o la clase no existan en la base de datos.
+     */
+    @Override
+    public void sendRequest(Request request) throws TeachToMeServiceException {
+        try {
+            persistence.sendRequest(request);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene las requests que se han hecho a una clase
+     *
+     * @param email   - El mail del usuario del cual se van a obtener las clases
+     * @param classId - El id de la clase que se está buscando
+     * @return Los requests que se han hecho a esa clase
+     * @throws TeachToMeServiceException - Cuando el usuario o la clase no existen en la base de datos
+     */
+    @Override
+    public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getRequestsOfAClass(classId, email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Envia un mensaje dentro del chat
+     *
+     * @param message - Nuevo Mensaje del chat
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad
+     */
+    @Override
+    public void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException {
+        try {
+            persistence.sendMessage(message, classId, email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene los mensajes de una clase
+     *
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @return Coleccion con  los mensajes del chat
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad
+     */
+    @Override
+    public List<Message> getChat(long classId, String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getChat(classId, email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Agrega un nuevo usuario dentro de la app
+     *
+     * @param user - Informacion del nuevo usuario
+     * @throws TeachToMeServiceException - Cuando la entidad ya existia
+     */
+    @Override
+    public void addUser(User user) throws TeachToMeServiceException {
+        try {
+            persistence.addUser(user);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene la informacion de un usuario por su email
+     *
+     * @param email - Email del Usuario
+     * @return Entidad del Usuario con el email dado
+     * @throws TeachToMeServiceException - Cuando la entidad no existe
+     */
+    @Override
+    public User getUser(String email) throws TeachToMeServiceException {
+        User user;
+        try {
+            user = persistence.getUser(email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+        return user;
+    }
+
+    /**
+     * Obtiene la informacion de una solicitud de una clase
+     *
+     * @param classId - Identificador de la clase
+     * @param userId  - Identificador del solicitante
+     * @return Solicitud de una clase por parte de un usuario
+     * @throws TeachToMeServiceException - Cuando alguna entidad no existe
+     */
+    @Override
+    public Request getRequest(Long classId, Long userId) throws TeachToMeServiceException {
+        if (classId == null || userId == null) {
+            throw new TeachToMeServiceException("Los identificadores no pueden ser nulos");
+        }
+        try {
+            return persistence.getRequest(classId, userId);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene las clases de un usuario
+     *
+     * @param email - El mail del usuario del cual se van a obtener las clases
+     * @return Las clases que dicta el usuario
+     * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
+     */
+    @Override
+    public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getTeachingClassesOfUser(email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Agrega un estudiante dentro de la clase
+     *
+     * @param clase - Clase a la cual se va a agregar el usuario
+     * @param email - Email del usuario que va a ser agregado
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad o la clase no tiene cupo
+     */
+    @Override
+    public void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException {
+        try {
+            persistence.addStudentToAClass(clase, email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene las clases que aprende un usuario
+     *
+     * @param email - El email del usuario del cual se van a obtener las clases
+     * @return Las clases que dicta el usuario
+     * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
+     */
+    @Override
+    public List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException {
+        try {
+            return persistence.getClassesOfAStudent(email);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Actualiza la request de una clase
+     *
+     * @param email   - El mail del usuario del cual se va a obtener el request
+     * @param classId - El id de la clase que se está buscando
+     * @throws TeachToMeServiceException - En caso de que un usuario inautorizado intente actualizar el request
+     */
+    @Override
+    public void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException {
+        try {
+            persistence.updateRequest(classId, email, request);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Consulta las clases que contengan cierta palabra
+     *
+     * @param nameFilter - nombre de la clase
+     * @return La lista de clases que contengan esa palabra
+     * @throws TeachToMeServiceException - Si la clase no existe en la base de datos
+     */
+    @Override
+    public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException {
+        try {
+            return persistence.getFilteredClassesByName(nameFilter);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Elimina una clase dentro de la base de datos
+     *
+     * @param clase - La clase a ser eliminada
+     * @param user  - El usuario que eliminará la clase
+     * @throws TeachToMeServiceException - Cuando no existe la clase dentro de la base de datos o no la elimina su profesor
+     */
+    @Override
+    public void deleteClass(long clase, String user) throws TeachToMeServiceException {
+        try {
+            persistence.deleteClass(clase, user);
+        } catch (TeachToMePersistenceException e) {
+            throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+    }
+
     @Override
     public List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException {
         try {
@@ -66,130 +281,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     public void addDraw(long classId, Draw draw) throws TeachToMeServiceException {
         try {
             persistence.addDraw(classId, draw);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void sendRequest(Request request) throws TeachToMeServiceException {
-        try {
-            persistence.sendRequest(request);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-
-    @Override
-    public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException {
-        try {
-            return persistence.getRequestsOfAClass(classId, email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-
-    @Override
-    public void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException {
-        try {
-            persistence.sendMessage(message, classId, email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Message> getChat(long classId, String email) throws TeachToMeServiceException {
-        try {
-            return persistence.getChat(classId,email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void addUser(User user) throws TeachToMeServiceException {
-        try {
-            persistence.addUser(user);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public User getUser(String email) throws TeachToMeServiceException {
-        User user;
-        try {
-            user = persistence.getUser(email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-        return user;
-    }
-
-    @Override
-    public Request getRequest(Long classId, Long userId) throws TeachToMeServiceException {
-        if (classId == null || userId == null) {
-            throw new TeachToMeServiceException("Los identificadores no pueden ser nulos");
-        }
-        try {
-            return persistence.getRequest(classId, userId);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
-        try {
-            return persistence.getTeachingClassesOfUser(email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException {
-        try {
-            persistence.addStudentToAClass(clase, email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException {
-        try {
-            return persistence.getClassesOfAStudent(email);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException {
-        try {
-            persistence.updateRequest(classId, email, request);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException {
-        try {
-            return persistence.getFilteredClassesByName(nameFilter);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void deleteClass(long clase, String user) throws TeachToMeServiceException {
-        try {
-            persistence.deleteClass(clase, user);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

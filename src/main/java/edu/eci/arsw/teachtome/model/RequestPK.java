@@ -5,6 +5,9 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Clase que representa la Principal Key de una solicitud
+ */
 @Embeddable
 public class RequestPK implements Serializable {
     @Column(name = "student")
@@ -13,9 +16,18 @@ public class RequestPK implements Serializable {
     @Column(name = "class")
     private long clase;
 
+    /**
+     * Constructor por defecto de la entidad RequestPK
+     */
     public RequestPK() {
     }
 
+    /**
+     * Constructor por defecto de la entidad RequestPK
+     *
+     * @param student - Identificador del solicitante
+     * @param clase   - Identificador de la clase
+     */
     public RequestPK(long student, long clase) {
         this.student = student;
         this.clase = clase;

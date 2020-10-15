@@ -40,9 +40,17 @@ public class Session {
 
     //private List<Draw> draws;
 
+    /**
+     * Constructor por defecto de la entidad Sesion
+     */
     public Session() {
     }
 
+    /**
+     * Constructor por defecto de la entidad Sesion
+     *
+     * @param classId - Identificador de la clase
+     */
     public Session(long classId) {
         this.classId = classId;
         chat = new ArrayList<>();
@@ -80,6 +88,11 @@ public class Session {
         this.chat = chat;
     }
 
+    /**
+     * Agrega un mensaje dentro del chat
+     *
+     * @param message
+     */
     public void addMessage(Message message) {
         chat.add(message);
     }

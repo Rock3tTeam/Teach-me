@@ -9,8 +9,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repositorio de Conexión con base de Datos para la clase "Request"
+ */
 @Repository
 public interface RequestRepository extends JpaRepository<Request, RequestPK> {
+
+    /**
+     * Obtiene las solicitudes de una clase
+     *
+     * @param classId - El identificador de la clase
+     * @return Coleccion de las solicitudes de la clase
+     */
     @Query(value = "select * from requests where class = :classId", nativeQuery = true)
     List<Request> getRequestsByClassId(@Param("classId") long classId);
 }

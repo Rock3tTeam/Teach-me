@@ -40,20 +40,40 @@ public class Message {
     @JsonBackReference
     private Session session;
 
+    /**
+     * Constructor por defecto de la entidad Mensaje
+     */
     public Message() {
     }
 
-    public Message(String content , String sender){
-        this.content=content;
-        this.sender=sender;
+    /**
+     * Constructor por defecto de la entidad Mensaje
+     *
+     * @param content - Contenido del mensaje
+     * @param sender  - Identificador del que envio el mensaje
+     */
+    public Message(String content, String sender) {
+        this.content = content;
+        this.sender = sender;
     }
 
+    /**
+     * Constructor por defecto de la entidad Mensaje
+     *
+     * @param content - Contenido del mensaje
+     */
     public Message(String content) {
         this.content = content;
         this.session = new Session();
         this.date = new Timestamp(new Date().getTime());
     }
 
+    /**
+     * Constructor por defecto de la entidad Mensaje
+     *
+     * @param content - Contenido del mensaje
+     * @param session - Sesion del mensaje
+     */
     public Message(String content, Session session) {
         this.content = content;
         this.session = session;
@@ -100,6 +120,9 @@ public class Message {
         this.sender = sender;
     }
 
+    /**
+     * Establece la fecha del mensaje como la fecha actual
+     */
     public void setActualDate() {
         this.date = new Timestamp(new Date().getTime());
     }

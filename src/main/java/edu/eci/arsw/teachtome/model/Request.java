@@ -33,14 +33,27 @@ public class Request {
     @JoinColumn(name = "student")
     private User student = new User();
 
-
+    /**
+     * Constructor por defecto de la entidad Solicitud
+     */
     public Request() {
     }
 
+    /**
+     * Constructor por defecto de la entidad Solicitud
+     *
+     * @param requestId - RequestPK de la solicitud
+     */
     public Request(RequestPK requestId) {
         this.requestId = requestId;
     }
 
+    /**
+     * Constructor por defecto de la entidad Solicitud
+     *
+     * @param requestId - RequestPK de la solicitud
+     * @param accepted  - Valor booleano que determina si la solicitud fue aprobada o rechazada
+     */
     public Request(RequestPK requestId, Boolean accepted) {
         this.requestId = requestId;
         this.accepted = accepted;
@@ -82,6 +95,11 @@ public class Request {
         this.student = student;
     }
 
+    /**
+     * Determina si la solicitud ya fue contestada
+     *
+     * @return Valor booleano que determina si la solicitud ya fue contestada
+     */
     public boolean hasAnswer() {
         return accepted != null;
     }

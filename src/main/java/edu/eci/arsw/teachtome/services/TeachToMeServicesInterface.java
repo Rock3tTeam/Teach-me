@@ -48,6 +48,13 @@ public interface TeachToMeServicesInterface {
      */
     void deleteClass(long clase, String user) throws TeachToMeServiceException;
 
+    /**
+     * Agrega un estudiante dentro de la clase
+     *
+     * @param clase - Clase a la cual se va a agregar el usuario
+     * @param email - Email del usuario que va a ser agregado
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad o la clase no tiene cupo
+     */
     void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException;
 
     /**
@@ -65,7 +72,6 @@ public interface TeachToMeServicesInterface {
      * @param request - La request con el usuario y la clase a la cual quiere unirse
      * @throws TeachToMeServiceException - Cuando el usuario o la clase no existan en la base de datos.
      */
-
     void sendRequest(Request request) throws TeachToMeServiceException;
 
     /**
@@ -76,8 +82,6 @@ public interface TeachToMeServicesInterface {
      * @return Los requests que se han hecho a esa clase
      * @throws TeachToMeServiceException - Cuando el usuario o la clase no existen en la base de datos
      */
-
-
     List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException;
 
     /**
@@ -98,17 +102,52 @@ public interface TeachToMeServicesInterface {
      */
     List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException;
 
+    /**
+     * Envia un mensaje dentro del chat
+     *
+     * @param message - Nuevo Mensaje del chat
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad
+     */
+    void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException;
+
+    /**
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @return Coleccion con  los mensajes del chat
+     * @throws TeachToMeServiceException - Cuando no existe alguna entidad
+     */
+    List<Message> getChat(long classId, String email) throws TeachToMeServiceException;
+
+    /**
+     * Agrega un nuevo usuario dentro de la app
+     *
+     * @param user - Informacion del nuevo usuario
+     * @throws TeachToMeServiceException - Cuando la entidad ya existia
+     */
+    void addUser(User user) throws TeachToMeServiceException;
+
+    /**
+     * Obtiene la informacion de un usuario por su email
+     *
+     * @param email - Email del Usuario
+     * @return Entidad del Usuario con el email dado
+     * @throws TeachToMeServiceException - Cuando la entidad no existe
+     */
+    User getUser(String email) throws TeachToMeServiceException;
+
+    /**
+     * Obtiene la informacion de una solicitud de una clase
+     *
+     * @param classId - Identificador de la clase
+     * @param userId  - Identificador del solicitante
+     * @return Solicitud de una clase por parte de un usuario
+     * @throws TeachToMeServiceException - Cuando alguna entidad no existe
+     */
+    Request getRequest(Long classId, Long userId) throws TeachToMeServiceException;
+
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException;
 
     void addDraw(long classId, Draw draw) throws TeachToMeServiceException;
-
-    void sendMessage(Message message, long classId, String email) throws TeachToMeServiceException;
-
-    List<Message> getChat(long classId, String email) throws TeachToMeServiceException;
-
-    void addUser(User user) throws TeachToMeServiceException;
-
-    User getUser(String email) throws TeachToMeServiceException;
-
-    Request getRequest(Long classId, Long userId) throws TeachToMeServiceException;
 }

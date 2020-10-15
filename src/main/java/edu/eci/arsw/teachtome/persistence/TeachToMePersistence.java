@@ -8,6 +8,9 @@ import edu.eci.arsw.teachtome.model.User;
 
 import java.util.List;
 
+/**
+ * Interfaz de la capa de persistencia de la aplicación TeachToMe
+ */
 public interface TeachToMePersistence {
     /**
      * Consulta una clase dentro de la base de datos
@@ -22,7 +25,7 @@ public interface TeachToMePersistence {
      * Elimina una clase dentro de la base de datos
      *
      * @param classId - La clase a ser eliminada
-     * @param email - El usuario que eliminará la clase
+     * @param email   - El usuario que eliminará la clase
      * @throws TeachToMePersistenceException - Cuando no existe la clase dentro de la base de datos o no la elimina su profesor
      */
     void deleteClass(long classId, String email) throws TeachToMePersistenceException;
@@ -34,7 +37,6 @@ public interface TeachToMePersistence {
      * @param user  - El usuario que va a dictar esa clase
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o falte información obligatoria de la clase
      */
-
     void addClase(Clase clase, User user) throws TeachToMePersistenceException;
 
     /**
@@ -53,7 +55,6 @@ public interface TeachToMePersistence {
      * @param email - El mail del usuario del cual se van a obtener las clases
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos o la clase sea nula
      */
-
     void addStudentToAClass(Clase clase, String email) throws TeachToMePersistenceException;
 
     /**
@@ -63,7 +64,6 @@ public interface TeachToMePersistence {
      * @return Las clases que dicta el usuario
      * @throws TeachToMePersistenceException - Cuando el usuario no exista en la base de datos
      */
-
     List<Clase> getClassesOfAStudent(String email) throws TeachToMePersistenceException;
 
     /**
@@ -72,7 +72,6 @@ public interface TeachToMePersistence {
      * @param request - La request con el usuario y la clase a la cual quiere unirse
      * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existan en la base de datos.
      */
-
     void sendRequest(Request request) throws TeachToMePersistenceException;
 
     /**
@@ -83,7 +82,6 @@ public interface TeachToMePersistence {
      * @return Los requests que se han hecho a esa clase
      * @throws TeachToMePersistenceException - Cuando el usuario o la clase no existen en la base de datos
      */
-
     List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMePersistenceException;
 
     /**
@@ -94,7 +92,6 @@ public interface TeachToMePersistence {
      * @return La request de un estudiante a una clase
      * @throws TeachToMePersistenceException - Cuando el usuario no ha hecho request a esa clase
      */
-
     Request getRequest(long classId, String emailStudent) throws TeachToMePersistenceException;
 
     /**
@@ -115,20 +112,63 @@ public interface TeachToMePersistence {
      */
     List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException;
 
+    /**
+     * Inserta un mensaje dentro la base de datos del chat
+     *
+     * @param message - Nuevo Mensaje del chat
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @throws TeachToMePersistenceException - Cuando no existe alguna entidad en la base de datos
+     */
+    void sendMessage(Message message, long classId, String email) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene los mensajes de una clase de la base de datos
+     *
+     * @param classId - Identificador de la clase
+     * @param email   - Email del remitente
+     * @return Coleccion con  los mensajes del chat
+     * @throws TeachToMePersistenceException - Cuando no existe alguna entidad en la base de datos
+     */
+    List<Message> getChat(long classId, String email) throws TeachToMePersistenceException;
+
+    /**
+     * Agrega un nuevo usuario dentro de la base de datos
+     *
+     * @param user - Informacion del nuevo usuario
+     * @throws TeachToMePersistenceException - Cuando la entidad ya existia en la base de datos
+     */
+    void addUser(User user) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene la informacion de un usuario de la base de datos por su email
+     *
+     * @param email - Email del Usuario
+     * @return Entidad del Usuario con el email dado
+     * @throws TeachToMePersistenceException - Cuando la entidad no existe en la base de datos
+     */
+    User getUser(String email) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene la informacion de un usuario de la base de datos por su identificador
+     *
+     * @param id - Identificador del usuario
+     * @return Entidad del Usuario con el identificador dado
+     * @throws TeachToMePersistenceException - Cuando la entidad no existe en la base de datos
+     */
+    User getUserById(long id) throws TeachToMePersistenceException;
+
+    /**
+     * Obtiene la informacion de una solicitud de una clase
+     *
+     * @param classId - Identificador de la clase
+     * @param userId  - Identificador del solicitante
+     * @return Solicitud de una clase por parte de un usuario
+     * @throws TeachToMePersistenceException - Cuando alguna entidad no existe en la base de datos
+     */
+    Request getRequest(long classId, long userId) throws TeachToMePersistenceException;
+
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException;
 
     void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;
-
-    void sendMessage(Message message, long classId, String email) throws TeachToMePersistenceException;
-
-    List<Message> getChat(long classId, String email) throws TeachToMePersistenceException;
-
-    void addUser(User user) throws TeachToMePersistenceException;
-
-    User getUser(String email) throws TeachToMePersistenceException;
-
-    User getUserById(long id) throws TeachToMePersistenceException;
-
-    Request getRequest(long classId, long userId) throws TeachToMePersistenceException;
-
 }

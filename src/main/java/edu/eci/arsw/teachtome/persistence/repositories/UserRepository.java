@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    /**
+     * Obtiene a los usuarios con el email dado
+     *
+     * @param emailUser - Email de los usuarios
+     * @return Coleccion de los usuarios con el email dado
+     */
     @Query(value = "select * from users where email = :emailUser", nativeQuery = true)
     List<User> getUserByEmail(@Param("emailUser") String emailUser);
 }

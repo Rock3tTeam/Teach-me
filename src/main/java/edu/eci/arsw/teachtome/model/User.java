@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.CascadeType;
@@ -54,9 +53,22 @@ public class User {
     @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)
     private List<Clase> studyingClasses = new ArrayList<Clase>();
 
+    /**
+     * Constructor por defecto de la entidad Usuario
+     */
     public User() {
     }
 
+    /**
+     * Constructor por defecto de la entidad Usuario
+     *
+     * @param email           - Email del usuario
+     * @param firstName       - Nombre del Usuario
+     * @param lastName        - Apellido del Usuario
+     * @param password        - Clave del Usuario
+     * @param description     - Descripcion del Usuario
+     * @param teachingClasses - Clases que dicta el Usuario
+     */
     public User(String email, String firstName, String lastName, String password, String description, List<Clase> teachingClasses) {
         this.email = email;
         this.firstName = firstName;
@@ -66,6 +78,15 @@ public class User {
         this.teachingClasses = teachingClasses;
     }
 
+    /**
+     * Constructor por defecto de la entidad Usuario
+     *
+     * @param email       - Email del usuario
+     * @param firstName   - Nombre del Usuario
+     * @param lastName    - Apellido del Usuario
+     * @param password    - Clave del Usuario
+     * @param description - Descripcion del Usuario
+     */
     public User(String email, String firstName, String lastName, String password, String description) {
         this.email = email;
         this.firstName = firstName;
@@ -75,6 +96,14 @@ public class User {
         this.teachingClasses = new CopyOnWriteArrayList<>();
     }
 
+    /**
+     * Constructor por defecto de la entidad Usuario
+     *
+     * @param email     - Email del usuario
+     * @param firstName - Nombre del Usuario
+     * @param lastName  - Apellido del Usuario
+     * @param password  - Clave del Usuario
+     */
     public User(String email, String firstName, String lastName, String password) {
         this.email = email;
         this.firstName = firstName;
