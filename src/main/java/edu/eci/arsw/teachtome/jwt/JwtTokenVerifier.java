@@ -16,11 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Verificador de Json Web Token
+ */
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
+    /**
+     * Constructor por defecto de verificador de Json Web Token
+     *
+     * @param secretKey - Llave secreta para cifrar
+     * @param jwtConfig - Configuracion de Json Web Token
+     */
     public JwtTokenVerifier(SecretKey secretKey, JwtConfig jwtConfig) {
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;

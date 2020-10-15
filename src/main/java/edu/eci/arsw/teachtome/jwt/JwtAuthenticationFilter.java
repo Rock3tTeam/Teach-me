@@ -17,12 +17,22 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * Filtro de autenticacion de Json Web Token
+ */
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
 
+    /**
+     * Contructor por defecto de filtro de autenticacion JWT
+     *
+     * @param authenticationManager - Controlador de Autenticacion
+     * @param jwtConfig             - Configuracion de Json Web Token
+     * @param secretKey             - Llave para cifrar secreta
+     */
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;

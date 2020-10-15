@@ -4,6 +4,9 @@ import com.google.common.net.HttpHeaders;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuracion de Json Web Token
+ */
 @Configuration
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
@@ -12,6 +15,9 @@ public class JwtConfig {
     private String tokenPrefix;
     private Integer tokenExpirationAfter;
 
+    /**
+     * Contructor por defecto de la configuracion
+     */
     public JwtConfig() {
     }
 
@@ -39,7 +45,11 @@ public class JwtConfig {
         this.tokenExpirationAfter = tokenExpirationAfter;
     }
 
-
+    /**
+     * Obtiene el Header de retorno en caso de fallo
+     *
+     * @return Header de retorno en caso de autenticacion fallida
+     */
     public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;
     }

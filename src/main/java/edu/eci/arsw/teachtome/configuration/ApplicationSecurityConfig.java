@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.security;
+package edu.eci.arsw.teachtome.configuration;
 
 import edu.eci.arsw.teachtome.auth.UserDetailsServiceImpl;
 import edu.eci.arsw.teachtome.jwt.JwtAuthenticationFilter;
@@ -23,6 +23,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.crypto.SecretKey;
 import java.util.Arrays;
 
+/**
+ * Configuracion de Seguridad de la aplicacion Teach To Me
+ */
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,6 +35,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
+    /**
+     * Constructor por defecto de configuracion de seguridad
+     *
+     * @param userDetailsService - Servicio de Detalles de Usuario
+     * @param passwordEncoder    - Tipo de Codificador para mantener la informacion segura
+     * @param secretKey          - Llave secreta para cifrar
+     * @param jwtConfig          - Configuracion de Json Web Token
+     */
     @Autowired
     public ApplicationSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder, SecretKey secretKey, JwtConfig jwtConfig) {
         this.userDetailsService = userDetailsService;
@@ -48,19 +59,23 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/*", "/", "/api/v1/","/chat/**")
+                .antMatchers(HttpMethod.OPTIONS, "/*", "/", "/api/v1/", "/chat/**")
                 .permitAll()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtAuthenticationFilter.class);
     }
 
-
+    /**
+     * Configuracion de CORS para la aplicación Teach To Me
+     *
+     * @return Configuracion de CORS
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-userEmail", "x-useremail"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -71,7 +86,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Ignore spring security in these paths
-        web.ignoring().antMatchers("/chat/**","/css/*", "/js/", "/js/**", "/fonts/", "/fonts/**", "/images/*", "/api/v1/users", "/favicon.ico");
+        web.ignoring().antMatchers("/chat/**", "/css/*", "/js/", "/js/**", "/fonts/", "/fonts/**", "/images/*", "/api/v1/users", "/favicon.ico");
     }
 
     @Override
@@ -79,6 +94,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    /**
+     * Configuracion de Autenticador
+     *
+     * @return Autenticador
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
