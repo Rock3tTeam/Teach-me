@@ -53,7 +53,7 @@ public interface TeachToMeServicesInterface {
     /**
      * Obtiene las clases que aprende un usuario
      *
-     * @param email - El mail del usuario del cual se van a obtener las clases
+     * @param email - El email del usuario del cual se van a obtener las clases
      * @return Las clases que dicta el usuario
      * @throws TeachToMeServiceException - Cuando el usuario no exista en la base de datos
      */

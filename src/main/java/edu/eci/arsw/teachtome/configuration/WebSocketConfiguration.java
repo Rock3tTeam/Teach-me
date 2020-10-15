@@ -7,6 +7,9 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
+/**
+ * Configuracion de Websockets para las sesiones de clase dentro de Teach To Me
+ */
 @Controller
 @Configuration
 @EnableWebSocketMessageBroker

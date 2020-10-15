@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio de Detalles de Usuario de Teach To Me
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -17,6 +20,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor por defecto de los servicios de detalles de usuario
+     * @param passwordEncoder Tipo de Codificador para mantener la clave segura
+     */
     public UserDetailsServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
