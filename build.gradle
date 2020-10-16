@@ -47,6 +47,18 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        getClassDirectories().setFrom(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/teachtome/auth/**',
+                                        '**/teachtome/configuration/**',
+                                        '**/teachtome/jwt/**',
+                                        '**/teachtome/model/**'])
+        })
+    }
+}
+
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
 }
+
