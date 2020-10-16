@@ -71,6 +71,23 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
+    public void shouldNotAddARepeatedDescriptionClass() {
+        Clase clase = getClase("Clase original", "Clase original");
+        User user = addUser("copyTeacher@gmail.com");
+        try {
+            services.addClase(clase, user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al agregar esta clase");
+        }
+        try {
+            services.addClase(clase, user);
+            fail("Debió fallar por insertar una clase con descripción repetida");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede insertar una clase con esa descripcion", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotAddAClassWithAInvalidDate() {
         User user = addUser("nuevoB@gmail.com");
         Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
@@ -163,5 +180,29 @@ public class ClassServicesTest extends BasicServicesUtilities {
         services.deleteClass(clase2.getId(), email);
         List<Clase> emptyClasses = services.getTeachingClassesOfUser(email);
         assertTrue(emptyClasses.isEmpty());
+    }
+
+    @Test
+    public void shouldNotConsultTheClassesByNameWithoutTheFilter() {
+        try {
+            services.getFilteredClassesByName(null);
+            fail("Debió fallar por usar un filtro nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El nombre no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldConsultTheClassesByName() throws TeachToMeServiceException {
+        addClassAndTeacher("teacherTT@gmail.com", "Ejemplo TT", "Ejemplo TT", 30, 0);
+        addClassAndTeacher("teacherUU@gmail.com", "Ejemplo UU", "Ejemplo UU", 20, 0);
+        String nameFilter = "Ejemplo";
+        List<Clase> clases = services.getFilteredClassesByName(nameFilter);
+        assertEquals(2, clases.size());
+        String name;
+        for (Clase returnedClass : clases) {
+            name = returnedClass.getNombre();
+            assertTrue(name.contains(nameFilter));
+        }
     }
 }

@@ -492,27 +492,6 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotConsultTheClassesByNameWithoutTheFilter() {
-        try {
-            services.getFilteredClassesByName(null);
-            fail("Debió fallar por usar un filtro nulo");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("El nombre no puede ser nulo", e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldConsultTheClassesByName() throws TeachToMeServiceException {
-        addClassAndTeacher("teacherT@gmail.com", "Ejemplo T", "Ejemplo T", 30, 0);
-        addClassAndTeacher("teacherU@gmail.com", "Ejemplo U", "Ejemplo U", 20, 0);
-        String nameFilter = "Ejemplo";
-        List<Clase> clases = services.getFilteredClassesByName(nameFilter);
-        for (Clase returnedClass : clases) {
-            assertTrue(returnedClass.getNombre().contains(nameFilter));
-        }
-    }
-
-    @Test
     public void shouldNotGetARequestOfANonExistingUser() {
         Clase clase = addClassAndTeacher("teacherX@gmail.com", "Clase X", "Clase X");
         long id = 200;

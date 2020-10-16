@@ -72,6 +72,10 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (clase.getDateOfInit().after(clase.getDateOfEnd())) {
             throw new TeachToMePersistenceException("Una clase no puede iniciar después de su fecha de finalización");
         }
+        Clase nullClass = claseRepository.getClaseByDescription(clase.getDescription());
+        if (nullClass != null) {
+            throw new TeachToMePersistenceException("No se puede insertar una clase con esa descripcion");
+        }
         user.getTeachingClasses().add(clase);
         clase.setProfessor(user);
         userRepository.save(user);
