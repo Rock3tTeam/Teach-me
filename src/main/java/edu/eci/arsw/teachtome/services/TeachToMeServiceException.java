@@ -4,6 +4,7 @@ package edu.eci.arsw.teachtome.services;
  * Excepción personalizada de errores causados en la capa de servicios
  */
 public class TeachToMeServiceException extends Exception {
+    public static final String NULL_EMAIL = "El email no puede ser nulo";
     /**
      * Constructor de la clase TeachToMeServiceException
      *

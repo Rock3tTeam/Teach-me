@@ -1,15 +1,13 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +28,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public Clase getClase(Long classId) throws TeachToMeServiceException {
+        if (classId == null) throw new TeachToMeServiceException("El id no puede ser nulo");
         try {
             return persistence.getClase(classId);
         } catch (TeachToMePersistenceException e) {
@@ -46,6 +45,17 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void addClase(Clase clase, User user) throws TeachToMeServiceException {
+        if (clase == null) throw new TeachToMeServiceException("La clase no puede ser nula");
+        if (user == null) throw new TeachToMeServiceException("El usuario no puede ser nulo");
+        if (clase.getDateOfInit().before(new Timestamp(new Date().getTime()))) {
+            throw new TeachToMeServiceException("No se puede programar una clase antes de la hora actual");
+        }
+        if (clase.getDateOfInit().after(clase.getDateOfEnd())) {
+            throw new TeachToMeServiceException("Una clase no puede iniciar después de su fecha de finalización");
+        }
+        if (clase.getCapacity() <= 0) {
+            throw new TeachToMeServiceException("No se puede insertar una clase con capacidad menor que 1");
+        }
         try {
             persistence.addClase(clase, user);
         } catch (TeachToMePersistenceException e) {
@@ -61,6 +71,10 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void sendRequest(Request request) throws TeachToMeServiceException {
+        if (request == null) throw new TeachToMeServiceException("La solicitud no puede ser nula");
+        if (request.getRequestId() == null) {
+            throw new TeachToMeServiceException("La solicitud no puede estar vacía");
+        }
         try {
             persistence.sendRequest(request);
         } catch (TeachToMePersistenceException e) {
@@ -78,6 +92,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public List<Request> getRequestsOfAClass(long classId, String email) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException(TeachToMeServiceException.NULL_EMAIL);
         try {
             return persistence.getRequestsOfAClass(classId, email);
         } catch (TeachToMePersistenceException e) {
@@ -127,6 +142,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void addUser(User user) throws TeachToMeServiceException {
+        if (user == null) throw new TeachToMeServiceException("El usuario no puede ser nulo");
         try {
             persistence.addUser(user);
         } catch (TeachToMePersistenceException e) {
@@ -143,6 +159,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public User getUser(String email) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException(TeachToMeServiceException.NULL_EMAIL);
         User user;
         try {
             user = persistence.getUser(email);
@@ -181,6 +198,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public List<Clase> getTeachingClassesOfUser(String email) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException(TeachToMeServiceException.NULL_EMAIL);
         try {
             return persistence.getTeachingClassesOfUser(email);
         } catch (TeachToMePersistenceException e) {
@@ -197,6 +215,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void addStudentToAClass(Clase clase, String email) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException(TeachToMeServiceException.NULL_EMAIL);
         try {
             persistence.addStudentToAClass(clase, email);
         } catch (TeachToMePersistenceException e) {
@@ -213,6 +232,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public List<Clase> getClassesOfAStudent(String email) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException(TeachToMeServiceException.NULL_EMAIL);
         try {
             return persistence.getClassesOfAStudent(email);
         } catch (TeachToMePersistenceException e) {
@@ -229,6 +249,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void updateRequest(Long classId, String email, Request request) throws TeachToMeServiceException {
+        if (email == null) throw new TeachToMeServiceException("El correo del maestro no debe ser nulo");
         try {
             persistence.updateRequest(classId, email, request);
         } catch (TeachToMePersistenceException e) {
@@ -245,11 +266,10 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMeServiceException {
-        try {
-            return persistence.getFilteredClassesByName(nameFilter);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
+        if (nameFilter == null) {
+            throw new TeachToMeServiceException("El nombre no puede ser nulo");
         }
+        return persistence.getFilteredClassesByName(nameFilter);
     }
 
     /**

@@ -108,9 +108,8 @@ public interface TeachToMePersistence {
      *
      * @param nameFilter - nombre de la clase
      * @return La lista de clases que contengan esa palabra
-     * @throws TeachToMePersistenceException - Si la clase no existe en la base de datos
      */
-    List<Clase> getFilteredClassesByName(String nameFilter) throws TeachToMePersistenceException;
+    List<Clase> getFilteredClassesByName(String nameFilter);
 
     /**
      * Inserta un mensaje dentro la base de datos del chat

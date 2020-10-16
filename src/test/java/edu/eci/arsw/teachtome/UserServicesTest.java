@@ -53,6 +53,22 @@ public class UserServicesTest extends BasicServicesUtilities {
     }
 
     @Test
+    public void shouldNotAddAUserWithRepeatedEmail() {
+        User user = new User("repetido@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        try {
+            services.addUser(user);
+        } catch (TeachToMeServiceException e) {
+            fail("No debió fallar al ingresar este usuario");
+        }
+        try {
+            services.addUser(user);
+            fail("Debió fallar al intentar agregar un usuario con email repetido");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Ya existe un usuario con el email repetido@gmail.com", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldAddAndGetANewUser() throws TeachToMeServiceException {
         User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         services.addUser(user);
