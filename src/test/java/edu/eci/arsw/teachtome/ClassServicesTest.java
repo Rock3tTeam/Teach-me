@@ -71,6 +71,30 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
+    public void shouldNotAddAClassWithNegativeCapacity() {
+        User user = addUser("negativeTeacher@gmail.com");
+        Clase clase = getClase("Capacidad Negativa", "Capacidad Negativa", -1, 0);
+        try {
+            services.addClase(clase, user);
+            fail("Debió fallar por insertar una clase con capacidad negativa");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede insertar una clase con capacidad menor que 1", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotAddAClassWithoutCapacity() {
+        User user = addUser("zeroTeacher@gmail.com");
+        Clase clase = getClase("Capacidad Cero", "Capacidad Cero", 0, 0);
+        try {
+            services.addClase(clase, user);
+            fail("Debió fallar por insertar una clase con capacidad cero");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede insertar una clase con capacidad menor que 1", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotAddARepeatedDescriptionClass() {
         Clase clase = getClase("Clase original", "Clase original");
         User user = addUser("copyTeacher@gmail.com");
