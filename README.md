@@ -101,6 +101,10 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ![](Diagrams/clases.PNG)
 
+## Diagrama de paquetes
+
+![](Diagrams/paquetes.PNG)
+
 ## Diagrama entidad relacion
 
 ![](Diagrams/er.PNG)
