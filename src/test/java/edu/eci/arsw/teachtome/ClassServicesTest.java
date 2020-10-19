@@ -173,7 +173,10 @@ public class ClassServicesTest extends BasicServicesUtilities {
             services.addClase(clase, user);
         }
         List<Clase> returnedClasses = services.getTeachingClassesOfUser(email);
-        IntStream.range(0, 2).forEach(i -> assertEquals(classes.get(i), returnedClasses.get(i)));
+        assertEquals(2,returnedClasses.size());
+        for (int i = 0; i < 2; i++) {
+            assertEquals(classes.get(i), returnedClasses.get(i));
+        }
     }
 
     @Test

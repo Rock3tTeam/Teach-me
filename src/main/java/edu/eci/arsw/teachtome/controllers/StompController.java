@@ -28,7 +28,7 @@ public class StompController {
      * @throws Exception Cuando Falla en Transmitir el mensaje o el envio tuvo algun error
      */
     @MessageMapping("/messages.{classId}")
-    public void handleBuyEvent(Message message, @DestinationVariable Long classId) throws Exception {
+    public void handleChatEvent(Message message, @DestinationVariable Long classId) throws Exception {
         services.sendMessage(message, classId, message.getSender());
         msgt.convertAndSend("/topic/messages." + classId, message);
     }
