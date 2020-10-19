@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -173,7 +172,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
             services.addClase(clase, user);
         }
         List<Clase> returnedClasses = services.getTeachingClassesOfUser(email);
-        assertEquals(2,returnedClasses.size());
+        assertEquals(2, returnedClasses.size());
         for (int i = 0; i < 2; i++) {
             assertEquals(classes.get(i), returnedClasses.get(i));
         }
