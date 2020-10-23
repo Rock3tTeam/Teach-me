@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 public class StompController {
 
     @Autowired
-    SimpMessagingTemplate msgt;
+    private SimpMessagingTemplate msgt;
 
     @Autowired
     TeachToMeServices services;

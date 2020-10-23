@@ -169,5 +169,5 @@ public interface TeachToMePersistence {
 
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException;
 
-    void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;
+    /*void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;*/
 }

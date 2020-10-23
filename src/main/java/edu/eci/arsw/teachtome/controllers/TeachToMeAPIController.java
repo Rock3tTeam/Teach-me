@@ -321,7 +321,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    //SIN IMPLEMENTAR
+    /*//SIN IMPLEMENTAR
     @PostMapping(value = "/draws/{classId}")
     public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
         try {
@@ -331,7 +331,7 @@ public class TeachToMeAPIController {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
-    }
+    }*/
 
 
 }

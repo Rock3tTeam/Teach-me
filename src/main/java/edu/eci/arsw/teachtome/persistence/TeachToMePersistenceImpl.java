@@ -385,8 +385,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return null;
     }
 
-    @Override
+    /*@Override
     public void addDraw(long classId, Draw draw) throws TeachToMePersistenceException {
-        String newDraw = "draw";
-    }
+    }*/
 }

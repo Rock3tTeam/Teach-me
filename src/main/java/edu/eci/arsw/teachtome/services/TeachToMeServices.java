@@ -301,12 +301,12 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
-    @Override
+    /*@Override
     public void addDraw(long classId, Draw draw) throws TeachToMeServiceException {
         try {
             persistence.addDraw(classId, draw);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
-    }
+    }*/
 }

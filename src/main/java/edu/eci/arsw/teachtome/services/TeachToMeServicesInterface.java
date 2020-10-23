@@ -149,5 +149,5 @@ public interface TeachToMeServicesInterface {
 
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException;
 
-    void addDraw(long classId, Draw draw) throws TeachToMeServiceException;
+    /*void addDraw(long classId, Draw draw) throws TeachToMeServiceException;*/
 }
