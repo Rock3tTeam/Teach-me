@@ -57,6 +57,7 @@ jacocoTestReport {
             fileTree(dir: it, exclude: ['**/teachtome/auth/**',
                                         '**/teachtome/configuration/**',
                                         '**/teachtome/jwt/**',
+                                        '**/teachtome/mail/**',
                                         '**/teachtome/model/**'])
         })
     }
