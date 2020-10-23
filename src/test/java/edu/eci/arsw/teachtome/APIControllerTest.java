@@ -1,14 +1,10 @@
-/*package edu.eci.arsw.teachtome;
+package edu.eci.arsw.teachtome;
 
 import com.google.gson.Gson;
-import edu.eci.arsw.teachtome.JWT.LoginRequest;
+import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
 import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
-import edu.eci.arsw.teachtome.services.TeachToMeServices;
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,17 +19,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -48,23 +36,31 @@ public class APIControllerTest implements ClassGenerator {
 
     @Autowired
     private MockMvc mvc;
-    @Autowired
-    private TeachToMeServices services;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private final Gson gson = new Gson();
     private final String apiRoot = "/api/v1";
+    private String token;
+    private static final String patternDate = "yyyy-MM-dd";
+    private static final String patternHour = "HH:mm:ss";
 
-   @Test
+    @Before
+    public void setUpUser() throws Exception {
+        User user = addUser("authenticated@hotmail.com");
+        UserDetailsImpl userDetails = new UserDetailsImpl(user.getEmail(), user.getPassword());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(userDetails)))
+                .andExpect(status().isOk())
+                .andReturn();
+        token = result.getResponse().getHeader("Authorization");
+    }
+
+    @Test
     public void shouldNotGetANonExistentUserByEmail() throws Exception {
-        User student = new User("B@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(student);
-        System.out.println(token);
         String email = "noexiste@gmail.com";
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization",token)
+                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isNotFound())
@@ -75,10 +71,8 @@ public class APIControllerTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAsUserSomethingThatIsNotAnUser() throws Exception {
-        User student = new User("C@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(student);
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization",token)
+                MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(new Clase())))
                 .andExpect(status().isBadRequest())
@@ -87,29 +81,41 @@ public class APIControllerTest implements ClassGenerator {
         assertEquals("JSON Bad Format", bodyResult);
     }
 
+    @Test
+    public void shouldNotAddAnAlreadyExistingUser() throws Exception {
+        String email = "UsuarioB@gmail.com";
+        User user = addUser(email);
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(user)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("Ya existe un usuario con el email " + email, bodyResult);
+    }
 
     @Test
-    public void shouldAddAUser() throws Exception {
-        User user = new User("new@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
+    public void shouldGetAnUserByEmail() throws Exception {
+        String email = "UsuarioA@gmail.com";
+        User expectedUser = addUser(email);
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + user.getEmail()).header("Authorization",token)
+                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isAccepted())
                 .andReturn();
-        String json = result.getResponse().getContentAsString();
-        User selectedUser = gson.fromJson(json, User.class);
-        assertEquals(user, selectedUser);
+        String bodyResult = result.getResponse().getContentAsString();
+        User user = gson.fromJson(bodyResult, User.class);
+        assertEquals(expectedUser, user);
     }
 
     @Test
     public void shouldNotGetAClassById() throws Exception {
-        User user = new User("new@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
+        addUser("UsuarioC@gmail.com");
         long id = 200;
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/classes/" + id).header("Authorization",token)
+                MockMvcRequestBuilders.get(apiRoot + "/classes/" + id).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isNotFound())
@@ -120,12 +126,12 @@ public class APIControllerTest implements ClassGenerator {
 
     @Test
     public void shouldNotAddAsAClassSomethingThatIsNotAnClass() throws Exception {
-        User user = new User("badteacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
+        String email = "UsuarioD@gmail.com";
+        addUser(email);
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
+                MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(user)))
+                        .content(gson.toJson(new User())))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
@@ -133,27 +139,12 @@ public class APIControllerTest implements ClassGenerator {
     }
 
     @Test
-    public void shouldNotAddAClassThatAlreadyStart() throws Exception {
-        User user = new User("badteacher2@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        Clase clase = getClaseAntigua("Controlador", "Clase con mal horario");
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getJsonClase(clase)))
-                .andExpect(status().isConflict())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No se puede programar una clase antes de la hora actual", bodyResult);
-    }
-
-    @Test
     public void shouldNotAddAnOutOfDateClass() throws Exception {
-        User user = new User("badteacher3@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
+        String email = "UsuarioE@gmail.com";
+        addUser(email);
         Clase clase = getClaseDesfasada("Mal horario", "Clase con horario desfasado");
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
+                MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
                 .andExpect(status().isConflict())
@@ -164,17 +155,17 @@ public class APIControllerTest implements ClassGenerator {
 
     @Test
     public void shouldAddAClass() throws Exception {
-        User user = new User("teacher@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
+        String email = "UsuarioF@gmail.com";
+        addUser(email);
         Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
         mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
+                MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
                 .andExpect(status().isCreated());
     }
 
-    @Test
+    /*@Test
     public void shouldNotGetTheClassesOfANonExistingTeacher() throws Exception {
         User user = new User("D@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
         String token = addUserAndLoginToken(user);
@@ -375,22 +366,16 @@ public class APIControllerTest implements ClassGenerator {
         JSONArray jsonElements = new JSONArray(bodyResult);
         assertEquals(0, jsonElements.length());
     }
+    */
 
-    private String addUserAndLoginToken(User user) throws Exception {
-        LoginRequest request = new LoginRequest(user.getEmail(), user.getPassword());
+    private User addUser(String email) throws Exception {
+        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
         mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isCreated());
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post("/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(request)))
-                .andExpect(status().isOk())
-                .andReturn();
-        String token = result.getResponse().getHeader("Authorization");
-        return token;
+        return user;
     }
 
     private String getJsonClase(Clase clase) {
@@ -399,16 +384,8 @@ public class APIControllerTest implements ClassGenerator {
 
     private String getJsonFormatTimeStamp(Timestamp timestamp) {
         Date date = new Date(timestamp.getTime());
-        int hour = timestamp.getHours();
-        int minute = timestamp.getMinutes();
-        int second = timestamp.getSeconds();
-        String hora = (hour < 10) ? "0" + hour : Integer.toString(hour);
-        String minuto = (minute < 10) ? "0" + minute : Integer.toString(minute);
-        String segundo = (second < 10) ? "0" + second : Integer.toString(second);
-        return date + "T" + hora + ":" + minuto + ":" + segundo;
+        SimpleDateFormat formatDate = new SimpleDateFormat(patternDate);
+        SimpleDateFormat hourDate = new SimpleDateFormat(patternHour);
+        return formatDate.format(date) + "T" + hourDate.format(date);
     }
-
 }
-
-
- */
