@@ -15,11 +15,6 @@ public class JwtConfig {
     private String tokenPrefix;
     private Integer tokenExpirationAfter;
 
-    /**
-     * Contructor por defecto de la configuracion
-     */
-    public JwtConfig() {
-    }
 
     public String getSecretKey() {
         return secretKey;

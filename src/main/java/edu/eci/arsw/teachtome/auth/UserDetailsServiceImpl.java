@@ -30,6 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
+        passwordEncoder.encode("test");
         User user = null;
         try {
             user = services.getUser(username);

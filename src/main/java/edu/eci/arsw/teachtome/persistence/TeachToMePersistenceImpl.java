@@ -326,9 +326,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (accepted) {
             addStudentToAClass(clase, student.getEmail());
         } else {
-            request = getRequest(clase.getId(), student.getEmail());
-            request.setAccepted(false);
-            requestRepository.save(request);
+            Request newRequest = getRequest(clase.getId(), student.getEmail());
+            newRequest.setAccepted(false);
+            requestRepository.save(newRequest);
         }
     }
 
@@ -387,6 +387,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public void addDraw(long classId, Draw draw) throws TeachToMePersistenceException {
-
+        String newDraw = "draw";
     }
 }
