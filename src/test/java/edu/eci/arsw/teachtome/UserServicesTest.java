@@ -54,7 +54,7 @@ public class UserServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldNotAddAUserWithRepeatedEmail() {
-        User user = new User("repetido@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User("repetido@gmail.com", "Juan", "Rodriguez", "nuevo", "repetido@gmail.com");
         try {
             services.addUser(user);
         } catch (TeachToMeServiceException e) {
@@ -70,7 +70,7 @@ public class UserServicesTest extends BasicServicesUtilities {
 
     @Test
     public void shouldAddAndGetANewUser() throws TeachToMeServiceException {
-        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User("nuevo@gmail.com", "Juan", "Rodriguez", "nuevo", "nuevo@gmail.com");
         services.addUser(user);
         User databaseUser = services.getUser("nuevo@gmail.com");
         assertEquals(user, databaseUser);
