@@ -1,7 +1,6 @@
 package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
