@@ -157,7 +157,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
         if (!user.getEmail().equals(user.getDescription())) {
-            mailSenderInterface.sendEmail(user.getEmail());
+            mailSenderInterface.sendCreatedUserEmail(user);
         }
     }
 
