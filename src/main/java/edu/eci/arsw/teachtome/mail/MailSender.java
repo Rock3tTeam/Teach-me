@@ -53,6 +53,6 @@ public class MailSender implements MailSenderInterface {
     }
 
     private String getHtmlMessage(User user) {
-        return String.format("<h1>Welcome %s %s</h1><br><a>Your account in Teach To Me was successfully created</a>", user.getFirstName(), user.getLastName());
+        return String.format("<div style=\"text-align:center;\"> <div style=\"display: inline-block;text-align:center;margin-left:2px;margin-right:2px;box-shadow: 0px 0px 20px -7px rgba(0,0,0,0.75);\"><h1 style=\"color: #8c211c\">Welcome %s %s</h1><br><a>Your account in Teach To Me was successfully created</a></div></div>", user.getFirstName(), user.getLastName());
     }
 }
