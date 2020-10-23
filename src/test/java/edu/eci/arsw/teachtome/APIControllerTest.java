@@ -39,9 +39,9 @@ public class APIControllerTest implements ClassGenerator {
 
     private final Gson gson = new Gson();
     private final String apiRoot = "/api/v1";
-    private String token;
     private static final String patternDate = "yyyy-MM-dd";
     private static final String patternHour = "HH:mm:ss";
+    private String token;
 
     @Before
     public void setUpUser() throws Exception {
@@ -158,11 +158,12 @@ public class APIControllerTest implements ClassGenerator {
         String email = "UsuarioF@gmail.com";
         addUser(email);
         Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
-        mvc.perform(
+        MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
-                .andExpect(status().isCreated());
+                .andReturn();
+        assertEquals(201, result.getResponse().getStatus());
     }
 
     /*@Test
