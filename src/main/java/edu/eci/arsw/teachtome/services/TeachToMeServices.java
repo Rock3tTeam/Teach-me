@@ -1,10 +1,7 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.mail.MailSenderInterface;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Autowired
     private TeachToMePersistence persistence;
+
+    @Autowired
+    private MailSenderInterface mailSenderInterface;
 
     /**
      * Consulta una clase dentro del modelo
@@ -151,6 +151,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             persistence.addUser(user);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
+        }
+        if (!user.getEmail().equals(user.getDescription())) {
+            mailSenderInterface.sendEmail(user.getEmail());
         }
     }
 

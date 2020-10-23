@@ -16,7 +16,7 @@ public class BasicServicesUtilities implements ClassGenerator {
     protected TeachToMeServicesInterface services;
 
     protected User addUser(String email) {
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User(email, "Juan", "Rodriguez", "nuevo", email);
         try {
             services.addUser(user);
         } catch (TeachToMeServiceException e) {
@@ -36,7 +36,7 @@ public class BasicServicesUtilities implements ClassGenerator {
     }
 
     protected Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", teacherEmail);
         Clase clase = getClase(className, classDescription);
         try {
             services.addUser(user);
@@ -48,7 +48,7 @@ public class BasicServicesUtilities implements ClassGenerator {
     }
 
     protected Clase addClassAndTeacher(String teacherEmail, String className, String classDescription, int capacity, int amount) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", teacherEmail);
         Clase clase = getClase(className, classDescription, capacity, amount);
         try {
             services.addUser(user);
@@ -60,7 +60,7 @@ public class BasicServicesUtilities implements ClassGenerator {
     }
 
     protected Clase addShortClassAndTeacher(String teacherEmail, String className, String classDescription) {
-        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", teacherEmail);
         Clase clase = getClassOfShortDuration(className, classDescription, 30, 0);
         try {
             services.addUser(user);

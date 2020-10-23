@@ -45,6 +45,10 @@ dependencies {
     implementation 'org.webjars:bootstrap:3.3.7'
     implementation 'org.webjars:jquery:3.1.1-1'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+
 }
 
 jacocoTestReport {

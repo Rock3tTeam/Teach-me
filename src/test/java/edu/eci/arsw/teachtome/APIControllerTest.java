@@ -370,7 +370,7 @@ public class APIControllerTest implements ClassGenerator {
     */
 
     private User addUser(String email) throws Exception {
-        User user = new User(email, "Juan", "Rodriguez", "nuevo", "description");
+        User user = new User(email, "Juan", "Rodriguez", "nuevo", email);
         mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/users")
                         .contentType(MediaType.APPLICATION_JSON)

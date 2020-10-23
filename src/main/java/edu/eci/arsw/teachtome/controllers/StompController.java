@@ -18,7 +18,7 @@ public class StompController {
     private SimpMessagingTemplate msgt;
 
     @Autowired
-    TeachToMeServices services;
+    private TeachToMeServices services;
 
     /**
      * Manejador de Eventos Relacionados con el chat de la sesion de clase
