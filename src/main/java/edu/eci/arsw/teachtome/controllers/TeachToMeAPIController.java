@@ -1,7 +1,6 @@
 package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
@@ -297,19 +296,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    //IMPLEMENTADO PERO SIN USO
-    @PostMapping(value = "/messages/{classId}")
-    public ResponseEntity<?> sendMessage(@RequestBody Message message, @PathVariable long classId, @RequestHeader("x-userEmail") String email) {
-        try {
-            services.sendMessage(message, classId, email);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (TeachToMeServiceException ex) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
-
-    //SIN IMPLEMENTAR
+    /*//SIN IMPLEMENTAR
     @GetMapping(value = "/draws/{classId}")
     public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
         try {
@@ -320,7 +307,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    /*//SIN IMPLEMENTAR
+    //SIN IMPLEMENTAR
     @PostMapping(value = "/draws/{classId}")
     public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
         try {
