@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -156,7 +157,17 @@ public class APIControllerTest implements ClassGenerator {
         assertEquals("Una clase no puede iniciar después de su fecha de finalización", bodyResult);
     }
 
-    //Pruebas Erroneas getTeachingClasses
+    @Test
+    public void shouldNotGetTheTeachingClassesOfANonExistentUser() throws Exception {
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/teachingClasses").header("Authorization", token).header("x-userEmail", "noexiste@gmail.com")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe el usuario con el email noexiste@gmail.com",bodyResult);
+    }
 
     @Test
     public void shouldAddAClass() throws Exception {
