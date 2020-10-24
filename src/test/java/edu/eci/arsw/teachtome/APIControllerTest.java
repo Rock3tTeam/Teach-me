@@ -189,7 +189,26 @@ public class APIControllerTest implements ClassGenerator {
         JSONObject obj = new JSONArray(bodyResult).getJSONObject(0);
         Clase returnedClass = gson.fromJson(obj.toString(), Clase.class);
         assertTrue(clase.lazyEquals(returnedClass));
+        result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/classes/"+returnedClass.getId()).header("Authorization", token).header("x-userEmail", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        bodyResult = result.getResponse().getContentAsString();
+        returnedClass = gson.fromJson(bodyResult, Clase.class);
+        assertTrue(clase.lazyEquals(returnedClass));
     }
+
+    //DELETE CLASS
+
+    //REQUESTS
+
+    //GET FILTERED CLASSES
+
+    //CHAT
+
+    //GET CLASSES OF A STUDENT
 
     /*@Test
     public void shouldNotGetTheClassesOfANonExistingTeacher() throws Exception {
