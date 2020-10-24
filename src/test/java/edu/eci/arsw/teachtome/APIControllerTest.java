@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -153,17 +156,28 @@ public class APIControllerTest implements ClassGenerator {
         assertEquals("Una clase no puede iniciar después de su fecha de finalización", bodyResult);
     }
 
+    //Pruebas Erroneas getTeachingClasses
+
     @Test
     public void shouldAddAClass() throws Exception {
         String email = "UsuarioF@gmail.com";
         addUser(email);
         Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
-        MvcResult result = mvc.perform(
+        mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
                 .andReturn();
-        assertEquals(201, result.getResponse().getStatus());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/teachingClasses").header("Authorization", token).header("x-userEmail", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        JSONObject obj = new JSONArray(bodyResult).getJSONObject(0);
+        Clase returnedClass = gson.fromJson(obj.toString(), Clase.class);
+        assertTrue(clase.lazyEquals(returnedClass));
     }
 
     /*@Test
@@ -380,7 +394,7 @@ public class APIControllerTest implements ClassGenerator {
     }
 
     private String getJsonClase(Clase clase) {
-        return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getNombre(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
+        return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getDescription(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
     }
 
     private String getJsonFormatTimeStamp(Timestamp timestamp) {
