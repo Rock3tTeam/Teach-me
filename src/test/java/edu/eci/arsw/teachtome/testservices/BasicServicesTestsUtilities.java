@@ -38,7 +38,7 @@ public class BasicServicesTestsUtilities implements TestsUtilities {
     }
 
     @Override
-    public Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception{
+    public Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception {
         User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", teacherEmail);
         Clase clase = getClase(className, classDescription);
         try {

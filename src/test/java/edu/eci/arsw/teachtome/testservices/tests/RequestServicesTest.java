@@ -16,7 +16,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 @RunWith(SpringRunner.class)
@@ -47,7 +50,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestOfANonExistingStudent() throws Exception{
+    public void shouldNotSendARequestOfANonExistingStudent() throws Exception {
         Clase clase = addClassAndTeacher("teacherG@gmail.com", "Clase G", "Clase G");
         try {
             services.sendRequest(new Request(new RequestPK(200, clase.getId())));
@@ -128,7 +131,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfANullUser() throws Exception{
+    public void shouldNotGetTheRequestsOfANullUser() throws Exception {
         Clase clase = addClassAndTeacher("teacherI@gmail.com", "Clase I", "Clase I");
         try {
             services.getRequestsOfAClass(clase.getId(), null);
@@ -139,7 +142,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfANonExistingUser() throws Exception{
+    public void shouldNotGetTheRequestsOfANonExistingUser() throws Exception {
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("teacherJ@gmail.com", "Clase J", "Clase J");
         try {
@@ -195,7 +198,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddANonExistingStudentToAClass() throws Exception{
+    public void shouldNotAddANonExistingStudentToAClass() throws Exception {
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("sadteacher@gmail.com", "Clase vacía", "Clase sin alumnos");
         try {
@@ -207,7 +210,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddAStudentWithNullEmailToAClass() throws Exception{
+    public void shouldNotAddAStudentWithNullEmailToAClass() throws Exception {
         Clase clase = addClassAndTeacher("teacherA@gmail.com", "Clase A", "Clase A");
         try {
             services.addStudentToAClass(clase, null);
@@ -218,7 +221,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddTheTeacherAsAStudentToAClass() throws Exception{
+    public void shouldNotAddTheTeacherAsAStudentToAClass() throws Exception {
         Clase clase = addClassAndTeacher("teacherB@gmail.com", "Clase B", "Clase B");
         try {
             services.addStudentToAClass(clase, "teacherB@gmail.com");
@@ -490,7 +493,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetARequestOfANonExistingUser() throws Exception{
+    public void shouldNotGetARequestOfANonExistingUser() throws Exception {
         Clase clase = addClassAndTeacher("teacherX@gmail.com", "Clase X", "Clase X");
         long id = 200;
         try {

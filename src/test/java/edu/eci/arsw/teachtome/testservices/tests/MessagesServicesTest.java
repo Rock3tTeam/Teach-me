@@ -41,7 +41,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotSendAMessageWithANonExistingUser() throws Exception{
+    public void shouldNotSendAMessageWithANonExistingUser() throws Exception {
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("teacherAD@gmail.com", "Clase AD", "Clase AD");
         Message message = new Message("hola");
@@ -54,7 +54,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotSendAMessageWithAUserThatIsNotPartOfTheClass() throws Exception{
+    public void shouldNotSendAMessageWithAUserThatIsNotPartOfTheClass() throws Exception {
         String email = "studentAE@gmail.com";
         Clase clase = addClassAndTeacher("teacherAE@gmail.com", "Clase AE", "Clase AE");
         addUser(email);
@@ -68,7 +68,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatWithANonExistingUser() throws Exception{
+    public void shouldNotGetTheChatWithANonExistingUser() throws Exception {
         String email = "teacherAF@gmail.com";
         Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
         Message message = new Message("hola estudiantes");
@@ -86,7 +86,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatOfANonExistingClass() throws Exception{
+    public void shouldNotGetTheChatOfANonExistingClass() throws Exception {
         long id = 200;
         String email = "teacherAG@gmail.com";
         Clase clase = addClassAndTeacher(email, "Clase AG", "Clase AG");
@@ -105,7 +105,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatWithAUserThatIsNotPartOfTheClass() throws Exception{
+    public void shouldNotGetTheChatWithAUserThatIsNotPartOfTheClass() throws Exception {
         String email = "teacherAF@gmail.com";
         addUser("studentAF@gmail.com");
         Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");

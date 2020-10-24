@@ -49,7 +49,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddANullClass() throws Exception{
+    public void shouldNotAddANullClass() throws Exception {
         User user = addUser("badteacher@gmail.com");
         try {
             services.addClase(null, user);
@@ -71,7 +71,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithNegativeCapacity() throws Exception{
+    public void shouldNotAddAClassWithNegativeCapacity() throws Exception {
         User user = addUser("negativeTeacher@gmail.com");
         Clase clase = getClase("Capacidad Negativa", "Capacidad Negativa", -1, 0);
         try {
@@ -83,7 +83,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithoutCapacity() throws Exception{
+    public void shouldNotAddAClassWithoutCapacity() throws Exception {
         User user = addUser("zeroTeacher@gmail.com");
         Clase clase = getClase("Capacidad Cero", "Capacidad Cero", 0, 0);
         try {
@@ -95,7 +95,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddARepeatedDescriptionClass() throws Exception{
+    public void shouldNotAddARepeatedDescriptionClass() throws Exception {
         Clase clase = getClase("Clase original", "Clase original");
         User user = addUser("copyTeacher@gmail.com");
         try {
@@ -112,7 +112,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithAInvalidDate() throws Exception{
+    public void shouldNotAddAClassWithAInvalidDate() throws Exception {
         User user = addUser("nuevoB@gmail.com");
         Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
         try {
@@ -180,7 +180,7 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() throws Exception{
+    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() throws Exception {
         String email = "teacherAC@gmail.com";
         User teacher = addUser(email);
         addUser("studentAC@gmail.com");
