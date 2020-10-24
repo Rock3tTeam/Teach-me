@@ -1,6 +1,7 @@
-package edu.eci.arsw.teachtome;
+package edu.eci.arsw.teachtome.testcontroller;
 
 import com.google.gson.Gson;
+import edu.eci.arsw.teachtome.ClassGenerator;
 import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
@@ -21,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,60 +58,6 @@ public class APIControllerTest implements ClassGenerator {
                 .andExpect(status().isOk())
                 .andReturn();
         token = result.getResponse().getHeader("Authorization");
-    }
-
-    @Test
-    public void shouldNotGetANonExistentUserByEmail() throws Exception {
-        String email = "noexiste@gmail.com";
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe el usuario con el email " + email, bodyResult);
-    }
-
-    @Test
-    public void shouldNotAddAsUserSomethingThatIsNotAnUser() throws Exception {
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(new Clase())))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("JSON Bad Format", bodyResult);
-    }
-
-    @Test
-    public void shouldNotAddAnAlreadyExistingUser() throws Exception {
-        String email = "UsuarioB@gmail.com";
-        User user = addUser(email);
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(user)))
-                .andExpect(status().isConflict())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("Ya existe un usuario con el email " + email, bodyResult);
-    }
-
-    @Test
-    public void shouldGetAnUserByEmail() throws Exception {
-        String email = "UsuarioA@gmail.com";
-        User expectedUser = addUser(email);
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isAccepted())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        User user = gson.fromJson(bodyResult, User.class);
-        assertEquals(expectedUser, user);
     }
 
     @Test
@@ -166,7 +112,7 @@ public class APIControllerTest implements ClassGenerator {
                 .andExpect(status().isNotFound())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe el usuario con el email noexiste@gmail.com",bodyResult);
+        assertEquals("No existe el usuario con el email noexiste@gmail.com", bodyResult);
     }
 
     @Test
@@ -190,7 +136,7 @@ public class APIControllerTest implements ClassGenerator {
         Clase returnedClass = gson.fromJson(obj.toString(), Clase.class);
         assertTrue(clase.lazyEquals(returnedClass));
         result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/classes/"+returnedClass.getId()).header("Authorization", token).header("x-userEmail", email)
+                MockMvcRequestBuilders.get(apiRoot + "/classes/" + returnedClass.getId()).header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isAccepted())
@@ -204,11 +150,11 @@ public class APIControllerTest implements ClassGenerator {
 
     //REQUESTS
 
+    //GET CLASSES OF A STUDENT
+
     //GET FILTERED CLASSES
 
     //CHAT
-
-    //GET CLASSES OF A STUDENT
 
     /*@Test
     public void shouldNotGetTheClassesOfANonExistingTeacher() throws Exception {
