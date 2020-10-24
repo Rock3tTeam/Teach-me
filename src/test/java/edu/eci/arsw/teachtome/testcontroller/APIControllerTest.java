@@ -98,7 +98,7 @@ public class APIControllerTest extends BasicControllerUtilities {
                 MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonClase(clase)))
-                .andReturn();
+                .andExpect(status().isCreated());
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/teachingClasses").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,6 +122,36 @@ public class APIControllerTest extends BasicControllerUtilities {
 
     //DELETE CLASS
 
+    @Test
+    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() throws Exception {
+        String email = "UsuarioG2@gmail.com";
+        addUser(email);
+        Clase clase = addClassAndTeacher("UsuarioG@gmail.com", "Clase que no se va a eliminar", "Description");
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.delete(apiRoot + "/classes/" + clase.getId()).header("Authorization", token).header("x-userEmail", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("El usuario no tiene permiso para eliminar esta clase", bodyResult);
+    }
+
+    @Test
+    public void shouldNotDeleteANonExistentClass() throws Exception {
+        String email = "UsuarioH@gmail.com";
+        addUser(email);
+        long id = 200;
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.delete(apiRoot + "/classes/" + id).header("Authorization", token).header("x-userEmail", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("No existe la clase con el id " + id, bodyResult);
+    }
+
     //REQUESTS
 
     //GET CLASSES OF A STUDENT
@@ -129,207 +159,4 @@ public class APIControllerTest extends BasicControllerUtilities {
     //GET FILTERED CLASSES
 
     //CHAT
-
-    /*@Test
-    public void shouldNotGetTheClassesOfANonExistingTeacher() throws Exception {
-        User user = new User("D@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        String email = "noexiste@gmail.com";
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + email + "/teachingClasses").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe el usuario con el email " + email, bodyResult);
-    }
-
-    @Test
-    public void shouldGetTheClassesOfATeacher() throws Exception {
-        List<Clase> classes = new ArrayList<>();
-        Clase clase;
-        User user = new User("felipemartinez@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        for (int i = 1; i < 3; i++) {
-            clase = getClase("Español " + i, "Español " + i);
-            classes.add(clase);
-            mvc.perform(
-                    MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(getJsonClase(clase)))
-                    .andExpect(status().isCreated());
-        }
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + user.getEmail() + "/teachingClasses").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isAccepted())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        JSONArray jsonElements = new JSONArray(bodyResult);
-        List<Clase> returnedClasses = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            returnedClasses.add(gson.fromJson(jsonElements.get(i).toString(), Clase.class));
-        }
-        IntStream.range(0, 2).forEach(i -> {
-            Clase originalClass = classes.get(i);
-            Clase actualClass = returnedClasses.get(i);
-            assertTrue(originalClass.lazyEquals(actualClass));
-            long originalDateOfInit = originalClass.getDateOfInit().getTime();
-            long originalDateOfEnd = originalClass.getDateOfEnd().getTime();
-            long actualDateOfInit = actualClass.getDateOfInit().getTime();
-            long actualDateOfEnd = actualClass.getDateOfEnd().getTime();
-            assertTrue(Math.abs(originalDateOfInit - actualDateOfInit) < 1000);
-            assertTrue(Math.abs(originalDateOfEnd - actualDateOfEnd) < 1000);
-        });
-    }
-
-    @Test
-    public void shouldNotSendAEmptyRequest() throws Exception {
-        User user = new User("A@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        Clase clase = getClase("C1", "Clase C1");
-        Request request = new Request();
-        mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getJsonClase(clase)))
-                .andExpect(status().isCreated());
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes/" + 1 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(request)))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("JSON Bad Format", bodyResult);
-    }
-
-    @Test
-    public void shouldNotSendARequestOfANonExistingStudent() throws Exception {
-        User user = new User("E@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        Request request = new Request(new RequestPK("noexiste@gmail.com", 1));
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/noexiste@gmail.com/classes/" + 1 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(request)))
-                .andExpect(status().isConflict())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe el usuario con el email noexiste@gmail.com", bodyResult);
-    }
-
-    @Test
-    public void shouldNotSendARequestWithANonExistingClass() throws Exception {
-        User user = new User("B@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        Request request = new Request(new RequestPK(user.getEmail(), 200));
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes/" + 200 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(request)))
-                .andExpect(status().isConflict())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe la clase con el id " + 200, bodyResult);
-    }
-
-    @Test
-    public void shouldNotGetTheRequestsOfANonExistingClass() throws Exception {
-        User user = new User("C@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/users/" + user.getEmail() + "/classes/" + 200 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe la clase con el id " + 200, bodyResult);
-    }
-
-    @Test
-    public void shouldNotUpdateTheRequestOfANonExistingClass() throws Exception {
-        String email = "studentM@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(student);
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.put(apiRoot + "/users/" + email + "/classes/" + 200 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(new Request(new RequestPK(email, 200)))))
-                .andExpect(status().isConflict())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe la clase con el id " + 200, bodyResult);
-    }
-
-    @Test
-    public void shouldNotUpdateWithABadConstructRequest() throws Exception {
-        String email = "studentM@gmail.com";
-        User student = new User(email, "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(student);
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.put(apiRoot + "/users/" + email + "/classes/" + 1 + "/requests").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(new Request())))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("JSON Bad Format", bodyResult);
-    }
-
-    @Test
-    public void shouldConsultTheClassesByName() throws Exception {
-        String nameFilter = "Controlador";
-        Clase clase = getClase("Controlador T", "Controlador T");
-        Clase clase2 = getClase("Controlador U", "Controlador U");
-        User user = new User("teacherT2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        User user2 = new User("teacherU2@gmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(user);
-        String token2 = addUserAndLoginToken(user2);
-        mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user.getEmail() + "/classes").header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getJsonClase(clase)))
-                .andExpect(status().isCreated());
-        mvc.perform(
-                MockMvcRequestBuilders.post(apiRoot + "/users/" + user2.getEmail() + "/classes").header("Authorization",token2)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getJsonClase(clase2)))
-                .andExpect(status().isCreated());
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/classes?name=" + nameFilter).header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isAccepted())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        JSONArray jsonElements = new JSONArray(bodyResult);
-        IntStream.range(0, 2).forEach(i -> {
-            try {
-                assertTrue(gson.fromJson(jsonElements.get(i).toString(), Clase.class).getNombre().contains(nameFilter));
-            } catch (JSONException e) {
-                fail("No debió fallar al convertir las clases de JSON a Java");
-            }
-        });
-    }
-
-    @Test
-    public void shouldNotConsultTheClassesByName() throws Exception {
-        User student = new User("A@hotmail.com", "Juan", "Rodriguez", "nuevo", "description");
-        String token = addUserAndLoginToken(student);
-        String nameFilter = "Ejemplo";
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/classes?name=" + nameFilter).header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(""))
-                .andExpect(status().isAccepted())
-                .andReturn();
-        String bodyResult = result.getResponse().getContentAsString();
-        JSONArray jsonElements = new JSONArray(bodyResult);
-        assertEquals(0, jsonElements.length());
-    }
-    */
 }

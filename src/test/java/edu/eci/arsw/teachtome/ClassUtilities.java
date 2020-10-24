@@ -1,10 +1,16 @@
 package edu.eci.arsw.teachtome;
 
 import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.User;
 
 import java.sql.Timestamp;
 
-public interface ClassGenerator {
+public interface ClassUtilities {
+
+    Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception;
+
+    User addUser(String email) throws Exception;
+
     default Clase getClase(String nombre, String description) {
         long classDurationInMillis = 100000;
         long actualTime = System.currentTimeMillis();

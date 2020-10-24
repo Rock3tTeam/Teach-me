@@ -40,7 +40,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendAMessageWithANonExistingUser() {
+    public void shouldNotSendAMessageWithANonExistingUser() throws Exception{
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("teacherAD@gmail.com", "Clase AD", "Clase AD");
         Message message = new Message("hola");
@@ -53,7 +53,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendAMessageWithAUserThatIsNotPartOfTheClass() {
+    public void shouldNotSendAMessageWithAUserThatIsNotPartOfTheClass() throws Exception{
         String email = "studentAE@gmail.com";
         Clase clase = addClassAndTeacher("teacherAE@gmail.com", "Clase AE", "Clase AE");
         addUser(email);
@@ -67,7 +67,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatWithANonExistingUser() {
+    public void shouldNotGetTheChatWithANonExistingUser() throws Exception{
         String email = "teacherAF@gmail.com";
         Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
         Message message = new Message("hola estudiantes");
@@ -85,7 +85,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatOfANonExistingClass() {
+    public void shouldNotGetTheChatOfANonExistingClass() throws Exception{
         long id = 200;
         String email = "teacherAG@gmail.com";
         Clase clase = addClassAndTeacher(email, "Clase AG", "Clase AG");
@@ -104,7 +104,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheChatWithAUserThatIsNotPartOfTheClass() {
+    public void shouldNotGetTheChatWithAUserThatIsNotPartOfTheClass() throws Exception{
         String email = "teacherAF@gmail.com";
         addUser("studentAF@gmail.com");
         Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");
@@ -123,7 +123,7 @@ public class MessagesServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldSendAndGetMessages() throws TeachToMeServiceException {
+    public void shouldSendAndGetMessages() throws Exception {
         String email = "teacherAF@gmail.com";
         User user = addUser("studentAF@gmail.com");
         Clase clase = addClassAndTeacher(email, "Clase AF", "Clase AF");

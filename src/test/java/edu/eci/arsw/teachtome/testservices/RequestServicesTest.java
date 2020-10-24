@@ -15,10 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -49,7 +46,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestOfANonExistingStudent() {
+    public void shouldNotSendARequestOfANonExistingStudent() throws Exception{
         Clase clase = addClassAndTeacher("teacherG@gmail.com", "Clase G", "Clase G");
         try {
             services.sendRequest(new Request(new RequestPK(200, clase.getId())));
@@ -60,7 +57,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestTheTeacherInHisClass() {
+    public void shouldNotSendARequestTheTeacherInHisClass() throws Exception {
         String email = "teacherH@gmail.com";
         User user = addUser(email);
         Clase clase = addClass(user, "Clase H", "Clase H");
@@ -73,7 +70,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestWithANonExistingClass() {
+    public void shouldNotSendARequestWithANonExistingClass() throws Exception {
         String email = "studentF@gmail.com";
         User user = addUser(email);
         long id = 200;
@@ -86,7 +83,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestOfAFullClass() {
+    public void shouldNotSendARequestOfAFullClass() throws Exception {
         String email = "studentAI@gmail.com";
         Clase clase = addClassAndTeacher("teacherAI@gmail.com", "Clase AI", "Clase AI", 30, 30);
         User user = addUser(email);
@@ -101,7 +98,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotSendARequestOfAnAlreadyStartedClass() {
+    public void shouldNotSendARequestOfAnAlreadyStartedClass() throws Exception {
         String email = "studentAJ@gmail.com";
         Clase clase = addShortClassAndTeacher("teacherAJ@gmail.com", "Clase AJ", "Clase AJ");
         User user = addUser(email);
@@ -117,7 +114,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfANonExistingClass() {
+    public void shouldNotGetTheRequestsOfANonExistingClass() throws Exception {
         String email = "studentI@gmail.com";
         long id = 200;
         addUser(email);
@@ -130,7 +127,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfANullUser() {
+    public void shouldNotGetTheRequestsOfANullUser() throws Exception{
         Clase clase = addClassAndTeacher("teacherI@gmail.com", "Clase I", "Clase I");
         try {
             services.getRequestsOfAClass(clase.getId(), null);
@@ -141,7 +138,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfANonExistingUser() {
+    public void shouldNotGetTheRequestsOfANonExistingUser() throws Exception{
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("teacherJ@gmail.com", "Clase J", "Clase J");
         try {
@@ -153,7 +150,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetTheRequestsOfAClassWithoutBeingTheTeacher() {
+    public void shouldNotGetTheRequestsOfAClassWithoutBeingTheTeacher() throws Exception {
         String email = "studentK@gmail.com";
         Clase clase = addClassAndTeacher("teacherK@gmail.com", "Clase K", "Clase K");
         addUser(email);
@@ -166,7 +163,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldSendAndGetTheRequestsOfAClass() throws TeachToMeServiceException {
+    public void shouldSendAndGetTheRequestsOfAClass() throws Exception {
         String email = "studentL@gmail.com";
         Clase clase = addClassAndTeacher("teacherL@gmail.com", "Clase L", "Clase L");
         User user = addUser(email);
@@ -185,7 +182,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
 
 
     @Test
-    public void shouldNotAddAStudentToANullClass() {
+    public void shouldNotAddAStudentToANullClass() throws Exception {
         String email = "badstudent@gmail.com";
         addUser(email);
         try {
@@ -197,7 +194,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddANonExistingStudentToAClass() {
+    public void shouldNotAddANonExistingStudentToAClass() throws Exception{
         String email = "noexiste@gmail.com";
         Clase clase = addClassAndTeacher("sadteacher@gmail.com", "Clase vacía", "Clase sin alumnos");
         try {
@@ -209,7 +206,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAStudentWithNullEmailToAClass() {
+    public void shouldNotAddAStudentWithNullEmailToAClass() throws Exception{
         Clase clase = addClassAndTeacher("teacherA@gmail.com", "Clase A", "Clase A");
         try {
             services.addStudentToAClass(clase, null);
@@ -220,7 +217,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddTheTeacherAsAStudentToAClass() {
+    public void shouldNotAddTheTeacherAsAStudentToAClass() throws Exception{
         Clase clase = addClassAndTeacher("teacherB@gmail.com", "Clase B", "Clase B");
         try {
             services.addStudentToAClass(clase, "teacherB@gmail.com");
@@ -231,7 +228,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAnAlreadyEnrolledStudentToAClass() {
+    public void shouldNotAddAnAlreadyEnrolledStudentToAClass() throws Exception {
         String email = "studentC@gmail.com";
         Clase clase = addClassAndTeacher("teacherC@gmail.com", "Clase C", "Clase C");
         User user = addUser(email);
@@ -250,7 +247,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddStudentToAClassThatDoNotRequestIt() {
+    public void shouldNotAddStudentToAClassThatDoNotRequestIt() throws Exception {
         String email = "studentD@gmail.com";
         Clase clase = addClassAndTeacher("teacherD@gmail.com", "Clase D", "Clase D");
         addUser(email);
@@ -263,7 +260,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAStudentToAClassWithoutSeats() {
+    public void shouldNotAddAStudentToAClassWithoutSeats() throws Exception {
         String email = "studentW@gmail.com";
         String email2 = "studentW2@gmail.com";
         Clase clase = addClassAndTeacher("teacherW@gmail.com", "Clase W", "Clase W", 30, 29);
@@ -304,7 +301,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldAddStudentToAClass() throws TeachToMeServiceException {
+    public void shouldAddStudentToAClass() throws Exception {
         String email = "studentE@gmail.com";
         Clase clase = addClassAndTeacher("teacherE@gmail.com", "Clase E", "Clase E");
         User user = addUser(email);
@@ -332,7 +329,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateTheRequestOfAClassIfIsNotTheTeacher() {
+    public void shouldNotUpdateTheRequestOfAClassIfIsNotTheTeacher() throws Exception {
         String email = "studentM@gmail.com";
         Clase clase = addClassAndTeacher("teacherM@gmail.com", "Clase M", "Clase M");
         User user = addUser(email);
@@ -347,7 +344,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateTheRequestOfANonExistingClass() {
+    public void shouldNotUpdateTheRequestOfANonExistingClass() throws Exception {
         long id = 200;
         String email = "studentN@gmail.com";
         User user = addUser(email);
@@ -362,7 +359,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateTheRequestOfAClassWithANullTeacherEmail() {
+    public void shouldNotUpdateTheRequestOfAClassWithANullTeacherEmail() throws Exception {
         String email = "studentO@gmail.com";
         Clase clase = addClassAndTeacher("teacherO@gmail.com", "Clase O", "Clase O");
         User user = addUser(email);
@@ -377,7 +374,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateTheRequestOfAClassWithANonExistingTeacher() {
+    public void shouldNotUpdateTheRequestOfAClassWithANonExistingTeacher() throws Exception {
         String email = "studentP@gmail.com";
         Clase clase = addClassAndTeacher("teacherP@gmail.com", "Clase P", "Clase P");
         User user = addUser(email);
@@ -392,7 +389,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateWithABadConstructRequest() {
+    public void shouldNotUpdateWithABadConstructRequest() throws Exception {
         Clase clase = addClassAndTeacher("teacherQ@gmail.com", "Clase Q", "Clase Q");
         String email = "studentQ@gmail.com";
         User user = addUser(email);
@@ -424,7 +421,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotUpdateARequestIfTheClassDoNotHaveCapacity() {
+    public void shouldNotUpdateARequestIfTheClassDoNotHaveCapacity() throws Exception {
         String email = "studentV@gmail.com";
         String email2 = "studentV2@gmail.com";
         Clase clase = addClassAndTeacher("teacherV@gmail.com", "Clase V", "Clase V", 30, 29);
@@ -450,7 +447,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldUpdateARequestToTrue() throws TeachToMeServiceException {
+    public void shouldUpdateARequestToTrue() throws Exception {
         Clase clase = addClassAndTeacher("teacherR@gmail.com", "Clase R", "Clase R");
         String email = "studentR@gmail.com";
         User user = addUser(email);
@@ -471,7 +468,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldUpdateARequestToFalse() throws TeachToMeServiceException {
+    public void shouldUpdateARequestToFalse() throws Exception {
         Clase clase = addClassAndTeacher("teacherS@gmail.com", "Clase S", "Clase S");
         String email = "studentS@gmail.com";
         User user = addUser(email);
@@ -492,7 +489,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetARequestOfANonExistingUser() {
+    public void shouldNotGetARequestOfANonExistingUser() throws Exception{
         Clase clase = addClassAndTeacher("teacherX@gmail.com", "Clase X", "Clase X");
         long id = 200;
         try {
@@ -503,7 +500,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetARequestOfANonExistingClass() {
+    public void shouldNotGetARequestOfANonExistingClass() throws Exception {
         User user = addUser("studentX@gmail.com");
         long id = 200;
         try {
@@ -514,7 +511,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetANonExistingRequest() {
+    public void shouldNotGetANonExistingRequest() throws Exception {
         Clase clase = addClassAndTeacher("teacherAL@gmail.com", "Clase AL", "Clase AL");
         User user = addUser("studentAL@gmail.com");
         try {
@@ -525,7 +522,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotGetARequestWithNullParameters() {
+    public void shouldNotGetARequestWithNullParameters() throws Exception {
         User user = addUser("studentY@gmail.com");
         Clase clase = addClassAndTeacher("teacherY@gmail.com", "Clase Y", "Clase Y");
         try {
@@ -541,7 +538,7 @@ public class RequestServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldGetARequest() throws TeachToMeServiceException {
+    public void shouldGetARequest() throws Exception {
         User user = addUser("studentZ@gmail.com");
         Clase clase = addClassAndTeacher("teacherZ@gmail.com", "Clase Z", "Clase Z");
         RequestPK requestPK = sendRequest(user.getId(), clase.getId());

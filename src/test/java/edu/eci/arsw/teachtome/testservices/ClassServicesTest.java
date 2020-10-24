@@ -48,7 +48,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddANullClass() {
+    public void shouldNotAddANullClass() throws Exception{
         User user = addUser("badteacher@gmail.com");
         try {
             services.addClase(null, user);
@@ -70,7 +70,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithNegativeCapacity() {
+    public void shouldNotAddAClassWithNegativeCapacity() throws Exception{
         User user = addUser("negativeTeacher@gmail.com");
         Clase clase = getClase("Capacidad Negativa", "Capacidad Negativa", -1, 0);
         try {
@@ -82,7 +82,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithoutCapacity() {
+    public void shouldNotAddAClassWithoutCapacity() throws Exception{
         User user = addUser("zeroTeacher@gmail.com");
         Clase clase = getClase("Capacidad Cero", "Capacidad Cero", 0, 0);
         try {
@@ -94,7 +94,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddARepeatedDescriptionClass() {
+    public void shouldNotAddARepeatedDescriptionClass() throws Exception{
         Clase clase = getClase("Clase original", "Clase original");
         User user = addUser("copyTeacher@gmail.com");
         try {
@@ -111,7 +111,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotAddAClassWithAInvalidDate() {
+    public void shouldNotAddAClassWithAInvalidDate() throws Exception{
         User user = addUser("nuevoB@gmail.com");
         Clase clase = getClaseAntigua("Clase con mal horario", "Mal horario");
         try {
@@ -131,7 +131,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
 
 
     @Test
-    public void shouldAddAndGetAClass() throws TeachToMeServiceException {
+    public void shouldAddAndGetAClass() throws Exception {
         Clase clase = getClase("Nueva Clase", "Prueba Exitosa de Inserción");
         String email = "nuevo@gmail.com";
         User user = addUser(email);
@@ -161,7 +161,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldGetTheClassesOfATeacher() throws TeachToMeServiceException {
+    public void shouldGetTheClassesOfATeacher() throws Exception {
         List<Clase> classes = new ArrayList<>();
         Clase clase;
         String email = "julioprofe@gmail.com";
@@ -179,7 +179,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() {
+    public void shouldNotDeleteAClassIfTheUserIsNotTheTeacher() throws Exception{
         String email = "teacherAC@gmail.com";
         User teacher = addUser(email);
         addUser("studentAC@gmail.com");
@@ -193,7 +193,7 @@ public class ClassServicesTest extends BasicServicesUtilities {
     }
 
     @Test
-    public void shouldDeleteAClass() throws TeachToMeServiceException {
+    public void shouldDeleteAClass() throws Exception {
         String email = "teacherAA@gmail.com";
         User teacher = addUser(email);
         Clase clase = addClass(teacher, "Clase AA", "Clase AA");

@@ -1,6 +1,6 @@
 package edu.eci.arsw.teachtome.testservices;
 
-import edu.eci.arsw.teachtome.ClassGenerator;
+import edu.eci.arsw.teachtome.ClassUtilities;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.fail;
 
-public class BasicServicesUtilities implements ClassGenerator {
+public class BasicServicesUtilities implements ClassUtilities {
 
     @Autowired
     protected TeachToMeServicesInterface services;
 
-    protected User addUser(String email) {
+    @Override
+    public User addUser(String email) throws Exception {
         User user = new User(email, "Juan", "Rodriguez", "nuevo", email);
         try {
             services.addUser(user);
@@ -36,7 +37,8 @@ public class BasicServicesUtilities implements ClassGenerator {
         return clase;
     }
 
-    protected Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) {
+    @Override
+    public Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception{
         User user = new User(teacherEmail, "Juan", "Rodriguez", "nuevo", teacherEmail);
         Clase clase = getClase(className, classDescription);
         try {
