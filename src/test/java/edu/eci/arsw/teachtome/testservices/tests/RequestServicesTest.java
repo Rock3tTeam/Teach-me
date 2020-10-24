@@ -1,10 +1,11 @@
-package edu.eci.arsw.teachtome.testservices;
+package edu.eci.arsw.teachtome.testservices.tests;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
+import edu.eci.arsw.teachtome.testservices.BasicServicesTestsUtilities;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,7 +24,7 @@ import static org.junit.Assert.*;
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
-public class RequestServicesTest extends BasicServicesUtilities {
+public class RequestServicesTest extends BasicServicesTestsUtilities {
 
     @Test
     public void shouldNotSendANullRequest() {

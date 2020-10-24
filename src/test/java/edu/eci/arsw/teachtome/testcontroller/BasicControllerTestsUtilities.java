@@ -1,7 +1,7 @@
 package edu.eci.arsw.teachtome.testcontroller;
 
 import com.google.gson.Gson;
-import edu.eci.arsw.teachtome.ClassUtilities;
+import edu.eci.arsw.teachtome.TestsUtilities;
 import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
@@ -19,7 +19,7 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class BasicControllerUtilities implements ClassUtilities {
+public class BasicControllerTestsUtilities implements TestsUtilities {
 
     @Autowired
     protected MockMvc mvc;

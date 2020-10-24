@@ -5,7 +5,7 @@ import edu.eci.arsw.teachtome.model.User;
 
 import java.sql.Timestamp;
 
-public interface ClassUtilities {
+public interface TestsUtilities {
 
     Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception;
 

@@ -1,7 +1,8 @@
-package edu.eci.arsw.teachtome.testcontroller;
+package edu.eci.arsw.teachtome.testcontroller.tests;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.testcontroller.BasicControllerTestsUtilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
-public class ClassControllerTest extends BasicControllerUtilities {
+public class ClassControllerTest extends BasicControllerTestsUtilities {
 
     @Before
     public void setUpTest() throws Exception {
@@ -207,5 +208,5 @@ public class ClassControllerTest extends BasicControllerUtilities {
         }
     }
 
-    //GET FILTERED CLASSES - FALTA EL CASO DE NOT FOUND
+    //GET FILTERED CLASSES - FALTA EL CASO DE NOT FOUND, PERO NO EXISTE
 }

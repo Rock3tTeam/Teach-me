@@ -1,6 +1,6 @@
 package edu.eci.arsw.teachtome.testservices;
 
-import edu.eci.arsw.teachtome.ClassUtilities;
+import edu.eci.arsw.teachtome.TestsUtilities;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.fail;
 
-public class BasicServicesUtilities implements ClassUtilities {
+public class BasicServicesTestsUtilities implements TestsUtilities {
 
     @Autowired
     protected TeachToMeServicesInterface services;

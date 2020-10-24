@@ -1,7 +1,8 @@
-package edu.eci.arsw.teachtome.testcontroller;
+package edu.eci.arsw.teachtome.testcontroller.tests;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.testcontroller.BasicControllerTestsUtilities;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
-public class UserControllerTest extends BasicControllerUtilities {
+public class UserControllerTest extends BasicControllerTestsUtilities {
 
     @Before
     public void setUpTest() throws Exception {
