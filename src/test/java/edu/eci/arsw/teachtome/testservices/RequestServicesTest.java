@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.testservices;
 
-import edu.eci.arsw.teachtome.BasicServicesUtilities;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
