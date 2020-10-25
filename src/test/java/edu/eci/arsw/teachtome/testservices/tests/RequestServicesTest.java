@@ -171,7 +171,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentL@gmail.com";
         Clase clase = addClassAndTeacher("teacherL@gmail.com", "Clase L", "Clase L");
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK);
         boolean found = false;
         List<Request> requests = services.getRequestsOfAClass(clase.getId(), "teacherL@gmail.com");
@@ -236,7 +236,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentC@gmail.com";
         Clase clase = addClassAndTeacher("teacherC@gmail.com", "Clase C", "Clase C");
         User user = addUser(email);
-        sendRequest(user.getId(), clase.getId());
+        sendRequest(user, clase.getId());
         try {
             services.addStudentToAClass(clase, email);
         } catch (TeachToMeServiceException e) {
@@ -270,8 +270,8 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         Clase clase = addClassAndTeacher("teacherW@gmail.com", "Clase W", "Clase W", 30, 29);
         User user1 = addUser(email);
         User user2 = addUser(email2);
-        sendRequest(user1.getId(), clase.getId());
-        sendRequest(user2.getId(), clase.getId());
+        sendRequest(user1, clase.getId());
+        sendRequest(user2, clase.getId());
         try {
             services.addStudentToAClass(clase, email);
         } catch (TeachToMeServiceException e) {
@@ -309,7 +309,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentE@gmail.com";
         Clase clase = addClassAndTeacher("teacherE@gmail.com", "Clase E", "Clase E");
         User user = addUser(email);
-        sendRequest(user.getId(), clase.getId());
+        sendRequest(user, clase.getId());
         services.addStudentToAClass(clase, email);
         boolean found = false;
         List<Clase> studentClasses = services.getClassesOfAStudent(email);
@@ -337,7 +337,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentM@gmail.com";
         Clase clase = addClassAndTeacher("teacherM@gmail.com", "Clase M", "Clase M");
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK);
         try {
             services.updateRequest(clase.getId(), email, request);
@@ -367,7 +367,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentO@gmail.com";
         Clase clase = addClassAndTeacher("teacherO@gmail.com", "Clase O", "Clase O");
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK, true);
         try {
             services.updateRequest(clase.getId(), null, request);
@@ -382,7 +382,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         String email = "studentP@gmail.com";
         Clase clase = addClassAndTeacher("teacherP@gmail.com", "Clase P", "Clase P");
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK, true);
         try {
             services.updateRequest(clase.getId(), "noexiste@gmail.com", request);
@@ -397,7 +397,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         Clase clase = addClassAndTeacher("teacherQ@gmail.com", "Clase Q", "Clase Q");
         String email = "studentQ@gmail.com";
         User user = addUser(email);
-        sendRequest(user.getId(), clase.getId());
+        sendRequest(user, clase.getId());
         RequestPK requestPK = new RequestPK();
         Request request = new Request(requestPK, true);
         try {
@@ -432,8 +432,8 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         User user = addUser(email);
         User user2 = addUser(email2);
         Request request;
-        sendRequest(user.getId(), clase.getId());
-        RequestPK requestPK = sendRequest(user2.getId(), clase.getId());
+        sendRequest(user, clase.getId());
+        RequestPK requestPK = sendRequest(user2, clase.getId());
         try {
             request = new Request(requestPK, true);
             services.updateRequest(clase.getId(), "teacherV@gmail.com", request);
@@ -455,7 +455,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         Clase clase = addClassAndTeacher("teacherR@gmail.com", "Clase R", "Clase R");
         String email = "studentR@gmail.com";
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK, true);
         services.updateRequest(clase.getId(), "teacherR@gmail.com", request);
         boolean foundRequest = false;
@@ -476,7 +476,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
         Clase clase = addClassAndTeacher("teacherS@gmail.com", "Clase S", "Clase S");
         String email = "studentS@gmail.com";
         User user = addUser(email);
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK, false);
         services.updateRequest(clase.getId(), "teacherS@gmail.com", request);
         boolean foundRequest = false;
@@ -545,7 +545,7 @@ public class RequestServicesTest extends BasicServicesTestsUtilities {
     public void shouldGetARequest() throws Exception {
         User user = addUser("studentZ@gmail.com");
         Clase clase = addClassAndTeacher("teacherZ@gmail.com", "Clase Z", "Clase Z");
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request expectedRequest = new Request(requestPK);
         Request request = services.getRequest(clase.getId(), user.getId());
         assertEquals(expectedRequest, request);

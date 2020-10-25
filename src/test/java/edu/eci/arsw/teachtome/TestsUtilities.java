@@ -1,15 +1,20 @@
 package edu.eci.arsw.teachtome;
 
 import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 
 import java.sql.Timestamp;
 
 public interface TestsUtilities {
 
+    User addUser(String email) throws Exception;
+
+    Clase addClass(User user, String className, String classDescription) throws Exception;
+
     Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception;
 
-    User addUser(String email) throws Exception;
+    RequestPK sendRequest(User user, long classId) throws Exception;
 
     default Clase getClase(String nombre, String description) {
         long classDurationInMillis = 100000;

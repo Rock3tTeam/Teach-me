@@ -60,7 +60,8 @@ public class UserControllerTest extends BasicControllerTestsUtilities {
     @Test
     public void shouldNotAddAnAlreadyExistingUser() throws Exception {
         String email = "UsuarioB@gmail.com";
-        User user = addUser(email);
+        addUser(email);
+        User user = getUser(email);
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)

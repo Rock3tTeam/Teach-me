@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import edu.eci.arsw.teachtome.TestsUtilities;
 import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
 import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
 import edu.eci.arsw.teachtome.model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,6 +56,25 @@ public class BasicControllerTestsUtilities implements TestsUtilities {
     }
 
     @Override
+    public Clase addClass(User user, String className, String classDescription) throws Exception {
+        Clase clase = getClase(className, classDescription);
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", user.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonClase(clase)))
+                .andExpect(status().isCreated());
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/teachingClasses").header("Authorization", token).header("x-userEmail", user.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        JSONObject obj = new JSONArray(bodyResult).getJSONObject(0);
+        return gson.fromJson(obj.toString(), Clase.class);
+    }
+
+    @Override
     public Clase addClassAndTeacher(String teacherEmail, String className, String classDescription) throws Exception {
         addUser(teacherEmail);
         Clase clase = getClase(className, classDescription);
@@ -71,6 +92,29 @@ public class BasicControllerTestsUtilities implements TestsUtilities {
         String bodyResult = result.getResponse().getContentAsString();
         JSONObject obj = new JSONArray(bodyResult).getJSONObject(0);
         return gson.fromJson(obj.toString(), Clase.class);
+    }
+
+    @Override
+    public RequestPK sendRequest(User user, long classId) throws Exception {
+        RequestPK requestPK = new RequestPK(user.getId(), classId);
+        Request request = new Request(requestPK);
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/classes/" + classId + "/requests").header("Authorization", token).header("x-userEmail", user.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isCreated());
+        return requestPK;
+    }
+
+    public User getUser(String email) throws Exception {
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isAccepted())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        return gson.fromJson(bodyResult, User.class);
     }
 
     protected String getJsonClase(Clase clase) {

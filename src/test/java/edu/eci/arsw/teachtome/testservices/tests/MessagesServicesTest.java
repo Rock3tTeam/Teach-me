@@ -133,7 +133,7 @@ public class MessagesServicesTest extends BasicServicesTestsUtilities {
         List<Message> messages = services.getChat(clase.getId(), email);
         assertEquals(1, messages.size());
         assertEquals(message, messages.get(0));
-        RequestPK requestPK = sendRequest(user.getId(), clase.getId());
+        RequestPK requestPK = sendRequest(user, clase.getId());
         Request request = new Request(requestPK, true);
         services.updateRequest(clase.getId(), email, request);
         Message message2 = new Message("hola profe");

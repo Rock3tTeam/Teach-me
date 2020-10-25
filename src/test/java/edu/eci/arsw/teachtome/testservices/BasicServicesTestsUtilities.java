@@ -27,7 +27,8 @@ public class BasicServicesTestsUtilities implements TestsUtilities {
         return user;
     }
 
-    protected Clase addClass(User user, String className, String classDescription) {
+    @Override
+    public Clase addClass(User user, String className, String classDescription) throws Exception{
         Clase clase = getClase(className, classDescription);
         try {
             services.addClase(clase, user);
@@ -74,11 +75,12 @@ public class BasicServicesTestsUtilities implements TestsUtilities {
         return clase;
     }
 
-    protected RequestPK sendRequest(long userId, long classId) {
+    @Override
+    public RequestPK sendRequest(User user, long classId) throws Exception{
         RequestPK requestPK = null;
         Request request;
         try {
-            requestPK = new RequestPK(userId, classId);
+            requestPK = new RequestPK(user.getId(), classId);
             request = new Request(requestPK);
             services.sendRequest(request);
         } catch (TeachToMeServiceException e) {
