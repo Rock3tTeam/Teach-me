@@ -1,6 +1,11 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Point;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.User;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -166,6 +171,7 @@ public interface TeachToMePersistence {
 
     /**
      * Obtiene los dibujos de una clase
+     *
      * @param classId el id de la clase a la cual el dibujo será añadido
      * @return Una lista con los dibujos de la clase
      * @throws TeachToMePersistenceException - Cuando la clase no existe en la base de datos
@@ -174,17 +180,19 @@ public interface TeachToMePersistence {
 
     /**
      * Añade puntos a un dibujo
+     *
      * @param points puntos a ser añadidos
-     * @param draw dibujo sobre el cual se van a añadir los puntos
+     * @param draw   dibujo sobre el cual se van a añadir los puntos
      */
     void addPointsToDraw(List<Point> points, Draw draw);
 
     /**
      * Añade un dibujo a una clase
+     *
      * @param classId el id de la clase a la cual el dibujo será añadido
-     * @param draw el dibujo a ser añadido
-     * @param date la hora a la cual los dibujos serán añadidos
+     * @param draw    el dibujo a ser añadido
+     * @param date    la hora a la cual los dibujos serán añadidos
      * @throws TeachToMePersistenceException - si la clase no existe en la base de datos
      */
-    void addDrawToAClass(long classId, Draw draw , Timestamp date) throws TeachToMePersistenceException;
+    void addDrawToAClass(long classId, Draw draw, Timestamp date) throws TeachToMePersistenceException;
 }

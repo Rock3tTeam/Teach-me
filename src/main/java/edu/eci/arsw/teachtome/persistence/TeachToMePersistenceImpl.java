@@ -1,6 +1,13 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Point;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.Session;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -8,8 +15,6 @@ import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,7 +139,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     public void addUser(User user) throws TeachToMePersistenceException {
         List<User> users = userRepository.getUserByEmail(user.getEmail());
         if (!users.isEmpty()) {
-            throw new TeachToMePersistenceException("Ya existe un usuario con el email "+user.getEmail());
+            throw new TeachToMePersistenceException("Ya existe un usuario con el email " + user.getEmail());
         }
         userRepository.save(user);
         User savedUser = getUser(user.getEmail());
@@ -386,8 +391,8 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         Timestamp dateOfLastDraw = session.getDateOfLastDraw();
         List<Draw> drawsOnTime = new ArrayList<Draw>();
         List<Draw> draws = session.getDraws();
-        for(Draw draw : draws){
-            if(draw.getDateOfDraw().equals(dateOfLastDraw)){
+        for (Draw draw : draws) {
+            if (draw.getDateOfDraw().equals(dateOfLastDraw)) {
                 drawsOnTime.add(draw);
             }
         }
@@ -395,14 +400,14 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public void addPointsToDraw(List<Point> points, Draw draw){
-        for(Point point: points){
+    public void addPointsToDraw(List<Point> points, Draw draw) {
+        for (Point point : points) {
             point.setDraw(draw);
         }
     }
 
     @Override
-    public void addDrawToAClass(long classId, Draw draw , Timestamp date) throws TeachToMePersistenceException {
+    public void addDrawToAClass(long classId, Draw draw, Timestamp date) throws TeachToMePersistenceException {
         Session session = sessionRepository.getSessionByClassId(classId);
         if (session == null) {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
@@ -413,7 +418,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         session.setDateOfLastDraw(date);
         draw.setSession(session);
         draw.setDateOfDraw(date);
-        addPointsToDraw(draw.getPoints(),draw);
+        addPointsToDraw(draw.getPoints(), draw);
         sessionRepository.save(session);
     }
 }
