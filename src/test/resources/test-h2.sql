@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS requests (
 CREATE TABLE IF NOT EXISTS sessions (
    id serial PRIMARY KEY,
    duration INTEGER NOT NULL,
-   class INTEGER(100) NOT NULL
+   class INTEGER(100) NOT NULL,
+   date_of_last_draw timestamp
 );
 
 CREATE TABLE IF NOT EXISTS messages (
