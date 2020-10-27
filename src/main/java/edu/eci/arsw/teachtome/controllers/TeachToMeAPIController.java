@@ -1,6 +1,7 @@
 package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
@@ -296,7 +297,7 @@ public class TeachToMeAPIController {
         }
     }
 
-    /*//SIN IMPLEMENTAR
+    /*SIN IMPLEMENTAR
     @GetMapping(value = "/draws/{classId}")
     public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
         try {
@@ -305,19 +306,18 @@ public class TeachToMeAPIController {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
-    //SIN IMPLEMENTAR
     @PostMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
+    public ResponseEntity<?> addDraw(@RequestBody List<Draw> draws, @PathVariable long classId) {
         try {
-            services.addDraw(classId, draw);
+            services.addDrawsToAClass(classId, draws);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
-    }*/
+    }
 
 
 }

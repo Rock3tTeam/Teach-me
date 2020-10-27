@@ -1,12 +1,6 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
-import edu.eci.arsw.teachtome.model.Session;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -14,6 +8,7 @@ import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -385,7 +380,24 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         return null;
     }
 
-    /*@Override
-    public void addDraw(long classId, Draw draw) throws TeachToMePersistenceException {
-    }*/
+    @Override
+    public void addPointsToDraw(List<Point> points , Draw draw){
+        for(Point point: points){
+            point.setDraw(draw);
+        }
+    }
+
+    @Override
+    public void addDrawToAClass(long classId, Draw draw) throws TeachToMePersistenceException {
+        Session session = sessionRepository.getSessionByClassId(classId);
+        if (session == null) {
+            throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
+        }
+        List<Draw> newDraws = session.getDraws();
+        newDraws.add(draw);
+        session.setDraws(newDraws);
+        draw.setSession(session);
+        addPointsToDraw(draw.getPoints(),draw);
+        sessionRepository.save(session);
+    }
 }

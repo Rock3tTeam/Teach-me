@@ -308,12 +308,14 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
-    /*@Override
-    public void addDraw(long classId, Draw draw) throws TeachToMeServiceException {
+    @Override
+    public void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException {
         try {
-            persistence.addDraw(classId, draw);
+            for(Draw draw : draws) {
+                persistence.addDrawToAClass(classId, draw);
+            }
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
-    }*/
+    }
 }

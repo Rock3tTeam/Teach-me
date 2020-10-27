@@ -1,6 +1,8 @@
 package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,11 +36,16 @@ public class Session {
     private long classId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "session")
     @JsonManagedReference
     private List<Message> chat;
 
-    //private List<Draw> draws;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinColumn(name = "session")
+    @JsonManagedReference
+    private List<Draw> draws = new ArrayList<Draw>();
 
     /**
      * Constructor por defecto de la entidad Sesion
@@ -86,6 +93,14 @@ public class Session {
 
     public void setChat(List<Message> chat) {
         this.chat = chat;
+    }
+
+    public List<Draw> getDraws() {
+        return draws;
+    }
+
+    public void setDraws(List<Draw> draws) {
+        this.draws = draws;
     }
 
     /**

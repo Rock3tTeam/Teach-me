@@ -1,10 +1,6 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 
 import java.util.List;
 
@@ -169,5 +165,7 @@ public interface TeachToMePersistence {
 
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException;
 
-    /*void addDraw(long classId, Draw draw) throws TeachToMePersistenceException;*/
+    void addPointsToDraw(List<Point> points, Draw draw);
+
+    void addDrawToAClass(long classId, Draw draw) throws TeachToMePersistenceException;
 }
