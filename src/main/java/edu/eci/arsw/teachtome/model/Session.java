@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class Session {
 
     @Column(name = "class", length = 10, nullable = false)
     private long classId;
+
+    @Column(name = "date_of_last_draw")
+    private Timestamp dateOfLastDraw;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -61,6 +65,14 @@ public class Session {
     public Session(long classId) {
         this.classId = classId;
         chat = new ArrayList<>();
+    }
+
+    public Timestamp getDateOfLastDraw() {
+        return dateOfLastDraw;
+    }
+
+    public void setDateOfLastDraw(Timestamp dateOfLastDraw) {
+        this.dateOfLastDraw = dateOfLastDraw;
     }
 
     public long getId() {

@@ -8,8 +8,10 @@ import edu.eci.arsw.teachtome.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -377,18 +379,30 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
 
     @Override
     public List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException {
-        return null;
+        Session session = sessionRepository.getSessionByClassId(classId);
+        if (session == null) {
+            throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
+        }
+        Timestamp dateOfLastDraw = session.getDateOfLastDraw();
+        List<Draw> drawsOnTime = new ArrayList<Draw>();
+        List<Draw> draws = session.getDraws();
+        for(Draw draw : draws){
+            if(draw.getDateOfDraw().equals(dateOfLastDraw)){
+                drawsOnTime.add(draw);
+            }
+        }
+        return drawsOnTime;
     }
 
     @Override
-    public void addPointsToDraw(List<Point> points , Draw draw){
+    public void addPointsToDraw(List<Point> points, Draw draw){
         for(Point point: points){
             point.setDraw(draw);
         }
     }
 
     @Override
-    public void addDrawToAClass(long classId, Draw draw) throws TeachToMePersistenceException {
+    public void addDrawToAClass(long classId, Draw draw , Timestamp date) throws TeachToMePersistenceException {
         Session session = sessionRepository.getSessionByClassId(classId);
         if (session == null) {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
@@ -396,7 +410,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         List<Draw> newDraws = session.getDraws();
         newDraws.add(draw);
         session.setDraws(newDraws);
+        session.setDateOfLastDraw(date);
         draw.setSession(session);
+        draw.setDateOfDraw(date);
         addPointsToDraw(draw.getPoints(),draw);
         sessionRepository.save(session);
     }

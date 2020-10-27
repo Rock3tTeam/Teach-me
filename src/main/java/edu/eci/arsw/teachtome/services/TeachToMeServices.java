@@ -311,8 +311,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     @Override
     public void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException {
         try {
+            Timestamp date = new Timestamp(new Date().getTime());
             for(Draw draw : draws) {
-                persistence.addDrawToAClass(classId, draw);
+                persistence.addDrawToAClass(classId, draw,date);
             }
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);

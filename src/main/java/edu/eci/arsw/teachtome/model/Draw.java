@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**

@@ -297,7 +297,6 @@ public class TeachToMeAPIController {
         }
     }
 
-    /*SIN IMPLEMENTAR
     @GetMapping(value = "/draws/{classId}")
     public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
         try {
@@ -306,7 +305,7 @@ public class TeachToMeAPIController {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-    }*/
+    }
 
     @PostMapping(value = "/draws/{classId}")
     public ResponseEntity<?> addDraw(@RequestBody List<Draw> draws, @PathVariable long classId) {

@@ -5,6 +5,7 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 
 import java.util.List;
 
@@ -147,7 +148,19 @@ public interface TeachToMeServicesInterface {
      */
     Request getRequest(Long classId, Long userId) throws TeachToMeServiceException;
 
+    /**
+     * Obtiene los dibujos de una clase
+     * @param classId el id de la clase a la cual el dibujo será añadido
+     * @return Una lista con los dibujos de la clase
+     * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
+     */
     List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException;
 
+    /**
+     * Añade una lista de dibujos a una clase
+     * @param classId el id de la clase a la cual los dibujos serán añadidos
+     * @param draws los dibujos a ser añadidos
+     * @throws TeachToMeServiceException
+     */
     void addDrawsToAClass(long classId,  List<Draw> draws) throws TeachToMeServiceException;
 }
