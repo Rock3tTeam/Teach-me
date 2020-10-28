@@ -299,6 +299,13 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    /**
+     * Obtiene los dibujos de una clase
+     *
+     * @param classId el id de la clase a la cual el dibujo será añadido
+     * @return Una lista con los dibujos de la clase
+     * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
+     */
     @Override
     public List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException {
         try {
@@ -308,12 +315,22 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         }
     }
 
+    /**
+     * Añade una lista de dibujos a una clase
+     *
+     * @param classId el id de la clase a la cual los dibujos serán añadidos
+     * @param draws   los dibujos a ser añadidos
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar las clases
+     */
     @Override
     public void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException {
+        if (draws.isEmpty()) {
+            throw new TeachToMeServiceException("La lista de dibujos debe poseer al menos un dibujo");
+        }
         try {
             Timestamp date = new Timestamp(new Date().getTime());
-            for(Draw draw : draws) {
-                persistence.addDrawToAClass(classId, draw,date);
+            for (Draw draw : draws) {
+                persistence.addDrawToAClass(classId, draw, date);
             }
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);

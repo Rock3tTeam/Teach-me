@@ -412,6 +412,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (session == null) {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
         }
+        if(draw.getPoints()==null || draw.getPoints().isEmpty()){
+            throw new TeachToMePersistenceException("Dibujo mal construido");
+        }
         List<Draw> newDraws = session.getDraws();
         newDraws.add(draw);
         session.setDraws(newDraws);

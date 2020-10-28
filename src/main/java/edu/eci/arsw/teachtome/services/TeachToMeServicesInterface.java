@@ -161,7 +161,7 @@ public interface TeachToMeServicesInterface {
      *
      * @param classId el id de la clase a la cual los dibujos serán añadidos
      * @param draws   los dibujos a ser añadidos
-     * @throws TeachToMeServiceException
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar las clases
      */
     void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException;
 }

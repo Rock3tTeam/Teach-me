@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Clase que representa un dibujo de una sesión dentro de la aplicación TeachToMe
@@ -54,6 +55,10 @@ public class Draw {
         this.points = points;
     }
 
+    public Draw(List<Point> points) {
+        this.points = points;
+    }
+
     public long getId() {
         return id;
     }
@@ -84,5 +89,28 @@ public class Draw {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Draw draw = (Draw) o;
+        return Objects.equals(points, draw.points);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(points);
+    }
+
+    @Override
+    public String toString() {
+        return "Draw{" +
+                "id=" + id +
+                ", dateOfDraw=" + dateOfDraw +
+                ", session=" + session +
+                ", points=" + points +
+                '}';
     }
 }
