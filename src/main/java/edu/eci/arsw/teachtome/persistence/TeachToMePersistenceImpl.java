@@ -119,14 +119,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
      */
     @Override
     public List<Clase> getFilteredClassesByName(String nameFilter) {
-        List<Clase> nonCapitalResults = claseRepository.filterByName(nameFilter.toLowerCase());
-        List<Clase> capitalResults = claseRepository.filterByName(nameFilter.toUpperCase());
-        for (Clase clase : capitalResults) {
-            if (!nonCapitalResults.contains(clase)) {
-                nonCapitalResults.add(clase);
-            }
-        }
-        return nonCapitalResults;
+        return claseRepository.filterByName(nameFilter);
     }
 
     /**
@@ -389,7 +382,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
         }
         Timestamp dateOfLastDraw = session.getDateOfLastDraw();
-        List<Draw> drawsOnTime = new ArrayList<Draw>();
+        List<Draw> drawsOnTime = new ArrayList<>();
         List<Draw> draws = session.getDraws();
         for (Draw draw : draws) {
             if (draw.getDateOfDraw().equals(dateOfLastDraw)) {

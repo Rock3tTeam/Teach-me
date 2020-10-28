@@ -15,9 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -222,14 +220,16 @@ public class ClassServicesTest extends BasicServicesTestsUtilities {
     @Test
     public void shouldConsultTheClassesByName() throws TeachToMeServiceException {
         addClassAndTeacher("teacherTT@gmail.com", "Ejemplo TT", "Ejemplo TT", 30, 0);
-        addClassAndTeacher("teacherUU@gmail.com", "Ejemplo UU", "Ejemplo UU", 20, 0);
+        addClassAndTeacher("teacherUU@gmail.com", "ejemplo UU", "Ejemplo UU", 20, 0);
         String nameFilter = "Ejemplo";
         List<Clase> clases = services.getFilteredClassesByName(nameFilter);
         assertEquals(2, clases.size());
         String name;
+        String lowerCaseName = nameFilter.toLowerCase();
+        String upperCaseName = nameFilter.toUpperCase();
         for (Clase returnedClass : clases) {
             name = returnedClass.getNombre();
-            assertTrue(name.contains(nameFilter));
+            assertTrue(name.contains(nameFilter) || name.contains(lowerCaseName) || name.contains(upperCaseName));
         }
     }
 }
