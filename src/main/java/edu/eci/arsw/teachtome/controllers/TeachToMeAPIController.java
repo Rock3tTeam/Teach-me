@@ -10,17 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -189,6 +179,22 @@ public class TeachToMeAPIController {
     }
 
     /**
+     * Obtiene los ultimos dibujos de una clase
+     *
+     * @param classId Identificador de la clase
+     * @return Entidad de Respuesta con la coleccion de clases y en caso de fallo, el mensaje de la excepcion
+     */
+    @GetMapping(value = "/draws/{classId}")
+    public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
+        try {
+            return new ResponseEntity<>(services.getDrawsOfAClass(classId), HttpStatus.ACCEPTED);
+        } catch (TeachToMeServiceException e) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
      * Agrega un nuevo usuario dentro de la app
      *
      * @param user Informacion del nuevo usuario
@@ -252,6 +258,24 @@ public class TeachToMeAPIController {
     }
 
     /**
+     * Agrega dibujos dentro de la sesión de una clase
+     *
+     * @param draws   Coleccion de dibujos para agregar
+     * @param classId Identificador de la clase
+     * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
+     */
+    @PostMapping(value = "/draws/{classId}")
+    public ResponseEntity<?> addDraw(@RequestBody List<Draw> draws, @PathVariable long classId) {
+        try {
+            services.addDrawsToAClass(classId, draws);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (TeachToMeServiceException ex) {
+            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    /**
      * Actualiza la informacion de una solicitud para una clase
      *
      * @param email   - Email del profesor
@@ -296,27 +320,4 @@ public class TeachToMeAPIController {
             }
         }
     }
-
-    @GetMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
-        try {
-            return new ResponseEntity<>(services.getDrawsOfAClass(classId), HttpStatus.ACCEPTED);
-        } catch (TeachToMeServiceException e) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> addDraw(@RequestBody List<Draw> draws, @PathVariable long classId) {
-        try {
-            services.addDrawsToAClass(classId, draws);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (TeachToMeServiceException ex) {
-            Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
-
-
 }
