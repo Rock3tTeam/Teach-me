@@ -5,7 +5,6 @@ import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
 import edu.eci.arsw.teachtome.testcontroller.BasicControllerTestsUtilities;
-import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,12 +32,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class DrawsControllerTest extends BasicControllerTestsUtilities {
 
-    @Autowired
-    private TeachToMeServices services;
-
     @Before
     public void setUpTest() throws Exception {
         super.setUpUser();
+    }
+
+    @Test
+    public void shouldNotAddABadBuildDraw() throws Exception {
+        Clase clase = addClassAndTeacher("artistaB@outlook.com", "Arte B", "Arte B");
+        ArrayList<Point> points = new ArrayList<>();
+        Draw draw = new Draw(points);
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(draw)))
+                .andExpect(status().isConflict())
+                .andReturn();
+        String bodyResult = result.getResponse().getContentAsString();
+        assertEquals("El dibujo debe poseer al menos un punto", bodyResult);
     }
 
     @Test
@@ -60,7 +71,11 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
         ArrayList<Point> points = new ArrayList<>();
         points.add(new Point(20, 20));
         Draw draw = new Draw(points);
-        services.addDrawToAClass(clase.getId(), draw);
+        mvc.perform(
+                MockMvcRequestBuilders.post(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(draw)))
+                .andExpect(status().isCreated());
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)

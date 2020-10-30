@@ -377,8 +377,6 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         Timestamp dateOfLastDraw = session.getDateOfLastDraw();
         List<Draw> drawsOnTime = new ArrayList<>();
         List<Draw> draws = session.getDraws();
-        System.out.println("*****");
-        System.out.println(session);
         for (Draw draw : draws) {
             if (draw.getDateOfDraw().equals(dateOfLastDraw)) {
                 drawsOnTime.add(draw);
