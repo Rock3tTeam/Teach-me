@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -389,6 +388,9 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
                 lastDraw = draw;
                 break;
             }
+        }
+        if (lastDraw == null) {
+            throw new TeachToMePersistenceException("No existen dibujos para esta clase");
         }
         return lastDraw;
     }

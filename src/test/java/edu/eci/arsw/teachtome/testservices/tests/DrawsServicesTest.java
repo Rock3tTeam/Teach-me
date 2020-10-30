@@ -62,13 +62,24 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldGetTheDrawsOfANonExistentClass() {
+    public void shouldNotGetTheDrawsOfANonExistentClass() {
         long id = 200;
         try {
             services.getDrawsOfAClass(id);
             fail("Debió fallar al buscar una clase con id inexistente");
         } catch (TeachToMeServiceException e) {
             assertEquals("No existe la clase con el id " + id, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotGetTheDrawsOfAClassWithoutDraws() throws Exception {
+        Clase clase = addClassAndTeacher("dibujanteE@gmail.com", "Dibujo E", "Dibujo E");
+        try {
+            services.getDrawsOfAClass(clase.getId());
+            fail("Debió fallar al buscar una clase sin dibujos");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No existen dibujos para esta clase", e.getMessage());
         }
     }
 
