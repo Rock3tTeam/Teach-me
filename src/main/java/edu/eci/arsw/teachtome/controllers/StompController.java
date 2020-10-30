@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.controllers;
 
+import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
@@ -8,6 +9,8 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 /**
  * Controlador de estilo publish suscribe para los eventos ocurridos en las sesiones de clase de Teach To Me
@@ -42,7 +45,8 @@ public class StompController {
      * @throws Exception Cuando Falla Al Transmitir el Nuevo Punto
      */
     @MessageMapping("/draws.{classId}")
-    public void handleDrawEvent(Point point, @DestinationVariable Long classId) throws Exception {
-        msgt.convertAndSend("/topic/draws." + classId, point);
+    public void handleDrawEvent(Draw draw, @DestinationVariable Long classId) throws Exception {
+        System.out.println(draw);
+        msgt.convertAndSend("/topic/draws." + classId, draw);
     }
 }
