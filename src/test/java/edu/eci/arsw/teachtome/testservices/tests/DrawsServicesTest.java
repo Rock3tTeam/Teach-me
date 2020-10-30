@@ -14,7 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -81,7 +80,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         Draw draw = new Draw(points);
         services.addDrawToAClass(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw,returnedDraw);
+        assertEquals(draw, returnedDraw);
     }
 
     @Test
@@ -92,12 +91,12 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         Draw draw = new Draw(points);
         services.addDrawToAClass(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw,returnedDraw);
+        assertEquals(draw, returnedDraw);
         ArrayList<Point> points2 = new ArrayList<>();
         points2.add(new Point(50, 50));
         Draw draw2 = new Draw(points2);
         services.addDrawToAClass(clase.getId(), draw2);
         Draw returnedLastDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw2,returnedLastDraw);
+        assertEquals(draw2, returnedLastDraw);
     }
 }

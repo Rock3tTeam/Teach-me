@@ -1,6 +1,13 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.*;
+import edu.eci.arsw.teachtome.model.Clase;
+import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Point;
+import edu.eci.arsw.teachtome.model.Request;
+import edu.eci.arsw.teachtome.model.RequestPK;
+import edu.eci.arsw.teachtome.model.Session;
+import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -375,14 +382,15 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
         }
         Timestamp dateOfLastDraw = session.getDateOfLastDraw();
-        List<Draw> drawsOnTime = new ArrayList<>();
+        Draw lastDraw = null;
         List<Draw> draws = session.getDraws();
         for (Draw draw : draws) {
             if (draw.getDateOfDraw().equals(dateOfLastDraw)) {
-                drawsOnTime.add(draw);
+                lastDraw = draw;
+                break;
             }
         }
-        return drawsOnTime.get(0);
+        return lastDraw;
     }
 
     @Override
