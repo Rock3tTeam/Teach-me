@@ -195,7 +195,7 @@ public class TeachToMeAPIController {
      * @return Entidad de Respuesta con la coleccion de clases y en caso de fallo, el mensaje de la excepcion
      */
     @GetMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> getDrawsOfAClass(@PathVariable long classId) {
+    public ResponseEntity<?> getDrawOfAClass(@PathVariable long classId) {
         try {
             return new ResponseEntity<>(services.getDrawsOfAClass(classId), HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
@@ -267,18 +267,17 @@ public class TeachToMeAPIController {
         }
     }
 
-    //SE DEBE REMOVER ESTE METODO DESPUES DE IMPLEMENTAR LOS DIBUJOS EN EL FRONT
     /**
      * Agrega dibujos dentro de la sesión de una clase
      *
-     * @param draws   Coleccion de dibujos para agregar
+     * @param draw    Dibujos para agregar
      * @param classId Identificador de la clase
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PostMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> addDraw(@RequestBody List<Draw> draws, @PathVariable long classId) {
+    public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
         try {
-            services.addDrawsToAClass(classId, draws);
+            services.addDrawToAClass(classId, draw);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);

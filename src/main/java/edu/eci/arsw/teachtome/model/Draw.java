@@ -91,6 +91,10 @@ public class Draw {
         this.session = session;
     }
 
+    public boolean isEmpty() {
+        return points.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

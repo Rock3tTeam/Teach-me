@@ -1,13 +1,6 @@
 package edu.eci.arsw.teachtome.persistence;
 
-import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
-import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Point;
-import edu.eci.arsw.teachtome.model.Request;
-import edu.eci.arsw.teachtome.model.RequestPK;
-import edu.eci.arsw.teachtome.model.Session;
-import edu.eci.arsw.teachtome.model.User;
+import edu.eci.arsw.teachtome.model.*;
 import edu.eci.arsw.teachtome.persistence.repositories.ClaseRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.RequestRepository;
 import edu.eci.arsw.teachtome.persistence.repositories.SessionRepository;
@@ -376,7 +369,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
     }
 
     @Override
-    public List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException {
+    public Draw getDrawOfAClass(long classId) throws TeachToMePersistenceException {
         Session session = sessionRepository.getSessionByClassId(classId);
         if (session == null) {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
@@ -384,12 +377,14 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         Timestamp dateOfLastDraw = session.getDateOfLastDraw();
         List<Draw> drawsOnTime = new ArrayList<>();
         List<Draw> draws = session.getDraws();
+        System.out.println("*****");
+        System.out.println(session);
         for (Draw draw : draws) {
             if (draw.getDateOfDraw().equals(dateOfLastDraw)) {
                 drawsOnTime.add(draw);
             }
         }
-        return drawsOnTime;
+        return drawsOnTime.get(0);
     }
 
     @Override
@@ -405,12 +400,7 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         if (session == null) {
             throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
         }
-        if(draw.getPoints()==null || draw.getPoints().isEmpty()){
-            throw new TeachToMePersistenceException("Dibujo mal construido");
-        }
-        List<Draw> newDraws = session.getDraws();
-        newDraws.add(draw);
-        session.setDraws(newDraws);
+        session.addDraw(draw);
         session.setDateOfLastDraw(date);
         draw.setSession(session);
         draw.setDateOfDraw(date);

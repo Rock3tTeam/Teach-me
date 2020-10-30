@@ -307,31 +307,32 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
      */
     @Override
-    public List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException {
+    public Draw getDrawsOfAClass(long classId) throws TeachToMeServiceException {
         try {
-            return persistence.getDrawsOfAClass(classId);
+            return persistence.getDrawOfAClass(classId);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
 
     /**
-     * Añade una lista de dibujos a una clase
+     * Añade un dibujo a una clase
      *
-     * @param classId el id de la clase a la cual los dibujos serán añadidos
-     * @param draws   los dibujos a ser añadidos
-     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar las clases
+     * @param classId El identificador de la clase a la cual los dibujos serán añadidos
+     * @param draw    El dibujo que va a ser agregado
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar el dibujo
      */
     @Override
-    public void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException {
-        if (draws.isEmpty()) {
-            throw new TeachToMeServiceException("La lista de dibujos debe poseer al menos un dibujo");
+    public void addDrawToAClass(long classId, Draw draw) throws TeachToMeServiceException {
+        if (draw.getPoints() == null) {
+            throw new TeachToMeServiceException("Dibujo mal construido");
+        }
+        if (draw.isEmpty()) {
+            throw new TeachToMeServiceException("El dibujo debe poseer al menos un punto");
         }
         try {
             Timestamp date = new Timestamp(new Date().getTime());
-            for (Draw draw : draws) {
-                persistence.addDrawToAClass(classId, draw, date);
-            }
+            persistence.addDrawToAClass(classId, draw, date);
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }

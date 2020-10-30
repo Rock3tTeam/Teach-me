@@ -57,12 +57,10 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
     @Test
     public void shouldGetTheDrawsOfAClass() throws Exception {
         Clase clase = addClassAndTeacher("artistaA@outlook.com", "Arte A", "Arte A");
-        ArrayList<Draw> draws = new ArrayList<>();
         ArrayList<Point> points = new ArrayList<>();
         points.add(new Point(20, 20));
         Draw draw = new Draw(points);
-        draws.add(draw);
-        services.addDrawsToAClass(clase.getId(), draws);
+        services.addDrawToAClass(clase.getId(), draw);
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -70,10 +68,7 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
                 .andExpect(status().isAccepted())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        JSONArray array = new JSONArray(bodyResult);
-        assertEquals(1, array.length());
-        String jsonMessage = array.getJSONObject(0).toString();
-        Draw returnedDraw = gson.fromJson(jsonMessage, Draw.class);
+        Draw returnedDraw = gson.fromJson(bodyResult, Draw.class);
         assertEquals(draw, returnedDraw);
     }
 }

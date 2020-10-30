@@ -173,10 +173,10 @@ public interface TeachToMePersistence {
      * Obtiene los dibujos de una clase
      *
      * @param classId el id de la clase a la cual el dibujo será añadido
-     * @return Una lista con los dibujos de la clase
+     * @return El ultimo dibujo de la clase
      * @throws TeachToMePersistenceException - Cuando la clase no existe en la base de datos
      */
-    List<Draw> getDrawsOfAClass(long classId) throws TeachToMePersistenceException;
+    Draw getDrawOfAClass(long classId) throws TeachToMePersistenceException;
 
     /**
      * Añade puntos a un dibujo

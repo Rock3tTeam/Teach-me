@@ -118,10 +118,19 @@ public class Session {
     /**
      * Agrega un mensaje dentro del chat
      *
-     * @param message
+     * @param message Mensaje a Agregar
      */
     public void addMessage(Message message) {
         chat.add(message);
+    }
+
+    /**
+     * Agrega un dibujo a la sesion de clase
+     *
+     * @param draw Dibujo a agregar
+     */
+    public void addDraw(Draw draw) {
+        draws.add(draw);
     }
 
     @Override
@@ -133,6 +142,4 @@ public class Session {
                 ", chat=" + chat +
                 '}';
     }
-
-
 }

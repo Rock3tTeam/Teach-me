@@ -151,17 +151,17 @@ public interface TeachToMeServicesInterface {
      * Obtiene los dibujos de una clase
      *
      * @param classId el id de la clase a la cual el dibujo será añadido
-     * @return Una lista con los dibujos de la clase
+     * @return El ultimo dibujo de la clase
      * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
      */
-    List<Draw> getDrawsOfAClass(long classId) throws TeachToMeServiceException;
+    Draw getDrawsOfAClass(long classId) throws TeachToMeServiceException;
 
     /**
-     * Añade una lista de dibujos a una clase
+     * Añade un dibujo a una clase
      *
-     * @param classId el id de la clase a la cual los dibujos serán añadidos
-     * @param draws   los dibujos a ser añadidos
-     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar las clases
+     * @param classId El identificador de la clase a la cual los dibujos serán añadidos
+     * @param draw    El dibujo que va a ser agregado
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar el dibujo
      */
-    void addDrawsToAClass(long classId, List<Draw> draws) throws TeachToMeServiceException;
+    void addDrawToAClass(long classId, Draw draw) throws TeachToMeServiceException;
 }
