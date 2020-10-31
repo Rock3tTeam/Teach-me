@@ -2,15 +2,12 @@ package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
-import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 /**
  * Controlador de estilo publish suscribe para los eventos ocurridos en las sesiones de clase de Teach To Me
@@ -40,13 +37,12 @@ public class StompController {
     /**
      * Manejador de Eventos Relacionados con el tablero de la sesión de clase
      *
-     * @param point   Punto enviado en el tablero
+     * @param draw    Dibujo enviado en el tablero
      * @param classId Identificador de la clase sobre la cual es estableció la comunicación
      * @throws Exception Cuando Falla Al Transmitir el Nuevo Punto
      */
     @MessageMapping("/draws.{classId}")
     public void handleDrawEvent(Draw draw, @DestinationVariable Long classId) throws Exception {
-        System.out.println(draw);
         msgt.convertAndSend("/topic/draws." + classId, draw);
     }
 }

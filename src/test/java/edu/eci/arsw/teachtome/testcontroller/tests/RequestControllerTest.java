@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.testcontroller.tests;
 
-import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.RequestDTO;
 import edu.eci.arsw.teachtome.model.Clase;
@@ -265,7 +264,7 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
                 .andExpect(status().isNotFound())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe la solicitud de la clase "+clase.getId()+" por parte del usuario "+user.getId(),bodyResult);
+        assertEquals("No existe la solicitud de la clase " + clase.getId() + " por parte del usuario " + user.getId(), bodyResult);
     }
 
     @Test

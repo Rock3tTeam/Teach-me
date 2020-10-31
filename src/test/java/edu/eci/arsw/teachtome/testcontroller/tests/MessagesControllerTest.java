@@ -1,6 +1,5 @@
 package edu.eci.arsw.teachtome.testcontroller.tests;
 
-import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Message;

@@ -1,6 +1,11 @@
 package edu.eci.arsw.teachtome.controllers;
 
-import edu.eci.arsw.teachtome.controllers.dtos.*;
+import edu.eci.arsw.teachtome.controllers.dtos.ClaseDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.DrawDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.MessageDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.RequestDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Request;
@@ -11,7 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -227,8 +242,8 @@ public class TeachToMeAPIController {
     /**
      * Envia una solicitud para ser parte de una clase
      *
-     * @param email   - Email del solicitante
-     * @param classId - Identificador de la clase
+     * @param email      - Email del solicitante
+     * @param classId    - Identificador de la clase
      * @param requestDTO - Informacion de la solicitud
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
@@ -252,7 +267,7 @@ public class TeachToMeAPIController {
     /**
      * Agrega una clase para dictar
      *
-     * @param claseDTO     Informacion basica de la clase
+     * @param claseDTO  Informacion basica de la clase
      * @param userEmail - Email del profesor
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
@@ -273,7 +288,7 @@ public class TeachToMeAPIController {
     /**
      * Agrega dibujos dentro de la sesión de una clase
      *
-     * @param drawDTO    Dibujos para agregar
+     * @param drawDTO Dibujos para agregar
      * @param classId Identificador de la clase
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
@@ -291,8 +306,8 @@ public class TeachToMeAPIController {
     /**
      * Actualiza la informacion de una solicitud para una clase
      *
-     * @param email   - Email del profesor
-     * @param classId - Identificador de la clase
+     * @param email      - Email del profesor
+     * @param classId    - Identificador de la clase
      * @param requestDTO - Nueva Informacion de la solicitud
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
