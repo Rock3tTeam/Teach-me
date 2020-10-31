@@ -12,16 +12,19 @@ public class RequestDTO implements Serializable {
 
     private Boolean accepted;
 
+    private GetUserDTO student;
+
     public RequestDTO() {
     }
 
     public RequestDTO(Request request) {
-        if(request.getRequestId()!=null){
+        if (request.getRequestId() != null) {
             this.requestId = new RequestPKDTO(request.getRequestId());
         }
         if (request.hasAnswer()) {
             this.accepted = request.isAccepted();
         }
+        this.student = new GetUserDTO(request.getStudent());
     }
 
     public RequestPKDTO getRequestId() {
@@ -38,6 +41,14 @@ public class RequestDTO implements Serializable {
 
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public GetUserDTO getStudent() {
+        return student;
+    }
+
+    public void setStudent(GetUserDTO student) {
+        this.student = student;
     }
 
     public boolean hasAnswer() {

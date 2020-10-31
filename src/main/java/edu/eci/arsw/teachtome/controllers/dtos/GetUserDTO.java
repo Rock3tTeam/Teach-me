@@ -22,14 +22,21 @@ public class GetUserDTO implements Serializable {
 
     private List<ClaseDTO> studyingClasses;
 
+    public GetUserDTO() {
+    }
+
     public GetUserDTO(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.description = user.getDescription();
-        this.teachingClasses = getClassesDTO(user.getTeachingClasses());
-        this.studyingClasses = getClassesDTO(user.getStudyingClasses());
+        if (user.getTeachingClasses() != null) {
+            this.teachingClasses = getClassesDTO(user.getTeachingClasses());
+        }
+        if (user.getStudyingClasses() != null) {
+            this.studyingClasses = getClassesDTO(user.getStudyingClasses());
+        }
     }
 
     public long getId() {
