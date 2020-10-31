@@ -212,7 +212,8 @@ public class TeachToMeAPIController {
      */
     @PostMapping(value = "/users")
     public ResponseEntity<?> addUser(@RequestBody User user) {
-        if (user.getEmail() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+        if (user.getEmail() == null)
+            return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             services.addUser(user);
@@ -233,7 +234,8 @@ public class TeachToMeAPIController {
      */
     @PostMapping(value = "/classes/{classId}/requests")
     public ResponseEntity<?> sendRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
-        if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+        if (request.getRequestId() == null)
+            return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
             services.sendRequest(request);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -256,7 +258,8 @@ public class TeachToMeAPIController {
      */
     @PostMapping(value = "/classes")
     public ResponseEntity<?> addClase(@RequestBody Clase clase, @RequestHeader("x-userEmail") String userEmail) {
-        if (clase.getNombre() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+        if (clase.getNombre() == null)
+            return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
             User user = services.getUser(userEmail);
             services.addClase(clase, user);
@@ -295,7 +298,8 @@ public class TeachToMeAPIController {
      */
     @PutMapping(value = "/classes/{classId}/requests")
     public ResponseEntity<?> updateRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
-        if (request.getRequestId() == null) return new ResponseEntity<>("JSON Bad Format", HttpStatus.BAD_REQUEST);
+        if (request.getRequestId() == null)
+            return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
             services.updateRequest(classId, email, request);
             return new ResponseEntity<>(HttpStatus.CREATED);

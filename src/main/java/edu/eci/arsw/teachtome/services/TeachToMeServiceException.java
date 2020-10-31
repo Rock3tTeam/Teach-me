@@ -5,6 +5,8 @@ package edu.eci.arsw.teachtome.services;
  */
 public class TeachToMeServiceException extends Exception {
     public static final String NULL_EMAIL = "El email no puede ser nulo";
+    public static final String BAD_FORMAT = "JSON Bad Format";
+
     /**
      * Constructor de la clase TeachToMeServiceException
      *
