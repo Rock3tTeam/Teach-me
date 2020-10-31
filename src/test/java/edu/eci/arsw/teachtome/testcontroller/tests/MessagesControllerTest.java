@@ -1,5 +1,7 @@
 package edu.eci.arsw.teachtome.testcontroller.tests;
 
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.User;
@@ -58,8 +60,8 @@ public class MessagesControllerTest extends BasicControllerTestsUtilities {
     public void shouldGetTheChat() throws Exception {
         String email = "ProfeChat@outlook.com";
         addUser(email);
-        User user = getUser(email);
-        Clase clase = addClass(user, "Clase Chat", "Chat");
+        GetUserDTO user = getUser(email);
+        Clase clase = addClass(new User(user), "Clase Chat", "Chat");
         Message message = new Message("hola estudiantes");
         services.sendMessage(message, clase.getId(), email);
         MvcResult result = mvc.perform(

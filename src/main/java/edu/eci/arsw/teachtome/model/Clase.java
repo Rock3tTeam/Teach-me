@@ -2,6 +2,7 @@ package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.eci.arsw.teachtome.controllers.dtos.ClaseDTO;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Clase que representa una asignatura que va a ser enseñada dentro de la aplicación TeachToMe
@@ -58,7 +59,7 @@ public class Clase {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "class"), inverseJoinColumns = @JoinColumn(name = "student"))
-    private List<User> students = new ArrayList<User>();
+    private List<User> students = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor por defecto de la entidad clase
@@ -83,6 +84,21 @@ public class Clase {
         this.amountOfStudents = amountOfStudents;
         this.dateOfInit = dateOfInit;
         this.dateOfEnd = dateOfEnd;
+    }
+
+    /**
+     * Constructor de la entidad clase
+     *
+     * @param claseDTO POJO de la entidad clase
+     */
+    public Clase(ClaseDTO claseDTO) {
+        this.id = claseDTO.getId();
+        this.nombre = claseDTO.getNombre();
+        this.capacity = claseDTO.getCapacity();
+        this.description = claseDTO.getDescription();
+        this.amountOfStudents = claseDTO.getAmountOfStudents();
+        this.dateOfInit = claseDTO.getDateOfInit();
+        this.dateOfEnd = claseDTO.getDateOfEnd();
     }
 
     public long getId() {

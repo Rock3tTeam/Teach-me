@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -53,8 +54,9 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     @Test
     public void shouldNotAddANullPointsDraw() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteC@gmail.com", "Dibujo C", "Dibujo C");
+        List<Point> points = null;
         try {
-            services.addDrawToAClass(clase.getId(), new Draw(null));
+            services.addDrawToAClass(clase.getId(), new Draw(points));
             fail("Debió fallar al intentar agregar una lista con un dibujo con puntos nulos");
         } catch (TeachToMeServiceException e) {
             assertEquals("Dibujo mal construido", e.getMessage());

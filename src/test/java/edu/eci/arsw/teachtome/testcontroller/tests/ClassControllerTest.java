@@ -98,6 +98,8 @@ public class ClassControllerTest extends BasicControllerTestsUtilities {
         String email = "UsuarioF@gmail.com";
         addUser(email);
         Clase clase = getClase("Controlador", "Prueba de Inserción desde el controlador");
+        System.out.println("******");
+        System.out.println(getJsonClase(clase));
         mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/classes").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)

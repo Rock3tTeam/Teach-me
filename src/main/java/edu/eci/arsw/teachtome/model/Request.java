@@ -1,5 +1,7 @@
 package edu.eci.arsw.teachtome.model;
 
+import edu.eci.arsw.teachtome.controllers.dtos.RequestDTO;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -61,6 +63,13 @@ public class Request {
 
     public Request(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public Request(RequestDTO requestDTO) {
+        this.requestId = new RequestPK(requestDTO.getRequestId());
+        if(requestDTO.hasAnswer()){
+            this.accepted = requestDTO.getAccepted();
+        }
     }
 
     public Boolean isAccepted() {

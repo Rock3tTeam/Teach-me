@@ -3,6 +3,8 @@ package edu.eci.arsw.teachtome.testcontroller;
 import com.google.gson.Gson;
 import edu.eci.arsw.teachtome.TestsUtilities;
 import edu.eci.arsw.teachtome.auth.UserDetailsImpl;
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
@@ -47,10 +49,11 @@ public class BasicControllerTestsUtilities implements TestsUtilities {
     @Override
     public User addUser(String email) throws Exception {
         User user = new User(email, "Juan", "Rodriguez", "nuevo", email);
+        CreateUserDTO createUserDTO = new CreateUserDTO(user);
         mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(user)))
+                        .content(gson.toJson(createUserDTO)))
                 .andExpect(status().isCreated());
         return user;
     }
@@ -106,7 +109,7 @@ public class BasicControllerTestsUtilities implements TestsUtilities {
         return requestPK;
     }
 
-    public User getUser(String email) throws Exception {
+    public GetUserDTO getUser(String email) throws Exception {
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/users/" + email).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,11 +117,12 @@ public class BasicControllerTestsUtilities implements TestsUtilities {
                 .andExpect(status().isAccepted())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        return gson.fromJson(bodyResult, User.class);
+        User user = gson.fromJson(bodyResult, User.class);
+        return new GetUserDTO(user);
     }
 
     protected String getJsonClase(Clase clase) {
-        return String.format("{\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getNombre(), clase.getCapacity(), clase.getDescription(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
+        return String.format("{\"id\":%d,\"nombre\":\"%s\",\"capacity\":%d,\"description\":\"%s\",\"amountOfStudents\":%d,\"dateOfInit\":\"%s\",\"dateOfEnd\":\"%s\"}", clase.getId(),clase.getNombre(), clase.getCapacity(), clase.getDescription(), clase.getAmountOfStudents(), getJsonFormatTimeStamp(clase.getDateOfInit()), getJsonFormatTimeStamp(clase.getDateOfEnd()));
     }
 
     protected String getJsonFormatTimeStamp(Timestamp timestamp) {

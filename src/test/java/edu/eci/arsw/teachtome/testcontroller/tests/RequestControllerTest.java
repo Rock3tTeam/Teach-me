@@ -1,5 +1,8 @@
 package edu.eci.arsw.teachtome.testcontroller.tests;
 
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.RequestDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.RequestPK;
@@ -55,8 +58,8 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldNotSendARequestTheTeacherInHisClass() throws Exception {
         String email = "ProfeB@outlook.com";
         addUser(email);
-        User user = getUser(email);
-        Clase clase = addClass(user, "Clase B", "Description B");
+        GetUserDTO user = getUser(email);
+        Clase clase = addClass(new User(user), "Clase B", "Description B");
         Request request = new Request(new RequestPK(user.getId(), clase.getId()));
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/classes/" + clase.getId() + "/requests").header("Authorization", token).header("x-userEmail", email)
@@ -115,7 +118,7 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldSendAndGetTheRequestsOfAClass() throws Exception {
         String email = "EstudianteE@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeE@outlook.com", "Clase E", "Description E");
         Request request = new Request(new RequestPK(user.getId(), clase.getId()));
         mvc.perform(
@@ -153,9 +156,9 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldNotUpdateTheRequestOfAClassIfIsNotTheTeacher() throws Exception {
         String email = "EstudianteF@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeF@outlook.com", "Clase F", "Description F");
-        RequestPK requestPK = sendRequest(user, clase.getId());
+        RequestPK requestPK = sendRequest(new User(user), clase.getId());
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.put(apiRoot + "/classes/" + clase.getId() + "/requests").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -171,7 +174,7 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
         long id = 200;
         String email = "EstudianteG@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         RequestPK requestPK = new RequestPK(user.getId(), id);
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.put(apiRoot + "/classes/" + id + "/requests").header("Authorization", token).header("x-userEmail", email)
@@ -187,13 +190,14 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldNotUpdateABadBuildRequest() throws Exception {
         String email = "EstudianteH@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeH@outlook.com", "Clase H", "Description H");
-        sendRequest(user, clase.getId());
+        sendRequest(new User(user), clase.getId());
+        RequestPK requestPK = null;
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.put(apiRoot + "/classes/" + clase.getId() + "/requests").header("Authorization", token).header("x-userEmail", email)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(new Request(null))))
+                        .content(gson.toJson(new RequestDTO(new Request(requestPK)))))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
@@ -204,9 +208,9 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldUpdateARequestToTrue() throws Exception {
         String email = "EstudianteI@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeI@outlook.com", "Clase I", "Description I");
-        RequestPK requestPK = sendRequest(user, clase.getId());
+        RequestPK requestPK = sendRequest(new User(user), clase.getId());
         mvc.perform(
                 MockMvcRequestBuilders.put(apiRoot + "/classes/" + clase.getId() + "/requests").header("Authorization", token).header("x-userEmail", "ProfeI@outlook.com")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -226,9 +230,9 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldGetTheStudyingClassesOfAStudent() throws Exception {
         String email = "EstudianteJ@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeJ@outlook.com", "Clase J", "Description J");
-        RequestPK requestPK = sendRequest(user, clase.getId());
+        RequestPK requestPK = sendRequest(new User(user), clase.getId());
         mvc.perform(
                 MockMvcRequestBuilders.put(apiRoot + "/classes/" + clase.getId() + "/requests").header("Authorization", token).header("x-userEmail", "ProfeJ@outlook.com")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -252,7 +256,7 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldNotGetANonExistentRequest() throws Exception {
         String email = "EstudianteL@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeL@outlook.com", "Clase L", "Description L");
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/requests/" + clase.getId() + "/" + user.getId()).header("Authorization", token)
@@ -268,9 +272,9 @@ public class RequestControllerTest extends BasicControllerTestsUtilities {
     public void shouldGetARequest() throws Exception {
         String email = "EstudianteK@outlook.com";
         addUser(email);
-        User user = getUser(email);
+        GetUserDTO user = getUser(email);
         Clase clase = addClassAndTeacher("ProfeK@outlook.com", "Clase K", "Description K");
-        RequestPK requestPK = sendRequest(user, clase.getId());
+        RequestPK requestPK = sendRequest(new User(user), clase.getId());
         Request request = new Request(requestPK);
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.get(apiRoot + "/requests/" + clase.getId() + "/" + user.getId()).header("Authorization", token)

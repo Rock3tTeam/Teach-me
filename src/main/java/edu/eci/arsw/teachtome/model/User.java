@@ -1,6 +1,9 @@
 package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import edu.eci.arsw.teachtome.controllers.dtos.ClaseDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,7 +53,7 @@ public class User {
     private List<Clase> teachingClasses;
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)
-    private List<Clase> studyingClasses = new ArrayList<Clase>();
+    private List<Clase> studyingClasses = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor por defecto de la entidad Usuario
@@ -109,6 +111,30 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.teachingClasses = new CopyOnWriteArrayList<>();
+    }
+
+    /**
+     * Constructor de la clase User con base en la clase GetUserDTO
+     *
+     * @param getUserDTO POJO version for get an user
+     */
+    public User(GetUserDTO getUserDTO) {
+        this.id = getUserDTO.getId();
+        this.email = getUserDTO.getEmail();
+        this.firstName = getUserDTO.getFirstName();
+        this.lastName = getUserDTO.getLastName();
+        this.description = getUserDTO.getDescription();
+        this.teachingClasses = getClassesFromDTO(getUserDTO.getTeachingClasses());
+        this.studyingClasses = getClassesFromDTO(getUserDTO.getStudyingClasses());
+    }
+
+    public User(CreateUserDTO createUserDTO) {
+        this.email = createUserDTO.getEmail();
+        this.firstName = createUserDTO.getFirstName();
+        this.lastName = createUserDTO.getLastName();
+        this.password = createUserDTO.getPassword();
+        this.description = createUserDTO.getDescription();
         this.teachingClasses = new CopyOnWriteArrayList<>();
     }
 
@@ -174,6 +200,14 @@ public class User {
 
     public void setStudyingClasses(List<Clase> studyingClasses) {
         this.studyingClasses = studyingClasses;
+    }
+
+    public List<Clase> getClassesFromDTO(List<ClaseDTO> claseDTOS) {
+        List<Clase> clases = new CopyOnWriteArrayList<>();
+        for (ClaseDTO claseDTO : claseDTOS) {
+            clases.add(new Clase(claseDTO));
+        }
+        return clases;
     }
 
     @Override

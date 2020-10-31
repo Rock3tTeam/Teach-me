@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.controllers;
 
+import edu.eci.arsw.teachtome.controllers.dtos.*;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Request;
@@ -10,17 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,7 +42,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/classes/{classId}")
     public ResponseEntity<?> getClass(@PathVariable Long classId) {
         try {
-            return new ResponseEntity<>(services.getClase(classId), HttpStatus.ACCEPTED);
+            ClaseDTO claseDTO = new ClaseDTO(services.getClase(classId));
+            return new ResponseEntity<>(claseDTO, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -70,7 +62,8 @@ public class TeachToMeAPIController {
             return new ResponseEntity<>("El valor para filtrar no puede estar vacío", HttpStatus.BAD_REQUEST);
         }
         try {
-            return new ResponseEntity<>(services.getFilteredClassesByName(nameFilter), HttpStatus.ACCEPTED);
+            List<ClaseDTO> claseDTOS = GetUserDTO.getClassesDTO(services.getFilteredClassesByName(nameFilter));
+            return new ResponseEntity<>(claseDTOS, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -86,7 +79,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/teachingClasses")
     public ResponseEntity<?> getTeachingClasses(@RequestHeader("x-userEmail") String email) {
         try {
-            return new ResponseEntity<>(services.getTeachingClassesOfUser(email), HttpStatus.ACCEPTED);
+            List<ClaseDTO> claseDTOS = GetUserDTO.getClassesDTO(services.getTeachingClassesOfUser(email));
+            return new ResponseEntity<>(claseDTOS, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -102,7 +96,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/studyingClasses")
     public ResponseEntity<?> getClassesOfAStudent(@RequestHeader("x-userEmail") String email) {
         try {
-            return new ResponseEntity<>(services.getClassesOfAStudent(email), HttpStatus.ACCEPTED);
+            List<ClaseDTO> claseDTOS = GetUserDTO.getClassesDTO(services.getClassesOfAStudent(email));
+            return new ResponseEntity<>(claseDTOS, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -127,7 +122,8 @@ public class TeachToMeAPIController {
             if (nonAnswerRequests.isEmpty()) {
                 return new ResponseEntity<>("No hay solicitudes pendientes para esta clase", HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(nonAnswerRequests, HttpStatus.ACCEPTED);
+            List<RequestDTO> requestDTOS = RequestDTO.getRequestsDTO(nonAnswerRequests);
+            return new ResponseEntity<>(requestDTOS, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             if (e.getMessage().equals("No tiene permitido ver los requests a esta clase")) {
@@ -148,7 +144,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/messages/{classId}")
     public ResponseEntity<?> getChat(@PathVariable long classId, @RequestHeader("x-userEmail") String email) {
         try {
-            return new ResponseEntity<>(services.getChat(classId, email), HttpStatus.ACCEPTED);
+            List<MessageDTO> messageDTOS = MessageDTO.getMessagesDTO(services.getChat(classId, email));
+            return new ResponseEntity<>(messageDTOS, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -164,7 +161,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/users/{email}")
     public ResponseEntity<?> getUser(@PathVariable String email) {
         try {
-            return new ResponseEntity<>(services.getUser(email), HttpStatus.ACCEPTED);
+            GetUserDTO getUserDTO = new GetUserDTO(services.getUser(email));
+            return new ResponseEntity<>(getUserDTO, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -181,7 +179,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/requests/{classId}/{userId}")
     public ResponseEntity<?> getRequest(@PathVariable Long classId, @PathVariable Long userId) {
         try {
-            return new ResponseEntity<>(services.getRequest(classId, userId), HttpStatus.ACCEPTED);
+            RequestDTO requestDTO = new RequestDTO(services.getRequest(classId, userId));
+            return new ResponseEntity<>(requestDTO, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -197,7 +196,8 @@ public class TeachToMeAPIController {
     @GetMapping(value = "/draws/{classId}")
     public ResponseEntity<?> getDrawOfAClass(@PathVariable long classId) {
         try {
-            return new ResponseEntity<>(services.getDrawsOfAClass(classId), HttpStatus.ACCEPTED);
+            DrawDTO drawDTO = new DrawDTO(services.getDrawsOfAClass(classId));
+            return new ResponseEntity<>(drawDTO, HttpStatus.ACCEPTED);
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -207,16 +207,16 @@ public class TeachToMeAPIController {
     /**
      * Agrega un nuevo usuario dentro de la app
      *
-     * @param user Informacion del nuevo usuario
+     * @param createUserDTO Informacion del nuevo usuario
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PostMapping(value = "/users")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
-        if (user.getEmail() == null)
+    public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO) {
+        if (createUserDTO.getEmail() == null)
             return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            services.addUser(user);
+            createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+            services.addUser(new User(createUserDTO));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -229,15 +229,15 @@ public class TeachToMeAPIController {
      *
      * @param email   - Email del solicitante
      * @param classId - Identificador de la clase
-     * @param request - Informacion de la solicitud
+     * @param requestDTO - Informacion de la solicitud
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PostMapping(value = "/classes/{classId}/requests")
-    public ResponseEntity<?> sendRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
-        if (request.getRequestId() == null)
+    public ResponseEntity<?> sendRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody RequestDTO requestDTO) {
+        if (requestDTO.getRequestId() == null)
             return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
-            services.sendRequest(request);
+            services.sendRequest(new Request(requestDTO));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -252,17 +252,17 @@ public class TeachToMeAPIController {
     /**
      * Agrega una clase para dictar
      *
-     * @param clase     Informacion basica de la clase
+     * @param claseDTO     Informacion basica de la clase
      * @param userEmail - Email del profesor
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PostMapping(value = "/classes")
-    public ResponseEntity<?> addClase(@RequestBody Clase clase, @RequestHeader("x-userEmail") String userEmail) {
-        if (clase.getNombre() == null)
+    public ResponseEntity<?> addClase(@RequestBody ClaseDTO claseDTO, @RequestHeader("x-userEmail") String userEmail) {
+        if (claseDTO.getNombre() == null)
             return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
             User user = services.getUser(userEmail);
-            services.addClase(clase, user);
+            services.addClase(new Clase(claseDTO), user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -273,14 +273,14 @@ public class TeachToMeAPIController {
     /**
      * Agrega dibujos dentro de la sesión de una clase
      *
-     * @param draw    Dibujos para agregar
+     * @param drawDTO    Dibujos para agregar
      * @param classId Identificador de la clase
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PostMapping(value = "/draws/{classId}")
-    public ResponseEntity<?> addDraw(@RequestBody Draw draw, @PathVariable long classId) {
+    public ResponseEntity<?> addDraw(@RequestBody DrawDTO drawDTO, @PathVariable long classId) {
         try {
-            services.addDrawToAClass(classId, draw);
+            services.addDrawToAClass(classId, new Draw(drawDTO));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,15 +293,15 @@ public class TeachToMeAPIController {
      *
      * @param email   - Email del profesor
      * @param classId - Identificador de la clase
-     * @param request - Nueva Informacion de la solicitud
+     * @param requestDTO - Nueva Informacion de la solicitud
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
     @PutMapping(value = "/classes/{classId}/requests")
-    public ResponseEntity<?> updateRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody Request request) {
-        if (request.getRequestId() == null)
+    public ResponseEntity<?> updateRequest(@RequestHeader("x-userEmail") String email, @PathVariable long classId, @RequestBody RequestDTO requestDTO) {
+        if (requestDTO.getRequestId() == null)
             return new ResponseEntity<>(TeachToMeServiceException.BAD_FORMAT, HttpStatus.BAD_REQUEST);
         try {
-            services.updateRequest(classId, email, request);
+            services.updateRequest(classId, email, new Request(requestDTO));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (TeachToMeServiceException ex) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -334,4 +334,6 @@ public class TeachToMeAPIController {
             }
         }
     }
+
+
 }

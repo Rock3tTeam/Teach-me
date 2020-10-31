@@ -1,6 +1,7 @@
 package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import edu.eci.arsw.teachtome.controllers.dtos.PointDTO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,12 @@ public class Point {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Point(PointDTO pointDTO) {
+        this.id = pointDTO.getId();
+        this.x = pointDTO.getX();
+        this.y = pointDTO.getY();
     }
 
     public long getId() {

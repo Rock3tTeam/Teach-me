@@ -1,5 +1,7 @@
 package edu.eci.arsw.teachtome.model;
 
+import edu.eci.arsw.teachtome.controllers.dtos.RequestPKDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -31,6 +33,11 @@ public class RequestPK implements Serializable {
     public RequestPK(long student, long clase) {
         this.student = student;
         this.clase = clase;
+    }
+
+    public RequestPK(RequestPKDTO requestId) {
+        this.student = requestId.getStudent();
+        this.clase = requestId.getClase();
     }
 
     public long getStudent() {

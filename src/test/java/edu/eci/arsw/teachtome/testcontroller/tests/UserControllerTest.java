@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.testcontroller.tests;
 
+import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.testcontroller.BasicControllerTestsUtilities;
@@ -60,12 +61,11 @@ public class UserControllerTest extends BasicControllerTestsUtilities {
     @Test
     public void shouldNotAddAnAlreadyExistingUser() throws Exception {
         String email = "UsuarioB@gmail.com";
-        addUser(email);
-        User user = getUser(email);
+        User user = addUser(email);
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/users").header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(user)))
+                        .content(gson.toJson(new CreateUserDTO(user))))
                 .andExpect(status().isConflict())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();

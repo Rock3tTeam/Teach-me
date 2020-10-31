@@ -2,6 +2,8 @@ package edu.eci.arsw.teachtome.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import edu.eci.arsw.teachtome.controllers.dtos.DrawDTO;
+import edu.eci.arsw.teachtome.controllers.dtos.PointDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,9 +19,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Clase que representa un dibujo de una sesión dentro de la aplicación TeachToMe
@@ -45,7 +47,7 @@ public class Draw {
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "draw")
     @JsonManagedReference
-    private List<Point> points = new ArrayList<Point>();
+    private List<Point> points = new CopyOnWriteArrayList<>();
 
     public Draw() {
     }
@@ -57,6 +59,12 @@ public class Draw {
 
     public Draw(List<Point> points) {
         this.points = points;
+    }
+
+    public Draw(DrawDTO drawDTO) {
+        this.id = drawDTO.getId();
+        this.dateOfDraw = drawDTO.getDateOfDraw();
+        this.points = getPointsFromDTO(drawDTO.getPoints());
     }
 
     public long getId() {
@@ -93,6 +101,14 @@ public class Draw {
 
     public boolean isEmpty() {
         return points.isEmpty();
+    }
+
+    private List<Point> getPointsFromDTO(List<PointDTO> points) {
+        List<Point> pointList = new CopyOnWriteArrayList<>();
+        for (PointDTO pointDTO : points) {
+            pointList.add(new Point(pointDTO));
+        }
+        return pointList;
     }
 
     @Override
