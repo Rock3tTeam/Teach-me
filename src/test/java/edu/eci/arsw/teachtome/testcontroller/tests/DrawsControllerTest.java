@@ -67,7 +67,7 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
     public void shouldGetTheDrawsOfAClass() throws Exception {
         Clase clase = addClassAndTeacher("artistaA@outlook.com", "Arte A", "Arte A");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20));
+        points.add(new Point(20, 20,"color"));
         Draw draw = new Draw(points);
         mvc.perform(
                 MockMvcRequestBuilders.post(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)

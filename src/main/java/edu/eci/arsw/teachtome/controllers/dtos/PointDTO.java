@@ -14,6 +14,8 @@ public class PointDTO implements Serializable {
 
     private int y;
 
+    private String color;
+
     public PointDTO() {
     }
 
@@ -21,6 +23,7 @@ public class PointDTO implements Serializable {
         this.id = point.getId();
         this.x = point.getX();
         this.y = point.getY();
+        this.color = point.getColor();
     }
 
     public long getId() {
@@ -53,5 +56,13 @@ public class PointDTO implements Serializable {
             pointDTOS.add(new PointDTO(point));
         }
         return pointDTOS;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

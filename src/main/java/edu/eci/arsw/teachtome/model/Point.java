@@ -37,18 +37,31 @@ public class Point {
     @Column(name = "y", nullable = false)
     private int y;
 
+    @Column(name = "color", nullable = false)
+    private String color;
+
     public Point() {
     }
 
-    public Point(int x, int y) {
+    public Point(int x, int y,String color) {
         this.x = x;
         this.y = y;
+        this.color = color;
     }
 
     public Point(PointDTO pointDTO) {
         this.id = pointDTO.getId();
         this.x = pointDTO.getX();
         this.y = pointDTO.getY();
+        this.color = pointDTO.getColor();
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public long getId() {
