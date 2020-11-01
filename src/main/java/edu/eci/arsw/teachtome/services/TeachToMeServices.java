@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.services;
 
+import edu.eci.arsw.teachtome.cache.TeachToMeCacheImpl;
 import edu.eci.arsw.teachtome.mail.MailSenderInterface;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
@@ -26,6 +27,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Autowired
     private MailSenderInterface mailSenderInterface;
+
+    @Autowired
+    private TeachToMeCacheImpl teachToMeCache;
 
     /**
      * Consulta una clase dentro del modelo
@@ -337,4 +341,16 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
+        if(teachToMeCache.isDrawInCache(classId)){
+            teachToMeCache.updateDrawInCache(classId,draw);
+        }
+        else {
+            teachToMeCache.putDrawOfClassInCache(classId, draw);
+        }
+    }
+
+
 }

@@ -164,4 +164,13 @@ public interface TeachToMeServicesInterface {
      * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar el dibujo
      */
     void addDrawToAClass(long classId, Draw draw) throws TeachToMeServiceException;
+
+    /**
+     * Añade un dibujo de una clase en Caché
+     * @param classId clase a la cual se añadira el dibujo en cache
+     * @param draw el dibujo a ser añadido en cache
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de guardar el dibujo en cache
+     */
+    void addDrawToCache(long classId , Draw draw) throws  TeachToMeServiceException;
+
 }
