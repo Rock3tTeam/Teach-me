@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -312,11 +313,17 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public Draw getDrawsOfAClass(long classId) throws TeachToMeServiceException {
+        Draw draw;
         try {
-            return persistence.getDrawOfAClass(classId);
+            if (teachToMeCache.isDrawInCache(classId)) {
+                draw = teachToMeCache.getDrawFromClass(classId);
+            } else {
+                draw = persistence.getDrawOfAClass(classId);
+            }
         } catch (TeachToMePersistenceException e) {
             throw new TeachToMeServiceException(e.getMessage(), e);
         }
+        return draw;
     }
 
     /**
@@ -344,10 +351,13 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Override
     public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
-        if(teachToMeCache.isDrawInCache(classId)){
-            teachToMeCache.updateDrawInCache(classId,draw);
+        if (draw == null) {
+            throw new TeachToMeServiceException("No se puede guardar en cache un dibujo nulo");
         }
-        else {
+        draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
+        if (teachToMeCache.isDrawInCache(classId)) {
+            teachToMeCache.updateDrawInCache(classId, draw);
+        } else {
             teachToMeCache.putDrawOfClassInCache(classId, draw);
         }
     }

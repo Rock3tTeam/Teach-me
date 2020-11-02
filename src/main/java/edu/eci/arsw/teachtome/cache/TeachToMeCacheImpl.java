@@ -3,6 +3,7 @@ package edu.eci.arsw.teachtome.cache;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class TeachToMeCacheImpl implements TeachToMeCache {
+
     private static final long MINUTES_IN_CACHE = 1;
     private final ConcurrentHashMap<Long, Draw> cache = new ConcurrentHashMap<>();
 
@@ -41,10 +43,10 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
     }
 
     @Override
-    public void updateDrawInCache(Long classId , Draw draw) throws TeachToMeServiceException {
+    public void updateDrawInCache(Long classId, Draw draw) throws TeachToMeServiceException {
         cache.remove(classId);
         draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
-        putDrawOfClassInCache(classId,draw);
+        putDrawOfClassInCache(classId, draw);
     }
 
     @Override
@@ -54,12 +56,12 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
 
     @Override
     public boolean isDrawInCache(Long classId) throws TeachToMeServiceException {
-        Draw draw  = cache.get(classId);
+        Draw draw = cache.get(classId);
         boolean isInCache = true;
         if (draw == null) {
             isInCache = false;
         } else if (LocalDateTime.now().isAfter(draw.getDateOfDraw().toLocalDateTime().plusMinutes(MINUTES_IN_CACHE))) {
-            teachToMeServices.addDrawToAClass(classId,draw);
+            teachToMeServices.addDrawToAClass(classId, draw);
             cleanDrawOfCache(classId);
             isInCache = false;
         }

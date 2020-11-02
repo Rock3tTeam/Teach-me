@@ -64,6 +64,17 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
+    public void shouldNotAddANullDrawInCache() throws Exception {
+        Clase clase = addClassAndTeacher("dibujanteD@gmail.com", "Dibujo D", "Dibujo D");
+        try {
+            services.addDrawToCache(clase.getId(), null);
+            fail("Debió fallar al intentar agregar en cache un dibujo nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("No se puede guardar en cache un dibujo nulo", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotGetTheDrawsOfANonExistentClass() {
         long id = 200;
         try {
@@ -94,6 +105,32 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         services.addDrawToAClass(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
         assertEquals(draw, returnedDraw);
+    }
+
+    @Test
+    public void shouldAddAndGetDrawsFromCache() throws Exception {
+        Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
+        ArrayList<Point> points = new ArrayList<>();
+        points.add(new Point(20, 20,"color"));
+        Draw draw = new Draw(points);
+        services.addDrawToCache(clase.getId(), draw);
+        Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
+        assertEquals(draw, returnedDraw);
+    }
+
+    @Test
+    public void shouldAddAndGetTheLastDrawFromCache() throws Exception {
+        Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
+        ArrayList<Point> points = new ArrayList<>();
+        points.add(new Point(20, 20,"color"));
+        Draw draw = new Draw(points);
+        services.addDrawToCache(clase.getId(), draw);
+        ArrayList<Point> points2 = new ArrayList<>();
+        points2.add(new Point(50, 50,"color"));
+        Draw draw2 = new Draw(points2);
+        services.addDrawToCache(clase.getId(), draw2);
+        Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
+        assertEquals(draw2, returnedDraw);
     }
 
     @Test
