@@ -3,7 +3,6 @@ package edu.eci.arsw.teachtome.cache;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

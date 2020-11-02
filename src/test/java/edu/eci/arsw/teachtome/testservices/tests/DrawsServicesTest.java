@@ -31,7 +31,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         long id = 200;
         ArrayList<Point> points = new ArrayList<>();
         try {
-            points.add(new Point(20, 20,"color"));
+            points.add(new Point(20, 20, "color"));
             services.addDrawToAClass(id, new Draw(points));
             fail("Debió fallar al buscar una clase con id inexistente");
         } catch (TeachToMeServiceException e) {
@@ -100,7 +100,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     public void shouldAddAndGetDraws() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteB@gmail.com", "Dibujo B", "Dibujo B");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20,"color"));
+        points.add(new Point(20, 20, "color"));
         Draw draw = new Draw(points);
         services.addDrawToAClass(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
@@ -111,7 +111,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     public void shouldAddAndGetDrawsFromCache() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20,"color"));
+        points.add(new Point(20, 20, "color"));
         Draw draw = new Draw(points);
         services.addDrawToCache(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
@@ -122,11 +122,11 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     public void shouldAddAndGetTheLastDrawFromCache() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20,"color"));
+        points.add(new Point(20, 20, "color"));
         Draw draw = new Draw(points);
         services.addDrawToCache(clase.getId(), draw);
         ArrayList<Point> points2 = new ArrayList<>();
-        points2.add(new Point(50, 50,"color"));
+        points2.add(new Point(50, 50, "color"));
         Draw draw2 = new Draw(points2);
         services.addDrawToCache(clase.getId(), draw2);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
@@ -137,13 +137,13 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     public void shouldAddAndGetOnlyTheLastDraws() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteD@gmail.com", "Dibujo D", "Dibujo D");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20,"color"));
+        points.add(new Point(20, 20, "color"));
         Draw draw = new Draw(points);
         services.addDrawToAClass(clase.getId(), draw);
         Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
         assertEquals(draw, returnedDraw);
         ArrayList<Point> points2 = new ArrayList<>();
-        points2.add(new Point(50, 50,"color"));
+        points2.add(new Point(50, 50, "color"));
         Draw draw2 = new Draw(points2);
         services.addDrawToAClass(clase.getId(), draw2);
         Draw returnedLastDraw = services.getDrawsOfAClass(clase.getId());
