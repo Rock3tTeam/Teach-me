@@ -43,6 +43,7 @@ public class StompController {
      */
     @MessageMapping("/draws.{classId}")
     public void handleDrawEvent(Draw draw, @DestinationVariable Long classId) throws Exception {
+        services.addDrawToCache(classId, draw);
         msgt.convertAndSend("/topic/draws." + classId, draw);
     }
 }
