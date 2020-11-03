@@ -1,5 +1,6 @@
 package edu.eci.arsw.teachtome.controllers;
 
+import edu.eci.arsw.teachtome.cache.TeachToMeCache;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
@@ -21,6 +22,9 @@ public class StompController {
     @Autowired
     private TeachToMeServices services;
 
+    @Autowired
+    private TeachToMeCache teachToMeCache;
+
     /**
      * Manejador de Eventos Relacionados con el chat de la sesion de clase
      *
@@ -35,7 +39,7 @@ public class StompController {
     }
 
     /**
-     * Manejador de Eventos Relacionados con el tablero de la sesión de clase
+     * Manejador de Eventos Relacionados con el los dibujos del tablero de la sesión de clase
      *
      * @param draw    Dibujo enviado en el tablero
      * @param classId Identificador de la clase sobre la cual es estableció la comunicación
@@ -45,5 +49,17 @@ public class StompController {
     public void handleDrawEvent(Draw draw, @DestinationVariable Long classId) throws Exception {
         services.addDrawToCache(classId, draw);
         msgt.convertAndSend("/topic/draws." + classId, draw);
+    }
+
+    /**
+     * Manejador de Eventos Relacionados con el tablero de la sesión de clase
+     *
+     * @param classId Identificador de la clase sobre la cual es estableció la comunicación
+     * @throws Exception Cuando Falla Al Transmitir el mensaje
+     */
+    @MessageMapping("/board.{classId}")
+    public void handleBoardEvent(@DestinationVariable Long classId) throws Exception {
+        teachToMeCache.persistDraw(classId);
+        msgt.convertAndSend("/topic/board." + classId);
     }
 }

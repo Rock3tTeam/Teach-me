@@ -1,6 +1,7 @@
 package edu.eci.arsw.teachtome.cache;
 
 import edu.eci.arsw.teachtome.model.Draw;
+import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -43,9 +45,11 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
 
     @Override
     public void updateDrawInCache(Long classId, Draw draw) throws TeachToMeServiceException {
-        cache.remove(classId);
+        List<Point> points = cache.get(classId).getPoints();
+        for (Point point : draw.getPoints()) {
+            points.add(point);
+        }
         draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
-        putDrawOfClassInCache(classId, draw);
     }
 
     @Override
@@ -65,5 +69,11 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
             isInCache = false;
         }
         return isInCache;
+    }
+
+    @Override
+    public void persistDraw(Long classId) throws TeachToMeServiceException {
+        teachToMeServices.addDrawToAClass(classId, cache.get(classId));
+        cache.remove(classId);
     }
 }

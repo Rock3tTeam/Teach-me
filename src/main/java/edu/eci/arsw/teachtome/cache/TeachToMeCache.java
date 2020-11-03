@@ -45,7 +45,14 @@ public interface TeachToMeCache {
      * Determina si un dibujo de una clase existe en cache
      * @param classId La clase sobre la cual se va a buscar el dibujo en cache
      * @return si un dibujo de una clase existe en cache
-     * @throws TeachToMeServiceException
+     * @throws TeachToMeServiceException si la clase no existe
      */
     boolean isDrawInCache(Long classId) throws TeachToMeServiceException;
+
+    /**
+     * Persiste el dibujo guardado en cache
+     * @param classId La clase sobre la cual se va a persistir el dibujo
+     * @throws TeachToMeServiceException si la clase no existe
+     */
+    void persistDraw(Long classId) throws TeachToMeServiceException;
 }
