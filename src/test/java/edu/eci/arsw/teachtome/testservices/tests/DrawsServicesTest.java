@@ -118,20 +118,24 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         assertEquals(draw, returnedDraw);
     }
 
-    /*@Test
+    @Test
     public void shouldAddAndGetTheLastDrawFromCache() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20, "color"));
+        Point point1 = new Point(20, 20, "color");
+        points.add(point1);
         Draw draw = new Draw(points);
         services.addDrawToCache(clase.getId(), draw);
         ArrayList<Point> points2 = new ArrayList<>();
-        points2.add(new Point(50, 50, "color"));
+        Point point2 = new Point(50, 50, "color");
+        points2.add(point2);
         Draw draw2 = new Draw(points2);
         services.addDrawToCache(clase.getId(), draw2);
-        Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw2, returnedDraw);
-    }*/
+        List<Point> returnedPoints = services.getDrawsOfAClass(clase.getId()).getPoints();
+        assertEquals(2,returnedPoints.size());
+        assertEquals(point1,returnedPoints.get(0));
+        assertEquals(point2,returnedPoints.get(1));
+    }
 
     @Test
     public void shouldAddAndGetOnlyTheLastDraws() throws Exception {
