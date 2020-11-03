@@ -350,7 +350,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
     }
 
     @Override
-    public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
+    public synchronized void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
         if (draw == null) throw new TeachToMeServiceException("No se puede guardar en cache un dibujo nulo");
         draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
         if (teachToMeCache.isDrawInCache(classId)) {

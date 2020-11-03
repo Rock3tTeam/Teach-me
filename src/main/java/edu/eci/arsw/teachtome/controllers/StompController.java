@@ -1,14 +1,18 @@
 package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.cache.TeachToMeCache;
+import edu.eci.arsw.teachtome.cache.TeachToMeCacheImpl;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
+import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.util.ArrayList;
 
 /**
  * Controlador de estilo publish suscribe para los eventos ocurridos en las sesiones de clase de Teach To Me
@@ -23,7 +27,7 @@ public class StompController {
     private TeachToMeServices services;
 
     @Autowired
-    private TeachToMeCache teachToMeCache;
+    private TeachToMeCacheImpl teachToMeCache;
 
     /**
      * Manejador de Eventos Relacionados con el chat de la sesion de clase
@@ -41,14 +45,18 @@ public class StompController {
     /**
      * Manejador de Eventos Relacionados con el los dibujos del tablero de la sesión de clase
      *
-     * @param draw    Dibujo enviado en el tablero
+     * @param point   punto del Dibujo enviado en el tablero
      * @param classId Identificador de la clase sobre la cual es estableció la comunicación
      * @throws Exception Cuando Falla Al Transmitir el Nuevo Punto
      */
     @MessageMapping("/draws.{classId}")
-    public void handleDrawEvent(Draw draw, @DestinationVariable Long classId) throws Exception {
+    public void handleDrawEvent(Point point, @DestinationVariable Long classId) throws Exception {
+        Draw draw = new Draw();
+        ArrayList<Point> points = new ArrayList<>();
+        points.add(point);
+        draw.setPoints(points);
         services.addDrawToCache(classId, draw);
-        msgt.convertAndSend("/topic/draws." + classId, draw);
+        msgt.convertAndSend("/topic/draws." + classId, point);
     }
 
     /**
@@ -58,8 +66,10 @@ public class StompController {
      * @throws Exception Cuando Falla Al Transmitir el mensaje
      */
     @MessageMapping("/board.{classId}")
-    public void handleBoardEvent(@DestinationVariable Long classId) throws Exception {
-        teachToMeCache.persistDraw(classId);
-        msgt.convertAndSend("/topic/board." + classId);
+    public void handleBoardEvent(String clear , @DestinationVariable Long classId) throws Exception {
+        /*if(teachToMeCache.isDrawInCache(classId)){
+            teachToMeCache.persistDraw(classId);
+        }*/
+        msgt.convertAndSend("/topic/board." + classId,clear);
     }
 }
