@@ -16,7 +16,7 @@ public interface TeachToMeCache {
      * @return el dibujo de la clase guardado en cache
      * @throws TeachToMeServiceException si la clase no existe
      */
-    Draw getDrawFromClass(Long classId) throws TeachToMeServiceException;
+    Draw getDrawFromClass(long classId) throws TeachToMeServiceException;
 
     /**
      * Metodo que añade el dibujo de una clase  en cache
@@ -24,7 +24,7 @@ public interface TeachToMeCache {
      * @param draw el dibujo a guardar en cache
      * @throws TeachToMeServiceException si la clase no existe
      */
-    void putDrawOfClassInCache(Long classId, Draw draw) throws TeachToMeServiceException;
+    void putDrawOfClassInCache(long classId, Draw draw) throws TeachToMeServiceException;
 
     /**
      * Actualiza el valor de un dibujo en cache
@@ -32,14 +32,14 @@ public interface TeachToMeCache {
      * @param draw el dibujo a ser guardado en cache
      * @throws TeachToMeServiceException si la clase no existe
      */
-    void updateDrawInCache(Long classId, Draw draw) throws TeachToMeServiceException;
+    void updateDrawInCache(long classId, Draw draw) throws TeachToMeServiceException;
 
     /**
      * Elimina un dibujo de una clase del cache
      * @param classId la clase sobre la cual se va a eliminar el dibujo
      * @throws TeachToMeServiceException si la clase no existe
      */
-    void cleanDrawOfCache(Long classId) throws TeachToMeServiceException;
+    void cleanDrawOfCache(long classId) throws TeachToMeServiceException;
 
     /**
      * Determina si un dibujo de una clase existe en cache
@@ -47,12 +47,5 @@ public interface TeachToMeCache {
      * @return si un dibujo de una clase existe en cache
      * @throws TeachToMeServiceException si la clase no existe
      */
-    boolean isDrawInCache(Long classId) throws TeachToMeServiceException;
-
-    /**
-     * Persiste el dibujo guardado en cache
-     * @param classId La clase sobre la cual se va a persistir el dibujo
-     * @throws TeachToMeServiceException si la clase no existe
-     */
-    void persistDraw(Long classId) throws TeachToMeServiceException;
+    boolean isDrawInCache(long classId) throws TeachToMeServiceException;
 }

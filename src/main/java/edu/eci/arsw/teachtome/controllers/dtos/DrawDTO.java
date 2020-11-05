@@ -9,8 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DrawDTO implements Serializable {
 
-    private long id;
-
     private Timestamp dateOfDraw;
 
     private List<PointDTO> points = new CopyOnWriteArrayList<>();
@@ -19,17 +17,8 @@ public class DrawDTO implements Serializable {
     }
 
     public DrawDTO(Draw draw) {
-        this.id = draw.getId();
         this.dateOfDraw = draw.getDateOfDraw();
         this.points = PointDTO.getPointsDTO(draw.getPoints());
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Timestamp getDateOfDraw() {

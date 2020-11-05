@@ -8,8 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PointDTO implements Serializable {
 
-    private long id;
-
     private int x;
 
     private int y;
@@ -20,18 +18,9 @@ public class PointDTO implements Serializable {
     }
 
     public PointDTO(Point point) {
-        this.id = point.getId();
         this.x = point.getX();
         this.y = point.getY();
         this.color = point.getColor();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public int getX() {

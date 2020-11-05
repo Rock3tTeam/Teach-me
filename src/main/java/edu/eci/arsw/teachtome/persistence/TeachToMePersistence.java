@@ -168,31 +168,4 @@ public interface TeachToMePersistence {
      * @throws TeachToMePersistenceException - Cuando alguna entidad no existe en la base de datos
      */
     Request getRequest(long classId, long userId) throws TeachToMePersistenceException;
-
-    /**
-     * Obtiene los dibujos de una clase
-     *
-     * @param classId el id de la clase a la cual el dibujo será añadido
-     * @return El ultimo dibujo de la clase
-     * @throws TeachToMePersistenceException - Cuando la clase no existe en la base de datos
-     */
-    Draw getDrawOfAClass(long classId) throws TeachToMePersistenceException;
-
-    /**
-     * Añade puntos a un dibujo
-     *
-     * @param points puntos a ser añadidos
-     * @param draw   dibujo sobre el cual se van a añadir los puntos
-     */
-    void addPointsToDraw(List<Point> points, Draw draw);
-
-    /**
-     * Añade un dibujo a una clase
-     *
-     * @param classId el id de la clase a la cual el dibujo será añadido
-     * @param draw    el dibujo a ser añadido
-     * @param date    la hora a la cual los dibujos serán añadidos
-     * @throws TeachToMePersistenceException - si la clase no existe en la base de datos
-     */
-    void addDrawToAClass(long classId, Draw draw, Timestamp date) throws TeachToMePersistenceException;
 }

@@ -151,26 +151,25 @@ public interface TeachToMeServicesInterface {
      * Obtiene los dibujos de una clase
      *
      * @param classId el id de la clase a la cual el dibujo será añadido
-     * @return El ultimo dibujo de la clase
-     * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
+     * @return Una lista con los dibujos de la clase
+     * @throws TeachToMeServiceException - Cuando la clase no existe en el cache
      */
-    Draw getDrawsOfAClass(long classId) throws TeachToMeServiceException;
-
-    /**
-     * Añade un dibujo a una clase
-     *
-     * @param classId El identificador de la clase a la cual los dibujos serán añadidos
-     * @param draw    El dibujo que va a ser agregado
-     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar el dibujo
-     */
-    void addDrawToAClass(long classId, Draw draw) throws TeachToMeServiceException;
+    Draw getDrawsOfAClass(Long classId) throws TeachToMeServiceException;
 
     /**
      * Añade un dibujo de una clase en Caché
+     *
      * @param classId clase a la cual se añadira el dibujo en cache
-     * @param draw el dibujo a ser añadido en cache
+     * @param draw    el dibujo a ser añadido en cache
      * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de guardar el dibujo en cache
      */
-    void addDrawToCache(long classId , Draw draw) throws  TeachToMeServiceException;
+    void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException;
 
+    /**
+     * Elimina un dibujo de una clase en Caché
+     *
+     * @param classId clase a la cual se eliminara el dibujo en cache
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de eliminar el dibujo en cache
+     */
+    void deleteDrawFromCache(Long classId) throws TeachToMeServiceException;
 }

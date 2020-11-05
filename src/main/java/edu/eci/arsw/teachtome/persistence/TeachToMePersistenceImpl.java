@@ -373,46 +373,4 @@ public class TeachToMePersistenceImpl implements TeachToMePersistence {
         }
         return session.getChat();
     }
-
-    @Override
-    public Draw getDrawOfAClass(long classId) throws TeachToMePersistenceException {
-        Session session = sessionRepository.getSessionByClassId(classId);
-        if (session == null) {
-            throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
-        }
-        Timestamp dateOfLastDraw = session.getDateOfLastDraw();
-        Draw lastDraw = null;
-        List<Draw> draws = session.getDraws();
-        for (Draw draw : draws) {
-            if (draw.getDateOfDraw().equals(dateOfLastDraw)) {
-                lastDraw = draw;
-                break;
-            }
-        }
-        if (lastDraw == null) {
-            throw new TeachToMePersistenceException("No existen dibujos para esta clase");
-        }
-        return lastDraw;
-    }
-
-    @Override
-    public void addPointsToDraw(List<Point> points, Draw draw) {
-        for (Point point : points) {
-            point.setDraw(draw);
-        }
-    }
-
-    @Override
-    public void addDrawToAClass(long classId, Draw draw, Timestamp date) throws TeachToMePersistenceException {
-        Session session = sessionRepository.getSessionByClassId(classId);
-        if (session == null) {
-            throw new TeachToMePersistenceException(TeachToMePersistenceException.NON_EXISTING_CLASS + classId);
-        }
-        session.addDraw(draw);
-        session.setDateOfLastDraw(date);
-        draw.setSession(session);
-        draw.setDateOfDraw(date);
-        addPointsToDraw(draw.getPoints(), draw);
-        sessionRepository.save(session);
-    }
 }

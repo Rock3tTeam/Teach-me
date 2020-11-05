@@ -47,20 +47,20 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
                 .andExpect(status().isConflict())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("El dibujo debe poseer al menos un punto", bodyResult);
+        assertEquals("No se puede guardar en cache un dibujo vacio", bodyResult);
     }
 
     @Test
-    public void shouldNotGetTheDrawsOfANonExistentClass() throws Exception {
-        long id = 200;
+    public void shouldNotGetANonExistentDraw() throws Exception {
+        Clase clase = addClassAndTeacher("artistaC@outlook.com", "Arte C", "Arte C");
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(apiRoot + "/draws/" + id).header("Authorization", token)
+                MockMvcRequestBuilders.get(apiRoot + "/draws/" + clase.getId()).header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isNotFound())
                 .andReturn();
         String bodyResult = result.getResponse().getContentAsString();
-        assertEquals("No existe la clase con el id " + id, bodyResult);
+        assertEquals("Esa clase no tiene dibujo en cache", bodyResult);
     }
 
     @Test

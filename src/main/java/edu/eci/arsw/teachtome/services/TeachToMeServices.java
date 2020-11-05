@@ -309,55 +309,51 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      *
      * @param classId el id de la clase a la cual el dibujo será añadido
      * @return Una lista con los dibujos de la clase
-     * @throws TeachToMeServiceException - Cuando la clase no existe en la base de datos
+     * @throws TeachToMeServiceException - Cuando la clase no existe en el cache
      */
     @Override
-    public Draw getDrawsOfAClass(long classId) throws TeachToMeServiceException {
+    public Draw getDrawsOfAClass(Long classId) throws TeachToMeServiceException {
+        if (classId == null) throw new TeachToMeServiceException("El identificador de la clase no puede ser nulo");
         Draw draw;
-        try {
-            if (teachToMeCache.isDrawInCache(classId)) {
-                draw = teachToMeCache.getDrawFromClass(classId);
-            } else {
-                draw = persistence.getDrawOfAClass(classId);
-            }
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
+        if (teachToMeCache.isDrawInCache(classId)) {
+            draw = teachToMeCache.getDrawFromClass(classId);
+        } else {
+            throw new TeachToMeServiceException("Esa clase no tiene dibujo en cache");
         }
         return draw;
     }
 
     /**
-     * Añade un dibujo a una clase
+     * Añade un dibujo de una clase en Caché
      *
-     * @param classId El identificador de la clase a la cual los dibujos serán añadidos
-     * @param draw    El dibujo que va a ser agregado
-     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de insertar el dibujo
+     * @param classId clase a la cual se añadira el dibujo en cache
+     * @param draw    el dibujo a ser añadido en cache
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de guardar el dibujo en cache
      */
     @Override
-    public void addDrawToAClass(long classId, Draw draw) throws TeachToMeServiceException {
-        if (draw.getPoints() == null) {
-            throw new TeachToMeServiceException("Dibujo mal construido");
-        }
-        if (draw.isEmpty()) {
-            throw new TeachToMeServiceException("El dibujo debe poseer al menos un punto");
-        }
-        try {
-            Timestamp date = new Timestamp(new Date().getTime());
-            persistence.addDrawToAClass(classId, draw, date);
-        } catch (TeachToMePersistenceException e) {
-            throw new TeachToMeServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public synchronized void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
+    public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
         if (draw == null) throw new TeachToMeServiceException("No se puede guardar en cache un dibujo nulo");
+        if (draw.isEmpty()) {
+            throw new TeachToMeServiceException("No se puede guardar en cache un dibujo vacio");
+        }
         draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
         if (teachToMeCache.isDrawInCache(classId)) {
             teachToMeCache.updateDrawInCache(classId, draw);
         } else {
             teachToMeCache.putDrawOfClassInCache(classId, draw);
         }
+    }
+
+    /**
+     * Elimina un dibujo de una clase en Caché
+     *
+     * @param classId clase a la cual se eliminara el dibujo en cache
+     * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de eliminar el dibujo en cache
+     */
+    @Override
+    public void deleteDrawFromCache(Long classId) throws TeachToMeServiceException {
+        if (classId == null) throw new TeachToMeServiceException("El identificador de la clase no puede ser nulo");
+        teachToMeCache.cleanDrawOfCache(classId);
     }
 
 

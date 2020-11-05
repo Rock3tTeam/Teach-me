@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
 @AutoConfigureTestDatabase
 public class DrawsServicesTest extends BasicServicesTestsUtilities {
 
-    @Test
+    /*@Test
     public void shouldNotAddDrawsOnANonExistentClass() {
         long id = 200;
         ArrayList<Point> points = new ArrayList<>();
@@ -61,7 +61,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         } catch (TeachToMeServiceException e) {
             assertEquals("Dibujo mal construido", e.getMessage());
         }
-    }
+    }*/
 
     @Test
     public void shouldNotAddANullDrawInCache() throws Exception {
@@ -75,36 +75,24 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
     }
 
     @Test
-    public void shouldNotGetTheDrawsOfANonExistentClass() {
-        long id = 200;
-        try {
-            services.getDrawsOfAClass(id);
-            fail("Debió fallar al buscar una clase con id inexistente");
-        } catch (TeachToMeServiceException e) {
-            assertEquals("No existe la clase con el id " + id, e.getMessage());
-        }
-    }
-
-    @Test
     public void shouldNotGetTheDrawsOfAClassWithoutDraws() throws Exception {
         Clase clase = addClassAndTeacher("dibujanteE@gmail.com", "Dibujo E", "Dibujo E");
         try {
             services.getDrawsOfAClass(clase.getId());
             fail("Debió fallar al buscar una clase sin dibujos");
         } catch (TeachToMeServiceException e) {
-            assertEquals("No existen dibujos para esta clase", e.getMessage());
+            assertEquals("Esa clase no tiene dibujo en cache", e.getMessage());
         }
     }
 
     @Test
-    public void shouldAddAndGetDraws() throws Exception {
-        Clase clase = addClassAndTeacher("dibujanteB@gmail.com", "Dibujo B", "Dibujo B");
-        ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20, "color"));
-        Draw draw = new Draw(points);
-        services.addDrawToAClass(clase.getId(), draw);
-        Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw, returnedDraw);
+    public void shouldNotGetTheDrawWithANullIdentifierClass() {
+        try {
+            services.getDrawsOfAClass(null);
+            fail("Debió fallar al ingresar un identificador nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El identificador de la clase no puede ser nulo", e.getMessage());
+        }
     }
 
     @Test
@@ -132,25 +120,35 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         Draw draw2 = new Draw(points2);
         services.addDrawToCache(clase.getId(), draw2);
         List<Point> returnedPoints = services.getDrawsOfAClass(clase.getId()).getPoints();
-        assertEquals(2,returnedPoints.size());
-        assertEquals(point1,returnedPoints.get(0));
-        assertEquals(point2,returnedPoints.get(1));
+        assertEquals(2, returnedPoints.size());
+        assertEquals(point1, returnedPoints.get(0));
+        assertEquals(point2, returnedPoints.get(1));
     }
 
     @Test
-    public void shouldAddAndGetOnlyTheLastDraws() throws Exception {
-        Clase clase = addClassAndTeacher("dibujanteD@gmail.com", "Dibujo D", "Dibujo D");
+    public void shouldNotDeleteADrawWithANullIdentifierClass() {
+        try {
+            services.deleteDrawFromCache(null);
+            fail("Debió fallar al ingresar un identificador nulo");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("El identificador de la clase no puede ser nulo", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldDeleteADraw() throws Exception {
+        Clase clase = addClassAndTeacher("dibujanteF@gmail.com", "Dibujo F", "Dibujo F");
         ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(20, 20, "color"));
+        Point point1 = new Point(20, 20, "color");
+        points.add(point1);
         Draw draw = new Draw(points);
-        services.addDrawToAClass(clase.getId(), draw);
-        Draw returnedDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw, returnedDraw);
-        ArrayList<Point> points2 = new ArrayList<>();
-        points2.add(new Point(50, 50, "color"));
-        Draw draw2 = new Draw(points2);
-        services.addDrawToAClass(clase.getId(), draw2);
-        Draw returnedLastDraw = services.getDrawsOfAClass(clase.getId());
-        assertEquals(draw2, returnedLastDraw);
+        services.addDrawToCache(clase.getId(), draw);
+        services.deleteDrawFromCache(clase.getId());
+        try {
+            services.getDrawsOfAClass(clase.getId());
+            fail("Debió fallar al consultar un dibujo que ya no existe");
+        } catch (TeachToMeServiceException e) {
+            assertEquals("Esa clase no tiene dibujo en cache", e.getMessage());
+        }
     }
 }

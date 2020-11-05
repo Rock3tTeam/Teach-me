@@ -67,9 +67,7 @@ public class StompController {
      */
     @MessageMapping("/board.{classId}")
     public void handleBoardEvent(String clear , @DestinationVariable Long classId) throws Exception {
-        /*if(teachToMeCache.isDrawInCache(classId)){
-            teachToMeCache.persistDraw(classId);
-        }*/
+        services.deleteDrawFromCache(classId);
         msgt.convertAndSend("/topic/board." + classId,clear);
     }
 }

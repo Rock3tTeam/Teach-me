@@ -45,12 +45,6 @@ public class Session {
     @JsonManagedReference
     private List<Message> chat;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinColumn(name = "session")
-    @JsonManagedReference
-    private List<Draw> draws = new ArrayList<Draw>();
-
     /**
      * Constructor por defecto de la entidad Sesion
      */
@@ -107,14 +101,6 @@ public class Session {
         this.chat = chat;
     }
 
-    public List<Draw> getDraws() {
-        return draws;
-    }
-
-    public void setDraws(List<Draw> draws) {
-        this.draws = draws;
-    }
-
     /**
      * Agrega un mensaje dentro del chat
      *
@@ -122,15 +108,6 @@ public class Session {
      */
     public void addMessage(Message message) {
         chat.add(message);
-    }
-
-    /**
-     * Agrega un dibujo a la sesion de clase
-     *
-     * @param draw Dibujo a agregar
-     */
-    public void addDraw(Draw draw) {
-        draws.add(draw);
     }
 
     @Override

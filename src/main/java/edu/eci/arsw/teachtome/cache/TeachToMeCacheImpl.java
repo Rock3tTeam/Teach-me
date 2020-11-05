@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TeachToMeCacheImpl implements TeachToMeCache {
 
-    private static final long MINUTES_IN_CACHE = 1;
+    private static final long MINUTES_IN_CACHE = 5;
     private final ConcurrentHashMap<Long, Draw> cache = new ConcurrentHashMap<>();
 
     @Autowired
@@ -26,54 +26,41 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
 
 
     @Override
-    public Draw getDrawFromClass(Long classId) throws TeachToMeServiceException {
-        Draw draw = cache.get(classId);
-        if (classId == null) {
-            throw new TeachToMeServiceException("No se encuentra la clase en cache");
-        }
-        return draw;
+    public Draw getDrawFromClass(long classId) throws TeachToMeServiceException {
+        return cache.get(classId);
     }
 
 
     @Override
-    public void putDrawOfClassInCache(Long classId, Draw draw) throws TeachToMeServiceException {
-        if (isDrawInCache(classId)) {
+    public void putDrawOfClassInCache(long classId, Draw draw) throws TeachToMeServiceException {
+        if (cache.containsKey(classId)) {
             throw new TeachToMeServiceException("Esa información ya esta en cache");
         }
         cache.put(classId, draw);
     }
 
     @Override
-    public void updateDrawInCache(Long classId, Draw draw) throws TeachToMeServiceException {
+    public void updateDrawInCache(long classId, Draw draw) throws TeachToMeServiceException {
         List<Point> points = cache.get(classId).getPoints();
-        for (Point point : draw.getPoints()) {
-            points.add(point);
-        }
+        points.addAll(draw.getPoints());
         draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Override
-    public void cleanDrawOfCache(Long classId) throws TeachToMeServiceException {
+    public void cleanDrawOfCache(long classId) throws TeachToMeServiceException {
         cache.remove(classId);
     }
 
     @Override
-    public boolean isDrawInCache(Long classId) throws TeachToMeServiceException {
+    public boolean isDrawInCache(long classId) throws TeachToMeServiceException {
         Draw draw = cache.get(classId);
         boolean isInCache = true;
         if (draw == null) {
             isInCache = false;
         } else if (LocalDateTime.now().isAfter(draw.getDateOfDraw().toLocalDateTime().plusMinutes(MINUTES_IN_CACHE))) {
-            teachToMeServices.addDrawToAClass(classId, draw);
             cleanDrawOfCache(classId);
             isInCache = false;
         }
         return isInCache;
-    }
-
-    @Override
-    public void persistDraw(Long classId) throws TeachToMeServiceException {
-        teachToMeServices.addDrawToAClass(classId, cache.get(classId));
-        cache.remove(classId);
     }
 }
