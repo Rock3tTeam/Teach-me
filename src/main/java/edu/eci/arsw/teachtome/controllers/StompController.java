@@ -1,7 +1,5 @@
 package edu.eci.arsw.teachtome.controllers;
 
-import edu.eci.arsw.teachtome.cache.TeachToMeCache;
-import edu.eci.arsw.teachtome.cache.TeachToMeCacheImpl;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Point;
@@ -25,9 +23,6 @@ public class StompController {
 
     @Autowired
     private TeachToMeServices services;
-
-    @Autowired
-    private TeachToMeCacheImpl teachToMeCache;
 
     /**
      * Manejador de Eventos Relacionados con el chat de la sesion de clase
@@ -66,8 +61,8 @@ public class StompController {
      * @throws Exception Cuando Falla Al Transmitir el mensaje
      */
     @MessageMapping("/board.{classId}")
-    public void handleBoardEvent(String clear , @DestinationVariable Long classId) throws Exception {
+    public void handleBoardEvent(String clear, @DestinationVariable Long classId) throws Exception {
         services.deleteDrawFromCache(classId);
-        msgt.convertAndSend("/topic/board." + classId,clear);
+        msgt.convertAndSend("/topic/board." + classId, clear);
     }
 }

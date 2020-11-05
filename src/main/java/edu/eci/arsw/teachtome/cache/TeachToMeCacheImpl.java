@@ -3,8 +3,6 @@ package edu.eci.arsw.teachtome.cache;
 import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Point;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
-import edu.eci.arsw.teachtome.services.TeachToMeServices;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -20,9 +18,6 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
 
     private static final long MINUTES_IN_CACHE = 5;
     private final ConcurrentHashMap<Long, Draw> cache = new ConcurrentHashMap<>();
-
-    @Autowired
-    private TeachToMeServices teachToMeServices;
 
 
     @Override
