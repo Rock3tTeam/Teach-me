@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "eeaa8069-3139-4059-859d-5f098fa8914c",
+		"name": "TeachToMeGetClasses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET CLASSES BY NAME",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjpbXSwiaWF0IjoxNjA1MDM3MTM5LCJleHAiOjE2MDYxOTQwMDB9.svjqSZBDlaK37-qg0XrjhTuxJSMsuCR8vTyiWLe9i2A",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://teach2-me.herokuapp.com/api/v1/classes?name=albu",
+					"protocol": "https",
+					"host": [
+						"teach2-me",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"classes"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "albu"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
