@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
  */
 @Entity(name = "Message")
 @Table(name = "messages")
-public class Message {
+public class Message implements Serializable {
 
     @Id
     @Column(name = "id")

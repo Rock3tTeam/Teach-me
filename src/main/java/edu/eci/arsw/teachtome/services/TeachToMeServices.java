@@ -1,6 +1,6 @@
 package edu.eci.arsw.teachtome.services;
 
-import edu.eci.arsw.teachtome.cache.TeachToMeCacheImpl;
+import edu.eci.arsw.teachtome.Cache.TeachToMeCacheImpl;
 import edu.eci.arsw.teachtome.mail.MailSenderInterface;
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
@@ -10,6 +10,7 @@ import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -31,6 +32,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
 
     @Autowired
     private TeachToMeCacheImpl teachToMeCache;
+
 
     /**
      * Consulta una clase dentro del modelo
@@ -285,7 +287,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         if (nameFilter == null) {
             throw new TeachToMeServiceException("El nombre no puede ser nulo");
         }
-        return persistence.getFilteredClassesByName(nameFilter);
+        return teachToMeCache.getFilteredClassesFromCache(nameFilter);
     }
 
     /**
@@ -313,14 +315,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public Draw getDrawsOfAClass(Long classId) throws TeachToMeServiceException {
-        if (classId == null) throw new TeachToMeServiceException("El identificador de la clase no puede ser nulo");
-        Draw draw;
-        if (teachToMeCache.isDrawInCache(classId)) {
-            draw = teachToMeCache.getDrawFromClass(classId);
-        } else {
-            throw new TeachToMeServiceException("Esa clase no tiene dibujo en cache");
-        }
-        return draw;
+        return null;
     }
 
     /**
@@ -332,16 +327,6 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
-        if (draw == null) throw new TeachToMeServiceException("No se puede guardar en cache un dibujo nulo");
-        if (draw.isEmpty()) {
-            throw new TeachToMeServiceException("No se puede guardar en cache un dibujo vacio");
-        }
-        draw.setDateOfDraw(Timestamp.valueOf(LocalDateTime.now()));
-        if (teachToMeCache.isDrawInCache(classId)) {
-            teachToMeCache.updateDrawInCache(classId, draw);
-        } else {
-            teachToMeCache.putDrawOfClassInCache(classId, draw);
-        }
     }
 
     /**
@@ -352,9 +337,5 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      */
     @Override
     public void deleteDrawFromCache(Long classId) throws TeachToMeServiceException {
-        if (classId == null) throw new TeachToMeServiceException("El identificador de la clase no puede ser nulo");
-        teachToMeCache.cleanDrawOfCache(classId);
     }
-
-
 }

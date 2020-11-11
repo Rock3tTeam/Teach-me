@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Objects;
 
 @Entity(name = "Request")
 @Table(name = "requests")
-public class Request {
+public class Request implements Serializable {
 
     @EmbeddedId
     private RequestPK requestId;

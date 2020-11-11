@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.testservices.tests;
+/*package edu.eci.arsw.teachtome.testservices.tests;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
 @AutoConfigureTestDatabase
 public class DrawsServicesTest extends BasicServicesTestsUtilities {
 
-    /*@Test
+    @Test
     public void shouldNotAddDrawsOnANonExistentClass() {
         long id = 200;
         ArrayList<Point> points = new ArrayList<>();
@@ -61,7 +61,7 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
         } catch (TeachToMeServiceException e) {
             assertEquals("Dibujo mal construido", e.getMessage());
         }
-    }*/
+    }
 
     @Test
     public void shouldNotAddANullDrawInCache() throws Exception {
@@ -151,4 +151,4 @@ public class DrawsServicesTest extends BasicServicesTestsUtilities {
             assertEquals("Esa clase no tiene dibujo en cache", e.getMessage());
         }
     }
-}
+}*/

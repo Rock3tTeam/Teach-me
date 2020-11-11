@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.testcontroller.tests;
+/*package edu.eci.arsw.teachtome.testcontroller.tests;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.model.Draw;
@@ -84,4 +84,4 @@ public class DrawsControllerTest extends BasicControllerTestsUtilities {
         Draw returnedDraw = gson.fromJson(bodyResult, Draw.class);
         assertEquals(draw, returnedDraw);
     }
-}
+}*/

@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Entity(name = "Clase")
 @Table(name = "classes")
-public class Clase {
+public class Clase implements Serializable {
 
     @Id
     @Column(name = "id")

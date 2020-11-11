@@ -3,6 +3,7 @@ package edu.eci.arsw.teachtome.model;
 import edu.eci.arsw.teachtome.controllers.dtos.DrawDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.PointDTO;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Clase que representa un dibujo de una sesión dentro de la aplicación TeachToMe
  */
-public class Draw {
+public class Draw  implements Serializable {
 
     private Timestamp dateOfDraw;
 

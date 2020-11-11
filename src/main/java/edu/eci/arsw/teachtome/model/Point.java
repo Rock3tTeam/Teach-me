@@ -2,12 +2,13 @@ package edu.eci.arsw.teachtome.model;
 
 import edu.eci.arsw.teachtome.controllers.dtos.PointDTO;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Clase que representa un punto de un dibujo dentro de la aplicación TeachToMe
  */
-public class Point {
+public class Point implements Serializable {
 
     private Draw draw;
 
