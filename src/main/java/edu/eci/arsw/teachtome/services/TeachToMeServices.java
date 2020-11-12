@@ -10,6 +10,8 @@ import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @throws TeachToMeServiceException - Cuando el usuario no existía o la clase tiene información nula
      */
     @Override
+    @CacheEvict(value = "filtered-classes-cache", allEntries = true)
     public void addClase(Clase clase, User user) throws TeachToMeServiceException {
         if (clase == null) throw new TeachToMeServiceException("La clase no puede ser nula");
         if (user == null) throw new TeachToMeServiceException("El usuario no puede ser nulo");
