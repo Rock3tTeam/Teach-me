@@ -116,7 +116,7 @@ Por ultimo, la siguiente vista representa el perfil de un usuario.
 
 ## Diagrama de despliegue
 
-![](Diagrams/despliegue.png)
+![](Diagrams/despliegued.png)
 
 
 ## Autores
