@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.Cache;
+package edu.eci.arsw.teachtome.cache;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;

@@ -1,11 +1,21 @@
 package edu.eci.arsw.teachtome.configuration;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import redis.clients.jedis.Jedis;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class BeanConfig {
@@ -22,5 +32,15 @@ public class BeanConfig {
         RedisTemplate template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
         return template;
+    }
+
+    @Bean
+    public RedisCacheManager redisCacheManager(@Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory) {
+        Map<String, RedisCacheConfiguration> cacheNamesConfigurationMap = new HashMap<>();
+        cacheNamesConfigurationMap.put("filtered-classes-cache",
+                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(900)));
+        return new RedisCacheManager(RedisCacheWriter.lockingRedisCacheWriter(connectionFactory),
+                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(300)),
+                cacheNamesConfigurationMap);
     }
 }

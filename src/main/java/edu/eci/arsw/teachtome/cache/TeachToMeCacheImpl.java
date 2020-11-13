@@ -1,4 +1,4 @@
-package edu.eci.arsw.teachtome.Cache;
+package edu.eci.arsw.teachtome.cache;
 
 import edu.eci.arsw.teachtome.model.Clase;
 import edu.eci.arsw.teachtome.persistence.TeachToMePersistence;
@@ -15,10 +15,9 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
     @Autowired
     private TeachToMePersistence persistence;
 
-    @Cacheable(key= "#nameFilter" , value = "filtered-classes-cache" , unless="#result == null")
+    @Cacheable(key= "#nameFilter" , cacheNames= "filtered-classes-cache" , unless="#result == null")
     @Override
     public List<Clase> getFilteredClassesFromCache(String nameFilter) throws TeachToMeServiceException {
         return persistence.getFilteredClassesByName(nameFilter);
     }
-
 }
