@@ -15,7 +15,7 @@ public class TeachToMeCacheImpl implements TeachToMeCache {
     @Autowired
     private TeachToMePersistence persistence;
 
-    @Cacheable(key= "#nameFilter" , cacheNames= "filtered-classes-cache" , unless="#result == null")
+    //@Cacheable(key= "#nameFilter" , cacheNames= "filtered-classes-cache" , unless="#result == null")
     @Override
     public List<Clase> getFilteredClassesFromCache(String nameFilter) throws TeachToMeServiceException {
         return persistence.getFilteredClassesByName(nameFilter);
