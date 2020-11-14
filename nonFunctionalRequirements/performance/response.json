@@ -1,0 +1,92 @@
+[
+    {
+        "id": 3812,
+        "nombre": "CLASE1",
+        "capacity": 50,
+        "description": "Clase 1",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-17T10:19:06.000-0500",
+        "dateOfEnd": "2020-11-26T10:19:10.000-0500"
+    },
+    {
+        "id": 3814,
+        "nombre": "CLASE2",
+        "capacity": 50,
+        "description": "clase 2",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-25T10:19:34.000-0500",
+        "dateOfEnd": "2020-11-30T10:19:37.000-0500"
+    },
+    {
+        "id": 3816,
+        "nombre": "CLASE3",
+        "capacity": 50,
+        "description": "clase 3",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-27T10:19:52.000-0500",
+        "dateOfEnd": "2020-11-30T10:19:54.000-0500"
+    },
+    {
+        "id": 3818,
+        "nombre": "CLASE4",
+        "capacity": 50,
+        "description": "Clase 4",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-26T10:20:15.000-0500",
+        "dateOfEnd": "2020-11-30T10:20:17.000-0500"
+    },
+    {
+        "id": 3820,
+        "nombre": "Clase5",
+        "capacity": 50,
+        "description": "clase5",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-20T10:46:30.000-0500",
+        "dateOfEnd": "2020-11-27T10:46:33.000-0500"
+    },
+    {
+        "id": 3841,
+        "nombre": "clase14",
+        "capacity": 50,
+        "description": "clase",
+        "amountOfStudents": 0,
+        "dateOfInit": "2020-11-25T11:19:59.000-0500",
+        "dateOfEnd": "2020-11-27T11:20:03.000-0500"
+    },
+    {
+        "id": 3844,
+        "nombre": "CLASE15",
+        "capacity": 50,
+        "description": "clase15",
+        "amountOfStudents": 1,
+        "dateOfInit": "2020-12-13T13:27:17.000-0500",
+        "dateOfEnd": "2020-12-26T13:27:20.000-0500"
+    },
+    {
+        "id": 3846,
+        "nombre": "CLASE16",
+        "capacity": 50,
+        "description": "clase16",
+        "amountOfStudents": 1,
+        "dateOfInit": "2020-12-13T13:27:17.000-0500",
+        "dateOfEnd": "2020-12-26T13:27:20.000-0500"
+    },
+    {
+        "id": 3848,
+        "nombre": "CLASE17",
+        "capacity": 50,
+        "description": "clase17",
+        "amountOfStudents": 1,
+        "dateOfInit": "2020-12-13T13:27:17.000-0500",
+        "dateOfEnd": "2020-12-26T13:27:20.000-0500"
+    },
+    {
+        "id": 3850,
+        "nombre": "CLASE20",
+        "capacity": 50,
+        "description": "clase20",
+        "amountOfStudents": 1,
+        "dateOfInit": "2020-12-13T13:27:17.000-0500",
+        "dateOfEnd": "2020-12-26T13:27:20.000-0500"
+    }
+]
