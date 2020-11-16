@@ -8,7 +8,7 @@
 - **Artefacto:**  API Teach To Me.
 - **Respuesta:** Se maneja la petición y se devuelve la información solicitada al usuario.
 - **Medida de la Respuesta:** Latencia promedio de máximo 1 segundo.
-- [Demostración primer escenario](/performance/readme.md)
+- [Demostración primer escenario](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/performance/readme.md)
 
 ## Seguridad
 ### Primer escenario:
