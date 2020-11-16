@@ -9,7 +9,7 @@ JMeter es un proyecto de Apache que puede ser utilizado como una herramienta de 
 
 ### Caso
 
-Para analizar el escenario se utilizó una petición GET a la url `https://teach2-me.herokuapp.com/api/v1/classes?name=CLASE`
+Para analizar el escenario se utilizó una petición GET a la url `https://teach2-me.herokuapp.com/api/v1/classes?name=CLASE` con un token de seguridad obtenido del proceso de login de la aplicación.
 
 [Ejemplo de resultado](response.json)						
 
