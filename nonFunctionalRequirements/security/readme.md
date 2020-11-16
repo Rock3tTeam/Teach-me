@@ -54,7 +54,7 @@ Adicionalmente observamos su potencial impacto , clasificación y modo de correc
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-before6.PNG)
 
-### Análisis después de corrección de vulnerabilidades
+#### Análisis después de corrección de vulnerabilidades
 
 #### Campo de contraseña enviado mediante el método GET
 
