@@ -41,3 +41,6 @@ Y al incrementar la cantidad de peticiones se observa un comportamiento mas cons
 
 ![](images/despues2.PNG)
 
+### Conclusión
+
+El uso de un caché Redis nos permitió cumplir el escenario planteado, obtiendo respuestas de gran tamaño en menos de un segundo, además nos permite tener centralizada esta clase información optimizando su acceso de lectura en casi de tener que realizar escalabilidad horizontal en el futuro. 
