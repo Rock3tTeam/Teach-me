@@ -46,7 +46,7 @@ Esto ocurre en la pagina del login (/authenticate.html)
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-before4.PNG)
 
-También ocurre en la página de registro (/signup.5html)
+También ocurre en la página de registro (/signup.html)
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-before5.PNG)
 
@@ -68,7 +68,7 @@ En la forma de logueo
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/correccion-get-password2.PNG)
 
-Posteriormente , se volvió a realizar el escaner y se obtuvieron los siguientes resultados con dos vulnerabilidades medias menos.
+Posteriormente , se volvió a realizar el scan y se obtuvieron los siguientes resultados con dos vulnerabilidades medias menos.
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-after.PNG)
 
@@ -78,7 +78,7 @@ De esta manera , observamos que las vulnerabilidades de campo de contraseña env
 
 ### Comparación entre scans
 
-Tenemos la posibilidad de obtener una comparación entre los scans realiazados hasta el momento y observar como se han ido reduciendo las vulnerabilidades
+Tenemos la posibilidad de obtener una comparación entre los scans realizados hasta el momento y observar como se han ido reduciendo las vulnerabilidades
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/scan-compare.PNG)
 
