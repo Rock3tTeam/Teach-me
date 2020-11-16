@@ -12,7 +12,7 @@ Acunetix es un escáner de seguridad de aplicaciones web automatizado y una plat
 Permite analizar un objetivo entero empezando desde una URL y mapea toda su estructura completa
 El Scanner testeará las paginas de la URL para encontrar vulnerabilidades. Permite una cobertura de escaneo rapida y facilmente personalizable
 
-### Acunetix Reports
+#### Acunetix Reports
 
 * Dashboard en tiempo real con tendencias
 * Genera una gran variedad de reportes de administración y de conformidad incluyendo OWASP Top 10 , PCI DSS , ISO 27001 , HIPAA
