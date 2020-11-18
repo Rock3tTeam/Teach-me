@@ -15,6 +15,7 @@ Demostración en video : https://www.youtube.com/watch?v=QBvKbZ98UG8
 #### Conexión a la clase con atajos de teclas
 
 Se realiza la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión de la clase el usuario final se tarda un tiempo de 00:09.98.
+
 Para este caso se tienen los siguientes atajos de teclas:
 
 - **Tecla enter** : Permite loguearse sin necesidad de oprimir el botón
