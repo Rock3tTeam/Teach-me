@@ -2,6 +2,8 @@
 # Usabilidad
 ## Primer escenario
 
+Con este escenario se verifica la heuristica número 7 de Jakob Nielsen, Flexibilidad y eficiencia de uso.
+
 ### Demostración
 
 #### Conexión a la clase sin atajos de teclas
@@ -29,12 +31,13 @@ Demostración en video : https://www.youtube.com/watch?v=BhUQpgH4ydo
 
 #### Conclusión
 
-Observamos que se redujo el tiempo al momento de conectarse a la clase usando atajos de teclas.
-De esta manera obtuvimos los siguientes resultados
+Se realizó el cumplimiento de esta heurística por medio de la implementción de los atajos de teclado que mejoran la interacción de los usuarios expertos. Permitiendo así realizar acciones de manera más rápida y automatizada.
+
+Para corroborarlo, observamos que se redujo el tiempo al momento de conectarse a la clase usando estos atajos por medio de los siguientes resultados:
 
 - **Tiempo de conexión a la clase con atajos de teclas** :  00:09.98
 - **Tiempo de conexión a la clase sin atajos de teclas** :  00:14.07
-- **Porcentaje (%) de reducción de tiempo** : -35,71%
+- **Porcentaje (%) de reducción de tiempo** : 35,71%
 
 
 
