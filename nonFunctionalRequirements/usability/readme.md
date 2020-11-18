@@ -19,7 +19,7 @@ Se realiza la conexión a la clase sin el uso de atajos de teclas. De esta maner
 Para este caso se tienen los siguientes atajos de teclas:
 
 - **Tecla enter** : Permite loguearse sin necesidad de oprimir el botón
-- **Flechas del tecladp** : Permiten desplazarse por el Scrolling que permite visualizar las clases que se está estudiando o enseñando
+- **Flechas del teclado** : Permiten desplazarse por el Scrolling que permite visualizar las clases que se está estudiando o enseñando
 - **Tecla c** : Permite conectarse a la sesión de la clase sin necesidad de oprimir el boton
 
 Demostración en video : https://www.youtube.com/watch?v=BhUQpgH4ydo
