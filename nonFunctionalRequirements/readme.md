@@ -2,12 +2,12 @@
 
 ## Usabilidad
 ### Primer Escenario:
-- **Source of Stimulus** : El usuario final.
-- **Stimulus:** Conectarse a una clase
-- **Environment:** Bajo operaciones normales
-- **Artefact:** Aplicación Web Teach To Me
-- **Response:** Se conecta satisfactoriamente a la clase.
-- **Response Measure:** El tiempo demorado en conectarse a la clase.
+- **Fuente del estímulo** : El usuario final.
+- **Estimulo:** Conectarse a una clase.
+- **Ambiente:** Bajo operaciones normales.
+- **Artefacto:** Aplicación Web Teach To Me.
+- **Respuesta:** Se conecta satisfactoriamente a la clase.
+- **Medida de la Respuesta:** El tiempo demorado en conectarse a la clase.
 - [Demostración primer escenario](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/usability/readme.md)
 
 ## Rendimiento (Performance)
