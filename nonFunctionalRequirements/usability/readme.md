@@ -16,7 +16,7 @@ Demostración en video : https://www.youtube.com/watch?v=cgJmK5BWsKw
 
 #### Conexión a la clase con atajos de teclas
 
-Varios usuarios finales realizan la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión a la clase , la mayoria de los usuarios experimentan una reducción en el tiempo que demoran en conectarse a la clase.
+Varios usuarios finales realizan la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión a la clase , la mayoria de los usuarios experimentan una reducción en el tiempo que demoran en conectarse a la misma.
 
 Para este caso se tienen los siguientes atajos de teclas:
 
