@@ -33,6 +33,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static edu.eci.arsw.teachtome.cache.VideoToken.generateProvisionToken;
+
 
 /**
  * Controlador API REST de la aplicación TeachToMe
@@ -46,6 +48,9 @@ public class TeachToMeAPIController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private static final String DELIM = "\0";
+    public static final String PROVISION_TOKEN = "provision";
 
 
     /**
@@ -216,6 +221,22 @@ public class TeachToMeAPIController {
         } catch (TeachToMeServiceException e) {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Generador del Token para el video
+     * @param userId Identificador del Usuario
+     * @return Entidad de respuesta con el token o con el mensaje de error
+     */
+    @GetMapping(value = "/{userId}/token")
+    public ResponseEntity<?> generateVideoToken(@PathVariable long userId) {
+        String token;
+        try {
+            token = generateProvisionToken(userId);
+            return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("Error al obtener el token del video", HttpStatus.CONFLICT);
         }
     }
 
