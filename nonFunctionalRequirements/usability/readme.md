@@ -8,15 +8,15 @@ Con este escenario se verifica la heuristica número 7 de Jakob Nielsen, Flexibi
 
 #### Conexión a la clase sin atajos de teclas
 
-Se realiza la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión de la clase , el usuario final se tarda un tiempo de 00:14.07
+Varios usuarios finales realizan la conexión a la clase sin el uso de atajos de teclas.
 
-Demostración en video : https://www.youtube.com/watch?v=QBvKbZ98UG8 
+Demostración en video : https://www.youtube.com/watch?v=cgJmK5BWsKw
 
-[![Curso de Java Básico](https://img.youtube.com/vi/QBvKbZ98UG8/0.jpg)](https://www.youtube.com/watch?v=QBvKbZ98UG8)
+[![Demostración sin atajos de teclas](https://img.youtube.com/vi/cgJmK5BWsKw/0.jpg)](https://www.youtube.com/watch?v=cgJmK5BWsKw)
 
 #### Conexión a la clase con atajos de teclas
 
-Se realiza la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión de la clase , el usuario final se tarda un tiempo de 00:09.98.
+Varios usuarios finales realizan la conexión a la clase sin el uso de atajos de teclas. De esta manera , desde el logueo hasta la conexión a la clase , la mayoria de los usuarios experimentan una reducción en el tiempo que demoran en conectarse a la clase.
 
 Para este caso se tienen los siguientes atajos de teclas:
 
@@ -24,9 +24,9 @@ Para este caso se tienen los siguientes atajos de teclas:
 - **Flechas del teclado** : Permiten desplazarse por el Scrolling que permite visualizar las clases que se está estudiando o enseñando
 - **Tecla c** : Permite conectarse a la sesión de la clase sin necesidad de oprimir el boton
 
-Demostración en video : https://www.youtube.com/watch?v=BhUQpgH4ydo
+Demostración en video : https://www.youtube.com/watch?v=IUtX9Gxka3c
 
-[![Curso de Java Básico](https://img.youtube.com/vi/BhUQpgH4ydo/0.jpg)](https://www.youtube.com/watch?v=BhUQpgH4ydo)
+[![Demostración con atajos de teclas](https://img.youtube.com/vi/IUtX9Gxka3c/0.jpg)](https://www.youtube.com/watch?v=IUtX9Gxka3c)
 
 
 #### Conclusión
@@ -34,10 +34,6 @@ Demostración en video : https://www.youtube.com/watch?v=BhUQpgH4ydo
 Se realizó el cumplimiento de esta heurística por medio de la implementción de los atajos de teclado que mejoran la interacción de los usuarios expertos. Permitiendo así realizar acciones de manera más rápida y automatizada.
 
 Para corroborarlo, observamos que se redujo el tiempo al momento de conectarse a la clase usando estos atajos por medio de los siguientes resultados:
-
-- **Tiempo de conexión a la clase con atajos de teclas** :  00:09.98
-- **Tiempo de conexión a la clase sin atajos de teclas** :  00:14.07
-- **Porcentaje (%) de reducción de tiempo** : 35,71%
 
 
 
