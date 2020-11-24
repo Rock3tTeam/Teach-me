@@ -8,7 +8,7 @@
 - **Artefacto:** Aplicación Web Teach To Me.
 - **Respuesta:** Se conecta satisfactoriamente a la clase.
 - **Medida de la Respuesta:** El tiempo demorado en conectarse a la clase.
-- [Demostración primer escenario](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/usability/readme.md)
+- [Demostración primer escenario](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/usability/Connect-To-Class/readme.md)
 
 ## Rendimiento (Performance)
 ### Primer escenario:
