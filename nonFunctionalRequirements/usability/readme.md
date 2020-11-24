@@ -35,6 +35,8 @@ Se realizó el cumplimiento de esta heurística por medio de la implementción d
 
 Para corroborarlo, observamos que se redujo el tiempo al momento de conectarse a la clase usando estos atajos por medio de los siguientes resultados:
 
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/usability/resources/Connect-To-Class/usability-analysis.PNG)
+
 
 
 
