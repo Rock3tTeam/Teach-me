@@ -43,6 +43,12 @@ Y al incrementar la cantidad de peticiones se observa un comportamiento mas cons
 
 ### Conclusión
 
-El uso de un caché Redis nos permitió cumplir el escenario planteado, obtiendo consultas de varias clases menos de un segundo, además nos permite tener centralizada esta clase información optimizando su acceso de lectura en caso de tener que realizar escalabilidad horizontal en el futuro. 
+El uso de un caché Redis nos permitió cumplir el escenario planteado, obtiendo consultas de varias clases menos de un segundo, además nos permite tener centralizada esta clase información optimizando su acceso de lectura en caso de tener que realizar escalabilidad horizontal en el futuro.
+
+![](images/antes3.PNG)
+
+El proceso de autenticación y búsqueda con 20 usuarios inicialmente tomó 4 segundos.
 
 ![](images/despues3.PNG)
+
+Pero al implementar el caché Redis todo el proceso de autnticación y consulta de las clases toma un tiempo promedio de 2 segundos, optimizando el uso de la aplicación.
