@@ -13,6 +13,6 @@ public interface TeachToMeCache {
      * @param nameFilter palabra clave por la cual se van a filtrar las clases
      * @return las clases que correspondan al filtro
      */
-    @Cacheable(key= "#nameFilter" , value = "filtered-classes-cache" , unless="#result == null")
+    //@Cacheable(key= "#nameFilter" , value = "filtered-classes-cache" , unless="#result == null")
     List<Clase>  getFilteredClassesFromCache(String nameFilter) throws TeachToMeServiceException;
 }

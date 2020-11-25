@@ -58,7 +58,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @throws TeachToMeServiceException - Cuando el usuario no existía o la clase tiene información nula
      */
     @Override
-    @CacheEvict(cacheNames = "filtered-classes-cache", allEntries = true)
+    //@CacheEvict(cacheNames = "filtered-classes-cache", allEntries = true)
     public void addClase(Clase clase, User user) throws TeachToMeServiceException {
         if (clase == null) throw new TeachToMeServiceException("La clase no puede ser nula");
         if (user == null) throw new TeachToMeServiceException("El usuario no puede ser nulo");
