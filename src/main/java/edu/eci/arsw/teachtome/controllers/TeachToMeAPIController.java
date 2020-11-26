@@ -12,6 +12,7 @@ import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
 import edu.eci.arsw.teachtome.services.TeachToMeServicesInterface;
+import edu.eci.arsw.teachtome.video.VideoTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static edu.eci.arsw.teachtome.cache.VideoToken.generateProvisionToken;
-
 
 /**
  * Controlador API REST de la aplicación TeachToMe
@@ -49,8 +48,8 @@ public class TeachToMeAPIController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final String DELIM = "\0";
-    public static final String PROVISION_TOKEN = "provision";
+    @Autowired
+    private VideoTokenService videoTokenService;
 
 
     /**
@@ -226,6 +225,7 @@ public class TeachToMeAPIController {
 
     /**
      * Generador del Token para el video
+     *
      * @param userId Identificador del Usuario
      * @return Entidad de respuesta con el token o con el mensaje de error
      */
@@ -233,7 +233,7 @@ public class TeachToMeAPIController {
     public ResponseEntity<?> generateVideoToken(@PathVariable long userId) {
         String token;
         try {
-            token = generateProvisionToken(userId);
+            token = videoTokenService.generateProvisionToken(userId);
             return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>("Error al obtener el token del video", HttpStatus.CONFLICT);
