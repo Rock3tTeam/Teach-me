@@ -212,7 +212,7 @@ public class TeachToMeAPIController {
      * @param classId Identificador de la clase
      * @return Entidad de Respuesta con la coleccion de clases y en caso de fallo, el mensaje de la excepcion
      */
-    @GetMapping(value = "/draws/{classId}")
+    /*@GetMapping(value = "/draws/{classId}")
     public ResponseEntity<?> getDrawOfAClass(@PathVariable long classId) {
         try {
             DrawDTO drawDTO = new DrawDTO(services.getDrawsOfAClass(classId));
@@ -221,7 +221,7 @@ public class TeachToMeAPIController {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
     /**
      * Generador del Token para el video
@@ -306,6 +306,7 @@ public class TeachToMeAPIController {
         }
     }
 
+
     /**
      * Agrega dibujos dentro de la sesión de una clase
      *
@@ -313,7 +314,7 @@ public class TeachToMeAPIController {
      * @param classId Identificador de la clase
      * @return Entidad de Respuesta con el estado de la solicitud y en caso de fallo, el mensaje de la excepcion
      */
-    @PostMapping(value = "/draws/{classId}")
+    /*@PostMapping(value = "/draws/{classId}")
     public ResponseEntity<?> addDraw(@RequestBody DrawDTO drawDTO, @PathVariable long classId) {
         try {
             services.addDrawToCache(classId, new Draw(drawDTO));
@@ -322,7 +323,7 @@ public class TeachToMeAPIController {
             Logger.getLogger(TeachToMeAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
-    }
+    }*/
 
     /**
      * Actualiza la informacion de una solicitud para una clase
