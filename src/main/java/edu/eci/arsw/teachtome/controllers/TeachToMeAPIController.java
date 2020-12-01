@@ -2,12 +2,10 @@ package edu.eci.arsw.teachtome.controllers;
 
 import edu.eci.arsw.teachtome.controllers.dtos.ClaseDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.CreateUserDTO;
-import edu.eci.arsw.teachtome.controllers.dtos.DrawDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.GetUserDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.MessageDTO;
 import edu.eci.arsw.teachtome.controllers.dtos.RequestDTO;
 import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
 import edu.eci.arsw.teachtome.services.TeachToMeServiceException;
