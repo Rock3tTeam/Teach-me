@@ -61,7 +61,10 @@ jacocoTestReport {
                                         '**/teachtome/configuration/**',
                                         '**/teachtome/jwt/**',
                                         '**/teachtome/mail/**',
+                                        '**/teachtome/video/**',
 					                    '**/teachtome/controllers/dtos**',
+                                        '**/teachtome/controllers/Validator**',
+                                        '**/teachtome/controllers/Stomp**',
                                         '**/teachtome/model/**'])
         })
     }
