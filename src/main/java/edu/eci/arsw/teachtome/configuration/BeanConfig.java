@@ -20,8 +20,8 @@ public class BeanConfig {
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("rediscacheteachtome.redis.cache.windows.net", 6379);
-        redisStandaloneConfiguration.setPassword(RedisPassword.of("a9v5Beu6tc2w64VYgueed99T+68UWQhMvFmH4mhLwJY="));
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("rediscacheteacht2me.redis.cache.windows.net", 6379);
+        redisStandaloneConfiguration.setPassword(RedisPassword.of("XWYdmMBpq0TqOcO3hNOP9kIKwsUs1F6DdfZcKpIEkB4="));
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
