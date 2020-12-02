@@ -54,6 +54,12 @@ Adicionalmente observamos su potencial impacto , clasificación y modo de correc
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-before6.PNG)
 
+### Tipo Password input con autocompletado activo
+
+Tenemos también vulnerabilidades de tipo informativo. En este caso observamos que existen campos de contraseña con autocompletado activo que pueden ser peligrosos en caso de que un atacante tenga acceso local en un dispositivo desde el cual se haya ingresado a la aplicación
+
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/input-password-autocomplete-before.PNG)
+
 #### Análisis después de corrección de vulnerabilidades
 
 #### Campo de contraseña enviado mediante el método GET
@@ -75,6 +81,29 @@ Posteriormente , se volvió a realizar el scan y se obtuvieron los siguientes re
 De esta manera , observamos que las vulnerabilidades de campo de contraseña enviado mediante el método GET ya no se encuentran.
 
 ![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/get-password-scan-after2.PNG)
+
+### Tipo Password input con autocompletado activo
+
+En primer lugar , se realizó la corrección de la vulnerabilidad deshabilitando el autocompletado en los campos de contraseña
+
+En la forma de registro
+
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/input-password-autocomplete-after.PNG)
+
+En la forma de logueo
+
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/input-password-autocomplete-after2.PNG)
+
+Posteriormente , se volvió a realizar el scan y se observa que ya no se obtienen dichas vulnerabilidades
+
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/input-password-autocomplete-after3.PNG)
+
+
+## HTML sin protección CSRF
+
+Se decidió ignorar las vulnerabilidades de CSRF en los campos de logueo y registro ya que cualquier usuario debe poder acceder a dichas paginas. Adicionalmente , una vez el usuario se haya logueado , todas las paginas realizan una validación de seguridad mediante un JSON Web Token que permite proteger a la aplicación contra este tipo de ataques.
+
+![](https://github.com/Rock3tTeam/Teach-me/blob/master/nonFunctionalRequirements/security/images/html-without-CSRF-protection-before.PNG)
 
 ### Comparación entre scans
 
