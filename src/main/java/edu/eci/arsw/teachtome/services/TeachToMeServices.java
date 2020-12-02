@@ -286,11 +286,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         if (nameFilter == null) {
             throw new TeachToMeServiceException("El nombre no puede ser nulo");
         }
-        List<Clase> returnedClasses = teachToMeCache.getFilteredClassesFromCache(nameFilter);
-        if (returnedClasses.isEmpty()) {
-            throw new TeachToMeServiceException("No hay clases con el nombre " + nameFilter);
-        }
-        return returnedClasses;
+        return teachToMeCache.getFilteredClassesFromCache(nameFilter);
     }
 
     /**
