@@ -3,7 +3,6 @@ package edu.eci.arsw.teachtome.services;
 import edu.eci.arsw.teachtome.cache.TeachToMeCacheImpl;
 import edu.eci.arsw.teachtome.mail.MailSenderInterface;
 import edu.eci.arsw.teachtome.model.Clase;
-import edu.eci.arsw.teachtome.model.Draw;
 import edu.eci.arsw.teachtome.model.Message;
 import edu.eci.arsw.teachtome.model.Request;
 import edu.eci.arsw.teachtome.model.User;
@@ -287,7 +286,11 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
         if (nameFilter == null) {
             throw new TeachToMeServiceException("El nombre no puede ser nulo");
         }
-        return teachToMeCache.getFilteredClassesFromCache(nameFilter);
+        List<Clase> returnedClasses = teachToMeCache.getFilteredClassesFromCache(nameFilter);
+        if (returnedClasses.isEmpty()) {
+            throw new TeachToMeServiceException("No hay clases con el nombre " + nameFilter);
+        }
+        return returnedClasses;
     }
 
     /**
@@ -313,10 +316,10 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @return Una lista con los dibujos de la clase
      * @throws TeachToMeServiceException - Cuando la clase no existe en el cache
      */
-    @Override
+    /*@Override
     public Draw getDrawsOfAClass(Long classId) throws TeachToMeServiceException {
         return null;
-    }
+    }*/
 
     /**
      * Añade un dibujo de una clase en Caché
@@ -325,9 +328,9 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @param draw    el dibujo a ser añadido en cache
      * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de guardar el dibujo en cache
      */
-    @Override
+    /*@Override
     public void addDrawToCache(long classId, Draw draw) throws TeachToMeServiceException {
-    }
+    }*/
 
     /**
      * Elimina un dibujo de una clase en Caché
@@ -335,7 +338,7 @@ public class TeachToMeServices implements TeachToMeServicesInterface {
      * @param classId clase a la cual se eliminara el dibujo en cache
      * @throws TeachToMeServiceException Cuando ocurre algún error a la hora de eliminar el dibujo en cache
      */
-    @Override
+    /*@Override
     public void deleteDrawFromCache(Long classId) throws TeachToMeServiceException {
-    }
+    }*/
 }

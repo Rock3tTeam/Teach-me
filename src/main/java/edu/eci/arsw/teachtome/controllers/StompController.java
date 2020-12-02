@@ -46,11 +46,11 @@ public class StompController {
      */
     @MessageMapping("/draws.{classId}")
     public void handleDrawEvent(Point point, @DestinationVariable Long classId) throws Exception {
-        Draw draw = new Draw();
+        /*Draw draw = new Draw();
         ArrayList<Point> points = new ArrayList<>();
         points.add(point);
         draw.setPoints(points);
-        services.addDrawToCache(classId, draw);
+        services.addDrawToCache(classId, draw);*/
         msgt.convertAndSend("/topic/draws." + classId, point);
     }
 
@@ -62,7 +62,7 @@ public class StompController {
      */
     @MessageMapping("/board.{classId}")
     public void handleBoardEvent(String clear, @DestinationVariable Long classId) throws Exception {
-        services.deleteDrawFromCache(classId);
+        //services.deleteDrawFromCache(classId);
         msgt.convertAndSend("/topic/board." + classId, clear);
     }
 }
