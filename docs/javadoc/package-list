@@ -1,0 +1,13 @@
+edu.eci.arsw
+edu.eci.arsw.teachtome.auth
+edu.eci.arsw.teachtome.cache
+edu.eci.arsw.teachtome.configuration
+edu.eci.arsw.teachtome.controllers
+edu.eci.arsw.teachtome.controllers.dtos
+edu.eci.arsw.teachtome.jwt
+edu.eci.arsw.teachtome.mail
+edu.eci.arsw.teachtome.model
+edu.eci.arsw.teachtome.persistence
+edu.eci.arsw.teachtome.persistence.repositories
+edu.eci.arsw.teachtome.services
+edu.eci.arsw.teachtome.video

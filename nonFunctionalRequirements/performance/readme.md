@@ -15,7 +15,7 @@ Para analizar el escenario se utilizó una petición GET a la url `https://teach
 
 ### Antes de implementar el caché
 
-El resultado con 20 peticiones simultaneas fue de 2.16 segundos, a continuación se presenta el ejemplo de la petición con JMeter.
+El resultado con 20 peticiones simultaneas fue de más de cuatro segundos, a continuación se presenta el ejemplo de la petición con JMeter.
 
 ![](images/sincache.PNG)
 
@@ -29,7 +29,7 @@ Además, al incrementar la cantidad de peticiones, se distingue que se increment
 
 ### Después de implementar el caché
 
-Después de haber implementado un caché Redis, el resultado con 20 peticiones simultaneas fue de 0.586 segundos, a continuación se presenta el ejemplo de la petición con JMeter.
+Después de haber implementado un caché Redis, el resultado con 20 peticiones simultaneas fue de 1.8 segundos, a continuación se presenta el ejemplo de la petición con JMeter.
 
 ![](images/concache.PNG)
 
