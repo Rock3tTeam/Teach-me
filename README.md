@@ -4,7 +4,7 @@
 
 [![Deployed to Heroku](https://www.herokucdn.com/deploy/button.png)](https://teache-me-front.herokuapp.com/)
 
-[![CircleCI](https://circleci.com/gh/Rock3tTeam/Teach-me.svg?style=svg)](https://app.circleci.com/pipelines/github/Rock3tTeam/Teach-me)
+[![CircleCI](https://circleci.com/gh/Rock3tTeam/Teach-me-front.svg?style=svg)](https://app.circleci.com/pipelines/github/Rock3tTeam/Teach-me-front)
 
 [Enlace Burndown Chart](https://docs.google.com/spreadsheets/d/1e1N1zd1U_OG5T2ELwBz_HQ3leefo6FXZyYKzylzRoOI/edit#gid=0)
 
